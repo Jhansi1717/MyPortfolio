@@ -3,8 +3,7 @@ import { HeroSection } from '../sections/HeroSection';
 import { EngineeringSnapshotSection } from '../sections/EngineeringSnapshotSection';
 import { ExperienceSection } from '../sections/ExperienceSection';
 import { ProjectsSection } from '../sections/ProjectsSection';
-import { SystemsLabSection } from '../sections/SystemsLabSection';
-import { BuildActivitySection } from '../sections/BuildActivitySection';
+import { ResearchFocusSection } from '../sections/ResearchFocusSection';
 import { AboutSection } from '../sections/AboutSection';
 import { EducationSection } from '../sections/EducationSection';
 import { CertificationsSection } from '../sections/CertificationsSection';
@@ -15,34 +14,50 @@ import { SectionReveal } from '../components/primitives/SectionReveal';
 export const HomePage: React.FC = () => {
   return (
     <>
+      {/* 01 / HERO */}
       <HeroSection />
-      <SectionReveal showLineReveal={false}>
-        <EngineeringSnapshotSection />
-      </SectionReveal>
-      <SectionReveal showLineReveal={true}>
-        <ExperienceSection />
-      </SectionReveal>
+
+      {/* 02 / SELECTED WORK */}
       <SectionReveal showLineReveal={true}>
         <ProjectsSection />
       </SectionReveal>
+
+      {/* 03 / EXPERIENCE */}
       <SectionReveal showLineReveal={true}>
-        <SystemsLabSection />
+        <ExperienceSection />
       </SectionReveal>
+
+      {/* 04 / HOW I BUILD */}
       <SectionReveal showLineReveal={true}>
-        <BuildActivitySection />
+        <ResearchFocusSection />
       </SectionReveal>
+
+      {/* 05 / TECHNICAL PROFILE */}
+      <SectionReveal showLineReveal={true}>
+        <EngineeringSnapshotSection />
+      </SectionReveal>
+
+      {/* 06 / ABOUT */}
       <SectionReveal showLineReveal={true}>
         <AboutSection />
       </SectionReveal>
+
+      {/* 07 / EDUCATION */}
       <SectionReveal showLineReveal={true}>
         <EducationSection />
       </SectionReveal>
+
+      {/* 08 / CERTIFICATIONS */}
       <SectionReveal showLineReveal={true}>
         <CertificationsSection />
       </SectionReveal>
+
+      {/* 09 / RESUME */}
       <SectionReveal showLineReveal={true}>
         <ResumeSection />
       </SectionReveal>
+
+      {/* 10 / CONTACT */}
       <SectionReveal showLineReveal={true}>
         <ContactSection />
       </SectionReveal>

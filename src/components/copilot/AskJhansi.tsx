@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import Markdown from 'react-markdown';
 import {
   X,
@@ -39,6 +39,7 @@ export const AskJhansi: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -218,7 +219,7 @@ export const AskJhansi: React.FC = () => {
               ? 'bg-[#E5BA70] text-[#090907] border-[#E5BA70] shadow-[#E5BA70]/20'
               : 'bg-[#14130F] text-[#F2EBDD] border-[#38352A] hover:border-[#D49A46] hover:text-[#E5BA70] shadow-black/80'
           }`}
-          aria-label="Open Ask Jhansi AI Portfolio Copilot"
+          aria-label="Open Jhansi AI Portfolio Assistant"
         >
           <div className="relative flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-[#D49A46]" />
@@ -227,10 +228,10 @@ export const AskJhansi: React.FC = () => {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]"></span>
             </span>
           </div>
-          <span>ASK JHANSI</span>
-          <span className="hidden sm:inline-block text-[10px] text-[#A39E93] bg-[#24221A] px-1.5 py-0.5 rounded border border-[#38352A]">
-            AI
-          </span>
+          <div className="flex flex-col items-start leading-tight">
+            <span className="font-bold">JHANSI AI</span>
+            <span className="text-[9px] text-[#A39E93] tracking-normal lowercase font-sans">portfolio assistant</span>
+          </div>
         </motion.button>
       </div>
 
@@ -252,10 +253,10 @@ export const AskJhansi: React.FC = () => {
               id="ask-jhansi-panel"
               role="dialog"
               aria-label="Ask Jhansi AI Copilot"
-              initial={{ opacity: 0, y: 40, x: 0 }}
-              animate={{ opacity: 1, y: 0, x: 0 }}
-              exit={{ opacity: 0, y: 40, x: 0 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 280 }}
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 40, x: 0 }}
+              animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, x: 0 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 40, x: 0 }}
+              transition={shouldReduceMotion ? { duration: 0.2 } : { type: 'spring', damping: 25, stiffness: 280 }}
               className="fixed inset-x-0 bottom-0 max-h-[88vh] h-[85vh] md:h-[680px] md:max-h-[85vh] md:inset-x-auto md:right-6 md:bottom-20 md:w-[460px] bg-[#0E0D0A] border border-[#2D2A22] rounded-t-2xl md:rounded-xl shadow-2xl flex flex-col z-50 overflow-hidden"
             >
               {/* Header */}
@@ -319,11 +320,11 @@ export const AskJhansi: React.FC = () => {
                     <div className="w-12 h-12 rounded-full bg-[#1F1D17] border border-[#38352A] flex items-center justify-center text-[#E5BA70] mb-3 shadow-inner">
                       <Bot className="w-6 h-6" />
                     </div>
-                    <h3 className="text-base font-medium text-[#F2EBDD] mb-1">
-                      Ask about Jhansi's Work & Background
+                    <h3 className="text-sm sm:text-base font-medium text-[#F2EBDD] mb-2 leading-relaxed">
+                      Welcome. I’m Jhansi’s AI portfolio assistant. Ask me about his projects, skills, education, experience, or technical work.
                     </h3>
                     <p className="text-xs text-[#A39E93] max-w-xs mb-6 leading-relaxed">
-                      I answer queries on flagship AI projects, systems engineering, academic record at CBIT, and industry internship.
+                      Grounded strictly in verified portfolio data across AI systems, machine learning, and full-stack engineering.
                     </p>
 
                     <div className="w-full text-left">

@@ -21,9 +21,9 @@ export const tokens = {
     statusGreen: '#4ADE80',
   },
   typography: {
-    fontDisplay: "'Syne', sans-serif",
-    fontBody: "'Outfit', sans-serif",
-    fontMono: "'JetBrains Mono', monospace",
+    fontDisplay: "'Manrope', sans-serif",
+    fontBody: "'Inter', sans-serif",
+    fontMono: "'IBM Plex Mono', monospace",
     sizes: {
       hero: 'clamp(2.5rem, 6vw, 4.5rem)',
       display: 'clamp(2rem, 4vw, 3rem)',

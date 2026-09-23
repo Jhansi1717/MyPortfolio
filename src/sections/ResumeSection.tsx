@@ -1,150 +1,175 @@
-import React, { useState } from 'react';
-import { SectionHeading } from '../components/primitives/SectionHeading';
-import { Card } from '../components/primitives/Card';
+import React from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Container } from '../components/primitives/Container';
-import { ResumeModal } from '../components/ResumeModal';
 import { resumeConfig } from '../data/portfolioData';
-import { FileText, Download, Eye, ArrowUpRight, CheckCircle2, ShieldCheck, Terminal, AlertCircle } from 'lucide-react';
+import { ArrowUpRight, ArrowDown, FileText, CheckCircle2 } from 'lucide-react';
 
 export const ResumeSection: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [downloadFeedback, setDownloadFeedback] = useState<string | null>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const easeCurve = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-  const handleDownload = async () => {
-    try {
-      // Check if file actually exists at configured path
-      const checkRes = await fetch(resumeConfig.filePath, { method: 'HEAD' });
-      if (checkRes.ok) {
-        const link = document.createElement('a');
-        link.href = resumeConfig.filePath;
-        link.download = resumeConfig.fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } else {
-        // If static PDF is not yet placed in public directory, open formatted printable view
-        setIsModalOpen(true);
-        setDownloadFeedback('Opening formatted printable dossier (asset configured at ' + resumeConfig.filePath + ')');
-        setTimeout(() => setDownloadFeedback(null), 4000);
-      }
-    } catch {
-      setIsModalOpen(true);
-      setDownloadFeedback('Opening formatted printable dossier (asset configured at ' + resumeConfig.filePath + ')');
-      setTimeout(() => setDownloadFeedback(null), 4000);
-    }
+  // Motion variants: 500-650ms duration, 16px entrance translateY
+  const headerVariants = {
+    hidden: shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.55, ease: easeCurve },
+    },
+  };
+
+  const cardVariants = {
+    hidden: shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        delay: 0.12,
+        ease: easeCurve,
+      },
+    },
   };
 
   return (
     <section
       id="resume"
-      aria-label="Resume Section: Comprehensive Engineering Dossier"
-      className="py-24 md:py-36 border-b border-[#292720] relative overflow-hidden bg-[#0C0C0A]"
+      aria-label="Resume Section"
+      className="py-20 md:py-28 lg:py-32 border-b border-[#292720] relative overflow-hidden bg-transparent scroll-mt-24"
     >
-      {/* Background Architectural Grid Lines */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#171612_1px,transparent_1px),linear-gradient(to_bottom,#171612_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30 pointer-events-none" />
+      {/* Subtle Background Accent Behind Document Card */}
+      <div className="absolute inset-0 pointer-events-none -z-10" aria-hidden="true">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[540px] h-[540px] bg-[#D49A46]/[0.012] blur-[150px] rounded-full" />
+      </div>
 
-      <Container size="wide" className="relative z-10">
-        <div className="font-mono text-xs font-bold text-[#D49A46] uppercase tracking-widest mb-4 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#D49A46]" />
-          <span>09 // RESUME & CURRICULUM VITAE</span>
-        </div>
+      <Container size="default" className="relative z-10">
+        {/* Section Heading Hierarchy */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-50px' }}
+          variants={headerVariants}
+          className="text-center max-w-xl mx-auto mb-10 md:mb-14"
+        >
+          {/* Index & Section Label */}
+          <div className="inline-flex items-center gap-2 mb-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#D49A46] font-semibold">
+              09 / RESUME
+            </span>
+          </div>
 
-        {/* Large Editorial Layout Container */}
-        <div className="p-8 sm:p-12 md:p-16 lg:p-20 rounded-xs bg-[#14130F] border border-[#292720] shadow-2xl">
-          <div className="max-w-4xl">
-            {/* Tagline / Subtitle */}
-            <div className="font-mono text-xs sm:text-sm uppercase tracking-widest text-[#888175] mb-4">
-              FORMAL ENGINEERING DOSSIER // VERIFIABLE SOURCE OF TRUTH
+          {/* Section Title */}
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl uppercase font-bold tracking-tight text-[#F2EBDD] leading-tight">
+            RESUME
+          </h2>
+
+          {/* Supporting Text */}
+          <p className="mt-3 font-body text-base text-[#AAA398] font-normal leading-relaxed">
+            View or download my current resume.
+          </p>
+        </motion.div>
+
+        {/* Premium Centered Document Access Card */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-50px' }}
+          variants={cardVariants}
+          className="group relative max-w-2xl mx-auto rounded-xs bg-[#0D0C09] border border-[#24221C] hover:border-[#D49A46]/45 p-6 sm:p-8 md:p-10 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.85)] border-t-2 border-t-[#D49A46]/70 transition-all duration-300 hover:-translate-y-1"
+        >
+          {/* Corner Framing Accents */}
+          <div className="absolute -top-1 -left-1 w-2.5 h-2.5 border-t border-l border-[#D49A46]/40 pointer-events-none" />
+          <div className="absolute -top-1 -right-1 w-2.5 h-2.5 border-t border-r border-[#D49A46]/40 pointer-events-none" />
+          <div className="absolute -bottom-1 -left-1 w-2.5 h-2.5 border-b border-l border-[#D49A46]/40 pointer-events-none" />
+          <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 border-b border-r border-[#D49A46]/40 pointer-events-none" />
+
+          {/* Top Metadata Row */}
+          <div className="flex items-center justify-between pb-4 mb-6 border-b border-[#1E1D17] font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.10em]">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
+              <span className="text-[#D49A46] font-medium">CURRENT VERSION</span>
+            </div>
+            <span className="text-[#8E887D]">PROFESSIONAL RESUME · PDF</span>
+          </div>
+
+          {/* Abstract Non-Readable Document Representation Graphic */}
+          <div className="mb-8 p-6 sm:p-7 rounded-xs bg-[#12110D] border border-[#201F18] flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-6">
+            {/* Document Graphic Silhouette */}
+            <div className="relative w-16 h-20 sm:w-18 sm:h-22 bg-[#171612] border border-[#2A2821] rounded-xs p-2.5 flex flex-col justify-between shrink-0 shadow-inner group-hover:border-[#D49A46]/50 transition-colors duration-300">
+              {/* Folded Corner Dog-Ear */}
+              <div className="absolute top-0 right-0 w-3.5 h-3.5 border-b border-l border-[#2A2821] bg-[#0D0C09] pointer-events-none" />
+              
+              {/* Top Accent Bar */}
+              <div className="w-6 h-1 bg-[#D49A46] rounded-full" />
+
+              {/* Purely Decorative Abstract Skeleton Lines (Zero Real Text) */}
+              <div className="space-y-1.5 my-auto" aria-hidden="true">
+                <div className="w-9 h-1 bg-[#2E2B23] rounded-full" />
+                <div className="w-7 h-1 bg-[#26241D] rounded-full" />
+                <div className="w-10 h-1 bg-[#2E2B23] rounded-full" />
+                <div className="w-6 h-1 bg-[#26241D] rounded-full" />
+              </div>
+
+              {/* Document Icon with 2-3px shift on hover */}
+              <div className="flex items-center justify-between pt-1 border-t border-[#201F18]">
+                <FileText className="w-3.5 h-3.5 text-[#D49A46] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                <div className="w-2 h-1 bg-[#D49A46]/40 rounded-full" />
+              </div>
             </div>
 
-            {/* Headline: Exactly as requested */}
-            <h2 className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold uppercase tracking-tight text-[#F2EBDD] leading-[0.95] mb-8">
-              WANT THE COMPLETE PICTURE?
-            </h2>
-
-            {/* Editorial Lead Narrative */}
-            <p className="font-sans text-base sm:text-lg md:text-xl text-[#AAA398] font-light leading-relaxed mb-10 max-w-3xl">
-              Access the complete academic record, deep neural architectures, full-stack production deployments, research vectors, and verified credentials in a unified technical document.
-            </p>
-
-            {/* Interactive Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-12">
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(true)}
-                className="inline-flex items-center justify-center gap-2.5 font-mono text-xs sm:text-sm text-[#090907] bg-[#D49A46] hover:bg-[#E5BA70] font-bold px-8 py-4 rounded-xs uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-lg hover:shadow-[#D49A46]/20 active:translate-y-0.5 focus-visible:outline-2 focus-visible:outline-[#D49A46] min-h-[48px]"
-                aria-label="View comprehensive interactive resume"
-              >
-                <Eye className="w-4 h-4" />
-                <span>VIEW RESUME</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleDownload}
-                className="inline-flex items-center justify-center gap-2.5 font-mono text-xs sm:text-sm text-[#F2EBDD] hover:text-[#E5BA70] bg-[#11100C] hover:bg-[#1A1914] border border-[#2D2A22] hover:border-[#D49A46] font-bold px-8 py-4 rounded-xs uppercase tracking-wider transition-all duration-200 cursor-pointer active:translate-y-0.5 focus-visible:outline-2 focus-visible:outline-[#D49A46] min-h-[48px]"
-                aria-label="Download curriculum vitae PDF document"
-              >
-                <Download className="w-4 h-4 text-[#D49A46]" />
-                <span>DOWNLOAD PDF</span>
-              </button>
-            </div>
-
-            {/* Download status / Fallback notification if triggered */}
-            {downloadFeedback && (
-              <div className="mb-8 p-3 rounded-xs bg-[#171612] border border-[#D49A46]/40 flex items-center gap-2.5 font-mono text-xs text-[#E5BA70] animate-in fade-in">
-                <AlertCircle className="w-4 h-4 text-[#D49A46] shrink-0" />
-                <span>{downloadFeedback}</span>
+            {/* Document Identity & Subject Summary */}
+            <div className="flex-1 text-center sm:text-left">
+              <div className="inline-flex items-center gap-1.5 mb-1 font-mono text-[10px] uppercase tracking-wider text-[#68645C]">
+                <CheckCircle2 className="w-3 h-3 text-[#D49A46]" />
+                <span>CANONICAL RESUME RECORD</span>
               </div>
-            )}
-
-            {/* Metadata & Technical Specification Block */}
-            <div className="pt-8 border-t border-[#24221C] grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-mono">
-              <div className="p-3.5 rounded-xs bg-[#11100C] border border-[#201F19]">
-                <div className="text-[10px] text-[#68645C] uppercase tracking-wider mb-1">
-                  DOCUMENT TYPE
-                </div>
-                <div className="text-[#F2EBDD] font-bold">
-                  {resumeConfig.fileFormat}
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-xs bg-[#11100C] border border-[#201F19]">
-                <div className="text-[10px] text-[#68645C] uppercase tracking-wider mb-1">
-                  TARGET PATH
-                </div>
-                <div className="text-[#D49A46] font-bold truncate" title={resumeConfig.filePath}>
-                  {resumeConfig.filePath}
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-xs bg-[#11100C] border border-[#201F19]">
-                <div className="text-[10px] text-[#68645C] uppercase tracking-wider mb-1">
-                  ACADEMIC TERM
-                </div>
-                <div className="text-[#F2EBDD] font-bold">
-                  B.E. CSE (AIML)
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-xs bg-[#11100C] border border-[#201F19]">
-                <div className="text-[10px] text-[#68645C] uppercase tracking-wider mb-1">
-                  VERIFIED GRADE
-                </div>
-                <div className="text-[#E5BA70] font-bold">
-                  9.72 / 10 CGPA
-                </div>
-              </div>
+              <h3 className="font-display text-xl sm:text-2xl font-bold uppercase text-[#F2EBDD] tracking-tight">
+                JHANSI BHUKYA
+              </h3>
+              <p className="font-mono text-xs text-[#D49A46] tracking-[0.08em] font-semibold mt-1">
+                AI/ML ENGINEER · FULL-STACK ENGINEER
+              </p>
+              <p className="font-body text-xs sm:text-[13px] text-[#8E887D] leading-relaxed mt-2.5">
+                Standardized curriculum vitae encompassing machine learning systems, deep learning architectures, full-stack engineering implementations, and verified credentials.
+              </p>
             </div>
           </div>
-        </div>
-      </Container>
 
-      {/* Interactive In-Page Resume Modal */}
-      <ResumeModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+          {/* Action Buttons: Responsive Grid (Stacks on mobile, row on tablet/desktop) */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 pt-2">
+            {/* Primary Action: OPEN FULL RESUME in new tab */}
+            <a
+              href={resumeConfig.filePath}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/btn inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-[#D49A46] hover:bg-[#E5BA70] text-[#090907] font-mono text-xs uppercase font-bold tracking-[0.10em] rounded-xs transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+              aria-label="Open full PDF resume in a new tab"
+            >
+              <span>OPEN FULL RESUME</span>
+              <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-0.5" />
+            </a>
+
+            {/* Secondary Action: DOWNLOAD RESUME */}
+            <a
+              href={resumeConfig.filePath}
+              download={resumeConfig.fileName}
+              className="group/btn inline-flex items-center justify-center gap-2.5 px-6 py-3.5 border border-[#2E2B22] hover:border-[#D49A46]/60 bg-[#14130F] hover:bg-[#1A1913] text-[#F2EBDD] font-mono text-xs uppercase font-bold tracking-[0.10em] rounded-xs transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+              aria-label="Download resume PDF file directly"
+            >
+              <span>DOWNLOAD RESUME</span>
+              <ArrowDown className="w-4 h-4 text-[#D49A46] transition-transform duration-300 group-hover/btn:translate-y-0.5" />
+            </a>
+          </div>
+
+          {/* Subtle Bottom Note */}
+          <div className="mt-6 pt-4 border-t border-[#1C1B15] text-center">
+            <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#55524B]">
+              FORMAT: PDF · FILE: Jhansi_Bhukya_Resume.pdf
+            </span>
+          </div>
+        </motion.div>
+      </Container>
     </section>
   );
 };

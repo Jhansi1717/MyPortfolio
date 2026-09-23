@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ChevronRight, Layers, Terminal } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronRight } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ProjectArchitecture } from '../../types/project';
 
@@ -7,132 +7,126 @@ export interface ArchitecturePreviewProps {
   architecture: ProjectArchitecture;
   projectNumber: string;
   isCardHovered?: boolean;
+  isMobileActive?: boolean;
 }
 
 export const ArchitecturePreview: React.FC<ArchitecturePreviewProps> = ({
   architecture,
   projectNumber,
   isCardHovered = false,
+  isMobileActive = false,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [activeStepIndex, setActiveStepIndex] = useState<number | null>(null);
   const shouldReduceMotion = useReducedMotion();
 
+  const isInteractive = isCardHovered || isMobileActive;
+
+  // The signal moves ONLY while the user interacts with the project (hover or tap)
+  useEffect(() => {
+    if (!isInteractive || shouldReduceMotion) {
+      setActiveStepIndex(null);
+      return;
+    }
+
+    let current = 0;
+    setActiveStepIndex(0);
+
+    const interval = setInterval(() => {
+      current = (current + 1) % architecture.pipeline.length;
+      setActiveStepIndex(current);
+    }, 550);
+
+    return () => clearInterval(interval);
+  }, [isInteractive, shouldReduceMotion, architecture.pipeline.length]);
+
   return (
-    <div className="mt-6 pt-5 border-t border-[#292720]/80 transition-colors duration-300">
-      {/* Header and Toggle */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+    <div className="w-full">
+      {/* Header and Status Indicator */}
+      <div className="flex items-center justify-between gap-3 mb-3">
         <div className="flex items-center gap-2">
           {/* Signal Indicator Dot */}
           <span
             className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-              isCardHovered ? 'bg-[#D49A46] shadow-[0_0_6px_#D49A46]' : 'bg-[#D49A46]/60'
+              isInteractive ? 'bg-[#D49A46] shadow-[0_0_8px_#D49A46]' : 'bg-[#68645C]'
             }`}
+            aria-hidden="true"
           />
-          <span
-            className={`font-mono text-xs uppercase tracking-widest transition-colors duration-300 ${
-              isCardHovered ? 'text-[#E5BA70]' : 'text-[#888175]'
-            }`}
-          >
-            ARCHITECTURE SPECIFICATION
-          </span>
-          <span className="font-mono text-[10px] text-[#68645C] px-1.5 py-0.5 border border-[#292720] rounded-xs">
-            SYS_{projectNumber}_FLOW
+          <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.10em] text-[#8E887D] font-medium">
+            ARCHITECTURE PIPELINE
           </span>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-[#AAA398] hover:text-[#D49A46] transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46] rounded-xs cursor-pointer py-1 px-1.5 self-start sm:self-auto"
-          aria-expanded={isExpanded}
-        >
-          <Layers className="w-3.5 h-3.5 text-[#D49A46]" />
-          <span>{isExpanded ? 'COLLAPSE PIPELINE' : 'VIEW PIPELINE FLOW'}</span>
-          <ChevronRight
-            className={`w-3.5 h-3.5 transition-transform duration-200 ${
-              isExpanded ? 'rotate-90 text-[#D49A46]' : 'text-[#68645C]'
-            }`}
-          />
-        </button>
+        <span className="font-mono text-[10px] text-[#68645C] tracking-[0.08em] uppercase">
+          SYS_{projectNumber} // DATAFLOW
+        </span>
       </div>
 
-      {/* Summary */}
-      <p className="text-xs sm:text-sm text-[#AAA398] leading-relaxed mb-4 font-mono">
-        {architecture.summary}
-      </p>
-
-      {/* Pipeline Inline Preview (Rest & Hover State) */}
-      <div className="p-3.5 sm:p-4 rounded-xs bg-[#090907]/90 border border-[#24221C] transition-colors duration-300 group-hover:border-[#38352C] relative overflow-hidden">
-        {/* Subtle traveling signal glow across top of preview box during hover */}
-        {isCardHovered && !shouldReduceMotion && (
+      {/* Pipeline Container with Controlled Horizontal Scroll on Small Screens */}
+      <div className="p-3 sm:p-3.5 rounded-xs bg-[#11110E] border border-[#24221C] transition-colors duration-300 relative overflow-hidden">
+        
+        {/* Subtle traveling signal glow across top border during interaction */}
+        {isInteractive && !shouldReduceMotion && (
           <motion.div
             className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#D49A46] to-transparent pointer-events-none opacity-80"
             initial={{ x: '-100%' }}
             animate={{ x: '100%' }}
             transition={{
               repeat: Infinity,
-              duration: 2.2,
+              duration: 1.8,
               ease: 'easeInOut',
             }}
           />
         )}
 
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 overflow-x-auto pb-1">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 pt-0.5 scrollbar-thin scrollbar-thumb-[#292720] scrollbar-track-transparent">
           {architecture.pipeline.map((node, idx) => {
-            const isFirst = idx === 0;
             const isLast = idx === architecture.pipeline.length - 1;
+            const isActiveNode = activeStepIndex === idx;
 
             return (
               <React.Fragment key={idx}>
+                {/* Node Box */}
                 <div
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-xs border transition-all duration-300 shrink-0 ${
-                    isCardHovered
-                      ? 'bg-[#191813] border-[#38352C] text-[#F2EBDD]'
-                      : 'bg-[#14130F] border-[#24221C] text-[#AAA398]'
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xs border transition-all duration-300 shrink-0 ${
+                    isActiveNode
+                      ? 'bg-[#1E1B13] border-[#D49A46] text-[#F2EBDD] shadow-[0_0_10px_rgba(212,154,70,0.25)]'
+                      : isInteractive
+                      ? 'bg-[#14130F] border-[#2E2B23] text-[#AAA398]'
+                      : 'bg-[#0E0D0A] border-[#201F19] text-[#787368]'
                   }`}
                 >
                   <span
-                    className={`font-mono text-[10px] font-bold transition-colors ${
-                      isCardHovered ? 'text-[#D49A46]' : 'text-[#68645C]'
+                    className={`font-mono text-[9px] sm:text-[10px] font-medium transition-colors ${
+                      isActiveNode
+                        ? 'text-[#D49A46]'
+                        : isInteractive
+                        ? 'text-[#8E887D]'
+                        : 'text-[#55524B]'
                     }`}
                   >
                     0{idx + 1}
                   </span>
-                  <span className="font-mono text-xs whitespace-nowrap">{node}</span>
+                  <span className="font-mono text-[10px] sm:text-[11px] whitespace-nowrap font-medium tracking-[0.06em]">
+                    {node}
+                  </span>
                 </div>
+
+                {/* Arrow Connector */}
                 {!isLast && (
                   <div
-                    className={`flex justify-center items-center shrink-0 rotate-90 lg:rotate-0 my-0.5 lg:my-0 transition-colors duration-300 ${
-                      isCardHovered ? 'text-[#D49A46]' : 'text-[#4A473F]'
+                    className={`flex items-center justify-center shrink-0 transition-colors duration-300 ${
+                      isActiveNode || isInteractive ? 'text-[#D49A46]' : 'text-[#3A382F]'
                     }`}
+                    aria-hidden="true"
                   >
-                    <ChevronRight className="w-3.5 h-3.5" />
+                    <ChevronRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   </div>
                 )}
               </React.Fragment>
             );
           })}
         </div>
-
-        {/* Detailed highlights when expanded */}
-        {isExpanded && architecture.keyHighlights && architecture.keyHighlights.length > 0 && (
-          <div className="mt-4 pt-3 border-t border-[#1E1D18] animate-fadeIn">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-[#68645C] mb-2 flex items-center gap-1.5">
-              <Terminal className="w-3 h-3 text-[#D49A46]" />
-              <span>VERIFIED ARCHITECTURAL HIGHLIGHTS</span>
-            </div>
-            <ul className="space-y-1.5">
-              {architecture.keyHighlights.map((hl, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs text-[#AAA398]">
-                  <span className="w-1 h-1 rounded-full bg-[#D49A46] mt-1.5 shrink-0" />
-                  <span>{hl}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
     </div>
   );
 };
-

@@ -14,7 +14,7 @@ export interface Profile {
   status: string;
   contact: {
     email: string;
-    phone: string;
+    phone?: string;
     location: string;
   };
 }
@@ -132,6 +132,9 @@ export interface InternshipExperience {
   focusLabels: string[];
   scopeNote: string;
   verificationBadge: string;
+  contributions?: string[];
+  tools?: string[];
+  outcomes?: string[];
 }
 
 export interface NavigationItem {

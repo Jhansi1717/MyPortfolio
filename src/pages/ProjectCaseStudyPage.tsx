@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -18,6 +18,7 @@ import { Container } from '../components/primitives/Container';
 import { Badge } from '../components/primitives/Badge';
 import { Button } from '../components/primitives/Button';
 import { InteractiveArchitectureDiagram } from '../components/projects/InteractiveArchitectureDiagram';
+import { ProjectVisualStack } from '../components/projects/ProjectVisualStack';
 
 export const ProjectCaseStudyPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -58,7 +59,11 @@ export const ProjectCaseStudyPage: React.FC = () => {
   const relatedProjects = projectsData.filter((p) => p.id !== project.id);
 
   return (
-    <article
+    <motion.article
+      initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16, scale: 0.99 }}
+      animate={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0, scale: 1 }}
+      exit={shouldReduceMotion ? { opacity: 0, y: 0 } : { opacity: 0, y: -12, scale: 0.99 }}
+      transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1.0] }}
       className="py-12 md:py-20 border-b border-[#292720]"
       aria-labelledby="case-study-title"
     >
@@ -117,7 +122,7 @@ export const ProjectCaseStudyPage: React.FC = () => {
                 aria-label={`View ${project.title} on GitHub`}
               >
                 <Github className="w-4 h-4" />
-                <span>[ GITHUB REPOSITORY ]</span>
+                <span>GITHUB</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
 
@@ -131,12 +136,25 @@ export const ProjectCaseStudyPage: React.FC = () => {
                   className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#E5BA70] border border-[#D49A46] hover:bg-[#D49A46]/10 px-4 py-3 rounded-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46]"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  <span>[ LIVE DEMO ]</span>
+                  <span>LIVE DEMO</span>
                 </a>
               )}
             </div>
           </div>
         </header>
+
+        {/* Large Editorial Project Visual Feature */}
+        <div className="mt-10 mb-12">
+          <div className="relative rounded-xs overflow-hidden border border-[#2E2B22] bg-[#0D0C09] p-4 sm:p-8 shadow-[0_25px_60px_rgba(0,0,0,0.8)] border-t-2 border-t-[#D49A46]/70">
+            <div className="max-w-4xl mx-auto">
+              <ProjectVisualStack
+                projectId={project.id}
+                isHovered={false}
+                isMobileActive={false}
+              />
+            </div>
+          </div>
+        </div>
 
         {/* Case Study Body */}
         <div className="space-y-16 md:space-y-24 mt-12 md:mt-16">
@@ -196,6 +214,146 @@ export const ProjectCaseStudyPage: React.FC = () => {
               </div>
             </div>
           </section>
+
+          {/* =========================================================================
+              RESPIRATORY AI SPECIALIZED SECTIONS
+              ========================================================================= */}
+          {project.id === 'respiratory-ai' && (
+            <>
+              {/* Input & Preprocessing */}
+              <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
+                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.1 // INPUT & DATA</div>
+                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">ACOUSTIC INGESTION</h3>
+                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
+                    Captures lung auscultation recordings from digital sensors. The raw data is a time-series amplitude signal that requires isolation from environmental artifacts.
+                  </p>
+                  <div className="font-mono text-[10px] text-[#68645C] uppercase">STREAMS: WAV_CH09 / 44.1 KHZ</div>
+                </div>
+                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
+                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.2 // PREPROCESSING</div>
+                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">SIGNAL NORMALIZATION</h3>
+                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
+                    Applies bandpass filtering (50Hz - 2000Hz) and Short-Time Fourier Transform (STFT) to generate Log-Mel Spectrograms, translating audio into a vision-compatible spatial format.
+                  </p>
+                  <div className="font-mono text-[10px] text-[#68645C] uppercase">OP: STFT / MEL-FILTERBANK</div>
+                </div>
+              </section>
+
+              {/* Model & Inference */}
+              <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
+                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.3 // MODEL BACKBONE</div>
+                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">EFFICIENTNET-B0 + SSL</h3>
+                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
+                    Utilizes a lightweight CNN backbone for compound scaling. Self-Supervised Learning (SSL) pre-training allows the model to learn acoustic hierarchies from unlabelled respiratory data.
+                  </p>
+                  <div className="font-mono text-[10px] text-[#68645C] uppercase">PARAMS: 5.3M / COMPOUND SCALING</div>
+                </div>
+                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
+                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.4 // INFERENCE & EVALUATION</div>
+                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">CLASSIFICATION ENGINE</h3>
+                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
+                    Maps latent embeddings to clinical classes (Normal, Crackles, Wheezes). Accuracy is maintained through cross-entropy loss optimization and rigorous validation cycles.
+                  </p>
+                  <div className="font-mono text-[10px] text-[#68645C] uppercase">LATENCY: &lt; 200MS / INFERENCE</div>
+                </div>
+              </section>
+
+              {/* Explainability */}
+              <section className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
+                <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.5 // EXPLAINABILITY (XAI)</div>
+                <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">GRAD-CAM ATTRIBUTION MAPPING</h3>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                  <p className="text-sm text-[#AAA398] leading-relaxed">
+                    To ensure clinical transparency, the system generates localized heatmaps over the input spectrogram. This reveals exactly which temporal and frequency components (e.g., high-pitched wheeze harmonics) influenced the model's diagnostic screening.
+                  </p>
+                  <div className="p-4 bg-[#090907] border border-[#292720] rounded-xs font-mono text-[10px] text-[#68645C]">
+                    [ LOG: XAI_ACTIVATION_MAP_GEN ]<br/>
+                    [ GRADIENT_BACKPROP: COMPLETE ]<br/>
+                    [ SALIENCY_OVERLAY: SUCCESSFUL ]
+                  </div>
+                </div>
+              </section>
+            </>
+          )}
+
+          {/* =========================================================================
+              PIZZA PLATFORM SPECIALIZED SECTIONS
+              ========================================================================= */}
+          {project.id === 'pizza-ordering' && (
+            <>
+              {/* Auth & RBAC */}
+              <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
+                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.1 // AUTHENTICATION</div>
+                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">JWT STATELESS SECURITY</h3>
+                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
+                    Implements secure user sessions using JSON Web Tokens (JWT) and bcrypt password hashing. Stateless verification eliminates server session overhead while protecting API routes.
+                  </p>
+                  <div className="font-mono text-[10px] text-[#68645C] uppercase">ALGO: HS256 / BCRYPT_GEN</div>
+                </div>
+                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
+                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.2 // RBAC</div>
+                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">ROLE-BASED PERMISSIONS</h3>
+                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
+                    Differentiates between Customer and Admin personas. Middleware ensures only authenticated admins can mutate menu items, manage inventory, or update order fulfillment stages.
+                  </p>
+                  <div className="font-mono text-[10px] text-[#68645C] uppercase">MIDDLEWARE: VERIFY_ADMIN / VERIFY_USER</div>
+                </div>
+              </section>
+
+              {/* Database & Payments */}
+              <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
+                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.3 // DATABASE</div>
+                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">MONGODB PERSISTENCE</h3>
+                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
+                    Utilizes a flexible document schema to handle nested pizza configurations (custom toppings, crusts, sizes). Mongoose ODM is used for schema validation and indexing.
+                  </p>
+                  <div className="font-mono text-[10px] text-[#68645C] uppercase">ENGINE: MONGODB / MONGOOSE ODM</div>
+                </div>
+                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
+                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.4 // PAYMENTS</div>
+                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">RAZORPAY INTEGRATION</h3>
+                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
+                    Secure financial transactions with server-side HMAC signature verification. Orders are only confirmed after cryptographic proof of payment success is validated.
+                  </p>
+                  <div className="font-mono text-[10px] text-[#68645C] uppercase">GATEWAY: RAZORPAY / SHA256_HMAC</div>
+                </div>
+              </section>
+
+              {/* Order Workflow: Deterministic State Transitions */}
+              <section className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
+                <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.5 // ORDER WORKFLOW</div>
+                <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">DETERMINISTIC STATE MACHINE</h3>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                  <p className="text-sm text-[#AAA398] leading-relaxed">
+                    Orders progress through a strictly defined lifecycle without state drift: Placed → Confirmed → Baking → Out for Delivery → Delivered. Customers track progression while privileged admin roles advance the stages upon verified triggers.
+                  </p>
+                  <div className="p-4 bg-[#090907] border border-[#292720] rounded-xs space-y-2">
+                    <div className="font-mono text-[10px] text-[#D49A46] uppercase tracking-wider pb-1.5 border-b border-[#201F19]">
+                      LIFECYCLE STATE TRANSITIONS
+                    </div>
+                    <div className="grid grid-cols-5 gap-1.5 pt-1">
+                      {[
+                        { step: '01', name: 'PLACED' },
+                        { step: '02', name: 'CONFIRMED' },
+                        { step: '03', name: 'BAKING' },
+                        { step: '04', name: 'DISPATCH' },
+                        { step: '05', name: 'DELIVERED' },
+                      ].map((s) => (
+                        <div key={s.step} className="p-2 rounded-xs bg-[#14130F] border border-[#24221C] text-center">
+                          <span className="block font-mono text-[8px] text-[#68645C]">{s.step}</span>
+                          <span className="block font-mono text-[9px] text-[#DCD6CA] font-medium truncate">{s.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </>
+          )}
 
           {/* =========================================================================
               03 / SYSTEM ARCHITECTURE
@@ -572,6 +730,6 @@ export const ProjectCaseStudyPage: React.FC = () => {
           </section>
         </div>
       </Container>
-    </article>
+    </motion.article>
   );
 };

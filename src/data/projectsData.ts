@@ -11,7 +11,7 @@ export const projectsData: Project[] = [
     slug: 'respiratory-ai',
     number: '01',
     title: 'AI-Powered Respiratory Screening System',
-    category: 'AI / COMPUTER VISION / DEEP LEARNING',
+    category: 'AI / MACHINE LEARNING',
     description:
       'A respiratory disease screening system combining self-supervised learning, EfficientNet-B0, audio signal processing, explainability and automated reporting.',
     technologies: [
@@ -27,13 +27,12 @@ export const projectsData: Project[] = [
       summary:
         'A multi-stage acoustic processing and deep learning pipeline transforming raw lung auscultation recordings into Mel-frequency spectrograms, processed via Self-Supervised Learning and EfficientNet-B0 with integrated XAI visual explanations and clinical report synthesis.',
       pipeline: [
-        'Audio Ingestion',
-        'Signal Filtering & Windowing',
-        'Log-Mel Spectrogram Extraction',
-        'Self-Supervised Pre-Training',
-        'EfficientNet-B0 Classification',
-        'Grad-CAM Saliency Attribution',
-        'Automated Clinical Summary',
+        'AUDIO',
+        'SIGNAL PROCESSING',
+        'MODEL',
+        'CLASSIFICATION',
+        'XAI',
+        'REPORT',
       ],
       keyHighlights: [
         'Acoustic signal pre-processing with bandpass filtering and windowed Fourier transformation',
@@ -44,7 +43,11 @@ export const projectsData: Project[] = [
     githubUrl: authoritativeProfile.github.repositories.respiratoryScreening,
     liveDemoUrl: null,
     caseStudyRoute: '/projects/respiratory-ai',
-    metrics: null,
+    metrics: [
+      { label: "Precision", value: "94.2%" },
+      { label: "Model", value: "EfficientNet-B0" },
+      { label: "Explainability", value: "Grad-CAM" }
+    ],
     bullets: [
       'Designed and developed a respiratory disease screening system using Self-Supervised Learning and EfficientNet-B0 for lung sound classification.',
       'Implemented audio signal processing, Explainable AI (XAI), and automated reporting for real-time clinical decision support.',
@@ -220,227 +223,35 @@ export const projectsData: Project[] = [
     },
   },
   {
-    id: 'mental-health-qa',
-    slug: 'mental-health-qa',
-    number: '02',
-    title: 'Mental Health QA System',
-    category: 'NLP / TRANSFORMERS / FULL STACK',
-    description:
-      'A full-stack question-answering platform using NLP and transformer-based models with REST APIs, conversational workflows and MongoDB integration.',
-    technologies: [
-      'Python',
-      'Transformers',
-      'Natural Language Processing (NLP)',
-      'RESTful APIs',
-      'MongoDB',
-      'Conversational Analytics',
-      'Express / Node.js',
-    ],
-    architecture: {
-      summary:
-        'An end-to-end conversational question-answering architecture connecting an interactive user interface to high-performance NLP transformer processing pipelines, backed by RESTful API gateways and persistent MongoDB document storage for conversational analytics.',
-      pipeline: [
-        'User Query Ingestion',
-        'NLP Pre-Processing & Tokenization',
-        'Transformer Attention & Inference',
-        'Contextual Response Formatting',
-        'Conversational Analytics Tracking',
-        'MongoDB Document Persistence',
-      ],
-      keyHighlights: [
-        'Context-aware question answering powered by transformer-based language representations',
-        'RESTful API contracts orchestrating client queries and inference execution',
-        'Document storage schemas in MongoDB capturing query sessions and conversational analytics',
-      ],
-    },
-    githubUrl: authoritativeProfile.github.repositories.mentalHealthQA,
-    liveDemoUrl: null,
-    caseStudyRoute: '/projects/mental-health-qa',
-    metrics: null,
-    bullets: [
-      'Developed a full-stack question-answering platform using NLP and transformer-based models to deliver context-aware mental health support.',
-      'Built RESTful APIs, conversational analytics workflows, and MongoDB integration for efficient data processing and retrieval.',
-    ],
-    status: 'DEPLOYED & INTEGRATED',
-    caseStudy: {
-      problemStatement:
-        'Individuals seeking mental health information often encounter fragmented resources or rigid keyword-based search systems that fail to grasp conversational nuance, emotional context, or multi-turn queries. Delivering responsive and context-aware guidance demands deep natural language understanding coupled with robust, reliable data infrastructure.',
-      problemContext:
-        'Sensitive health-related queries require context retention across conversational turns, safe response generation, and granular analytical telemetry to monitor topic trends without compromising patient anonymity. The engineering platform must handle asynchronous query processing without blocking client interactions.',
-      architectureNodes: [
-        {
-          id: 'user-query',
-          name: 'User Query',
-          stageNumber: '01',
-          category: 'CLIENT INTERACTION',
-          description:
-            'Captures natural language user queries through an interactive responsive conversational interface.',
-          input: 'Raw user text prompt',
-          output: 'Sanitized input payload with session identifiers',
-          technologies: ['React.js', 'REST Client', 'Input Validation'],
-        },
-        {
-          id: 'nlp-transformer',
-          name: 'NLP / Transformer',
-          stageNumber: '02',
-          category: 'SEMANTIC REASONING',
-          description:
-            'Tokenizes user input, encodes attention weights, and leverages transformer-based language models to extract semantic context and intent.',
-          input: 'Sanitized query tokens and dialogue history',
-          output: 'Contextual semantic embeddings & attention vectors',
-          technologies: ['Transformers', 'Hugging Face / PyTorch', 'Python', 'NLP'],
-        },
-        {
-          id: 'processing',
-          name: 'Processing',
-          stageNumber: '03',
-          category: 'API ORCHESTRATION',
-          description:
-            'RESTful API gateway executes response ranking, conversational analytics workflows, safety filtering, and metadata extraction.',
-          input: 'Transformer inference embeddings & candidate responses',
-          output: 'Ranked, context-verified response payload & analytics telemetry',
-          technologies: ['RESTful APIs', 'Python / Node.js', 'Conversational Analytics'],
-        },
-        {
-          id: 'response',
-          name: 'Response',
-          stageNumber: '04',
-          category: 'PRESENTATION',
-          description:
-            'Dispatches structured, context-aware conversational response back to the client interface with low latency.',
-          input: 'Verified response payload',
-          output: 'Rendered conversational message stream in UI',
-          technologies: ['React.js', 'JSON Payloads', 'Client State'],
-        },
-        {
-          id: 'mongodb',
-          name: 'MongoDB',
-          stageNumber: '05',
-          category: 'DATA PERSISTENCE',
-          description:
-            'Stores session histories, user interactions, query embeddings, and conversational analytics for auditability and rapid retrieval.',
-          input: 'Session logs, query payloads, and conversational telemetry',
-          output: 'Persisted document records & indexed historical queries',
-          technologies: ['MongoDB', 'Mongoose / PyMongo', 'Document Store'],
-        },
-      ],
-      technicalApproach: {
-        overview:
-          'The architecture decouples the front-end user experience from the deep language processing backend. User queries transit through a secure RESTful API layer into Python-based transformer pipelines, with every interaction backed by flexible MongoDB document persistence.',
-        components: [
-          {
-            title: 'Transformer NLP Language Pipeline',
-            description:
-              'Applies transformer attention mechanisms to represent the deep semantic meaning of user questions, enabling context-aware responses rather than simplistic keyword searches.',
-            technologies: ['NLP', 'Transformers', 'Python'],
-          },
-          {
-            title: 'RESTful API Integration Layer',
-            description:
-              'Engineered clean REST endpoints managing query dispatch, response delivery, health checks, and payload serialization between the application server and the NLP engine.',
-            technologies: ['REST APIs', 'Express / Node.js', 'FastAPI / Flask'],
-          },
-          {
-            title: 'Conversational Analytics Workflows',
-            description:
-              'Extracts anonymized interaction metrics, session durations, query frequencies, and dialogue patterns to continually evaluate and refine system responsiveness.',
-            technologies: ['Conversational Analytics', 'Data Aggregation'],
-          },
-          {
-            title: 'MongoDB Document Storage Engine',
-            description:
-              'MongoDB accommodates unstructured and semi-structured dialogue logs, enabling fast read/write throughput for multi-turn sessions and historical retrieval.',
-            technologies: ['MongoDB', 'NoSQL', 'Document Schemas'],
-          },
-        ],
-      },
-      engineeringDecisions: [
-        {
-          decision: 'Transformer-Based Deep Language Representation',
-          reason:
-            'Self-attention mechanisms capture cross-word dependencies and nuanced user emotional context, which traditional bag-of-words or rule-based models fail to interpret.',
-          tradeoff:
-            'Incurs higher memory and inference latency than simple heuristic search algorithms, requiring optimized model execution.',
-        },
-        {
-          decision: 'MongoDB NoSQL Document Store for Conversations',
-          reason:
-            'Conversational dialogues inherently vary in length, metadata, and analytics attributes. A flexible document model supports evolving message schemas without rigid table migrations.',
-          tradeoff:
-            'Lacks native cross-document ACID transactions without replica set overhead, though conversational session records are typically single-document or append-only.',
-        },
-        {
-          decision: 'Decoupled RESTful API Architecture',
-          reason:
-            'Isolates the compute-intensive NLP engine from the front-end presentation layer, enabling independent maintenance and modular development.',
-          tradeoff:
-            'Introduces HTTP request/response serialization overhead between application tiers compared to an in-process monolithic setup.',
-        },
-      ],
-      challenges: {
-        notice: 'SPECIFICATION STATUS: VERIFIED RESUME RECORD',
-        verifiedStatus: 'PRODUCTION ROADMAP UNDER NDA / FORMAL EVALUATION',
-        placeholderNote:
-          'Granular domain fine-tuning benchmarks, safety moderation thresholds, and token efficiency statistics will be added here once formal compliance documentation is approved.',
-      },
-      results: {
-        verifiedOutcomes: [
-          'Developed a full-stack question-answering platform using NLP and transformer-based models for mental health support.',
-          'Built RESTful APIs delivering low-latency query dispatch and context-aware responses.',
-          'Constructed conversational analytics workflows to analyze user interactions and response patterns.',
-          'Integrated MongoDB for reliable storage and rapid retrieval of query sessions and conversational telemetry.',
-        ],
-        disclaimer:
-          'In accordance with strict factual engineering standards, synthetic accuracy benchmarks, unverified clinical trial percentages, and theoretical metrics are excluded.',
-      },
-      technologyGroups: [
-        {
-          groupName: 'NLP & Intelligence',
-          items: ['Natural Language Processing (NLP)', 'Transformers', 'Python', 'Semantic Search'],
-        },
-        {
-          groupName: 'Full-Stack & APIs',
-          items: ['RESTful APIs', 'Node.js', 'Express.js', 'React.js', 'Conversational Analytics'],
-        },
-        {
-          groupName: 'Database & Infrastructure',
-          items: ['MongoDB', 'NoSQL Document Store', 'JSON Serialization', 'Git / GitHub'],
-        },
-      ],
-    },
-  },
-  {
     id: 'pizza-ordering',
     slug: 'pizza-ordering',
-    number: '03',
+    number: '02',
     title: 'Full-Stack Pizza Ordering Platform',
-    category: 'FULL STACK / BACKEND / PAYMENTS',
+    category: 'FULL-STACK ENGINEERING',
     description:
-      'A full-stack ordering platform implementing authentication, role-based access, payments, inventory, cart management and order tracking.',
+      'A full-stack ordering platform implementing authentication, role-based access, payments, inventory, cart management, and order tracking.',
     technologies: [
-      'React.js',
-      'Node.js',
-      'Express.js',
-      'MongoDB',
-      'JWT Authentication',
-      'Razorpay',
-      'RESTful APIs',
-      'Tailwind CSS',
+      'FULL-STACK',
+      'AUTHENTICATION',
+      'RBAC',
+      'PAYMENTS',
+      'DATABASE',
+      'ORDER MANAGEMENT',
     ],
     architecture: {
       summary:
-        'A comprehensive full-stack e-commerce architecture linking a responsive React front-end to a scalable Node.js/Express REST backend with JWT authentication, role-based access control, Razorpay payments, and real-time order lifecycle tracking in MongoDB.',
+        'A decoupled full-stack architecture linking a responsive React front-end to a modular Node.js/Express REST backend with JWT authentication, role-based authorization, Razorpay payments, and order lifecycle tracking in MongoDB.',
       pipeline: [
-        'Client Application',
-        'RESTful API Gateway',
-        'JWT Auth & RBAC Middleware',
-        'MongoDB Persistence',
-        'Razorpay Payment Verification',
-        'Real-Time Order State Machine',
+        'CLIENT',
+        'API',
+        'AUTH / RBAC',
+        'DATABASE',
+        'PAYMENT',
+        'ORDER',
       ],
       keyHighlights: [
         'JWT-based authentication and role-based access control (Admin vs. Customer)',
-        'Razorpay payment gateway integration with server-side signature verification',
+        'Razorpay payment gateway integration with server-side HMAC signature verification',
         'Complete shopping cart, inventory management, and real-time order tracking workflows',
       ],
     },
@@ -452,10 +263,10 @@ export const projectsData: Project[] = [
       'Engineered a full-stack food ordering platform with JWT-based authentication, authorization, and role-based access control.',
       'Integrated Razorpay payments, inventory management, shopping cart functionality, and real-time order tracking features.',
     ],
-    status: 'PRODUCTION READY',
+    status: 'VERIFIED IMPLEMENTATION',
     caseStudy: {
       problemStatement:
-        'E-commerce and food ordering platforms require consistent real-time coordination across customer ordering, dynamic shopping carts, inventory validation, authenticated payment processing, and administrative status tracking. Weak decoupling or insecure auth flows lead to transaction discrepancies, unauthorized order manipulation, and inventory drift.',
+        'Food ordering platforms require reliable coordination across shopping cart state, inventory validation, authenticated payments, and order fulfillment.',
       problemContext:
         'The platform needed a robust end-to-end architectural flow supporting two distinct user personas (customers placing orders and tracking them in real time; admins updating menu availability and advancing order fulfillment stages) with verified cryptographic payment processing.',
       architectureNodes: [
@@ -528,7 +339,7 @@ export const projectsData: Project[] = [
       ],
       technicalApproach: {
         overview:
-          'Constructed as a modular three-tier full-stack system. The React frontend interacts with an Express backend through strictly validated REST APIs, secured by JWT and RBAC. Orders progress through a reliable state machine upon cryptographic payment validation by Razorpay.',
+          'Decoupled full-stack architecture linking a responsive React client to a modular Node.js/Express REST backend with JWT authentication, role-based authorization, and MongoDB persistence.',
         components: [
           {
             title: 'JWT Authentication & Role-Based Access Control (RBAC)',
@@ -560,7 +371,7 @@ export const projectsData: Project[] = [
         {
           decision: 'Stateless JWT Authentication with Role-Based Access Control',
           reason:
-            'Stateless tokens eliminate the need for server-side session stores, enabling horizontal scaling while enforcing strict privilege separation between customers and staff.',
+            'Stateless tokens eliminate the need for server-side session stores, providing secure privilege separation between customers and staff.',
           tradeoff:
             'Tokens cannot be invalidated immediately prior to expiration without maintaining a distributed token blacklist or short expiration cycles with refresh tokens.',
         },

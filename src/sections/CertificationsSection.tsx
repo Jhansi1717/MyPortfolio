@@ -28,12 +28,12 @@ export const CertificationsSection: React.FC = () => {
     <section
       id="certifications"
       aria-label="Certifications Section: Verified Technical Credentials"
-      className="py-20 md:py-28 border-b border-[#292720]"
+      className="py-20 md:py-28 lg:py-32 border-b border-[#292720] scroll-mt-24 bg-transparent"
     >
       <Container size="wide">
         <SectionHeading
-          indexTag="08 // CERTIFICATIONS"
-          title="08 / CERTIFICATIONS: TECHNICAL CREDENTIALS"
+          indexTag="08 / CERTIFICATIONS"
+          title="CERTIFICATIONS"
           description="Verified accreditations across artificial intelligence, autonomous agent architectures, algorithmic foundations, database systems, and cybersecurity auditing."
         />
 

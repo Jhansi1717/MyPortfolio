@@ -156,6 +156,32 @@ app.get('/api/chat/status', (req, res) => {
   });
 });
 
+function getLocalGroundedFallback(query: string): string {
+  const q = query.toLowerCase();
+  if (q.includes('respiratory') || q.includes('screening') || q.includes('audio') || q.includes('lung')) {
+    return "Jhansi built the **AI-Powered Respiratory Screening System** ([View Case Study](/projects/respiratory-ai)). It uses audio signal processing, Mel-spectrograms, TensorFlow, and EfficientNet-B0 to screen respiratory pathologies with Grad-CAM explainability and automated clinical reporting. Code is available on [GitHub](https://github.com/Jhansi1717/AI_Powered_Respiratory_Screening).";
+  }
+  if (q.includes('pizza') || q.includes('ordering') || q.includes('full-stack') || q.includes('payment') || q.includes('razorpay')) {
+    return "Jhansi built the **Full-Stack Pizza Ordering Platform** ([View Case Study](/projects/pizza-ordering)). It features JWT authentication, Role-Based Access Control (RBAC), MongoDB persistence, and Razorpay payment gateway integration with server-side HMAC signature verification. Code is available on [GitHub](https://github.com/Jhansi1717/Pizza_ordering_system).";
+  }
+  if (q.includes('cgpa') || q.includes('education') || q.includes('cbit') || q.includes('university') || q.includes('degree')) {
+    return "Jhansi is an undergraduate student at **Chaitanya Bharathi Institute of Technology (CBIT)** pursuing a Bachelor of Engineering (B.E.) in Computer Science & Engineering (AI & ML), expected May 2027, with a **9.72 / 10 CGPA** ([View Education](#education)).";
+  }
+  if (q.includes('intern') || q.includes('aminobots') || q.includes('experience') || q.includes('job') || q.includes('work')) {
+    return "Jhansi is a Data Science Intern at **Aminobots** (15 July 2026 – 14 January 2027), focused on data science pipelines, preprocessing workflows, and applied machine learning system integration ([View Experience](#experience)).";
+  }
+  if (q.includes('skill') || q.includes('python') || q.includes('react') || q.includes('tensorflow') || q.includes('tech')) {
+    return "Jhansi's technical stack includes **Python, TensorFlow, EfficientNet-B0, Scikit-Learn, OpenCV, React.js, Node.js, Express.js, MongoDB, MySQL, Git, and RESTful APIs** ([View Tech Stack](#skills)).";
+  }
+  if (q.includes('contact') || q.includes('email') || q.includes('phone') || q.includes('reach') || q.includes('hire')) {
+    return "You can reach Jhansi via email at **jhansibhukya17@gmail.com**. Her GitHub is [github.com/Jhansi1717](https://github.com/Jhansi1717) and LinkedIn is [linkedin.com/in/jhansibhukya](https://www.linkedin.com/in/jhansibhukya/) ([View Contact](#contact)).";
+  }
+  if (q.includes('github') || q.includes('code') || q.includes('repo')) {
+    return "Jhansi's GitHub profile is [github.com/Jhansi1717](https://github.com/Jhansi1717), featuring repositories for Respiratory AI, Pizza Ordering, Mental Health QA, and RAG agents.";
+  }
+  return "That information isn't included in Jhansi's portfolio. You can explore her [Featured Projects](#projects), [Experience](#experience), [Education](#education), or contact her directly at jhansibhukya17@gmail.com.";
+}
+
 // AI Copilot Grounded Chat Endpoint
 app.post('/api/chat', async (req, res) => {
   const { message, history } = req.body;
@@ -194,7 +220,7 @@ app.post('/api/chat', async (req, res) => {
     });
 
     // Fallback cascade for temporary demand spikes
-    const candidateModels = ['gemini-2.5-flash', 'gemini-3.8-flash', 'gemini-3.1-flash-lite'];
+    const candidateModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
     let result: any = null;
     let lastError: any = null;
 
@@ -230,10 +256,28 @@ app.post('/api/chat', async (req, res) => {
     });
   } catch (error: any) {
     console.error('Error executing Gemini generateContent in /api/chat:', error);
-    const errorMessage = error?.message || 'An error occurred while generating response.';
-    return res.status(500).json({
-      error: errorMessage,
-      fallbackMessage: "I encountered a communication issue while reaching the AI service. Please try again.",
+    // If quota, rate limit, fetch failure, or 503 is encountered, seamlessly return local grounded fallback
+    const errStr = String(error?.message || error);
+    if (
+      errStr.includes('resource_exhausted') ||
+      errStr.includes('429') ||
+      errStr.includes('Quota exceeded') ||
+      errStr.includes('503') ||
+      errStr.includes('UNAVAILABLE') ||
+      errStr.includes('fetch failed')
+    ) {
+      const fallbackReply = getLocalGroundedFallback(message);
+      return res.json({
+        text: fallbackReply,
+        status: 'fallback_resilient',
+      });
+    }
+
+    // For any other error, also provide local fallback instead of 500
+    const fallbackReply = getLocalGroundedFallback(message);
+    return res.json({
+      text: fallbackReply,
+      status: 'fallback_error',
     });
   }
 });

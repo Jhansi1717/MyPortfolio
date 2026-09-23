@@ -1,265 +1,312 @@
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { Container } from '../components/primitives/Container';
 import { internshipExperienceData } from '../data/portfolioData';
-import { Calendar, MapPin, Building2, ChevronDown, ShieldCheck, Clock } from 'lucide-react';
-import { cn } from '../lib/utils';
-import { MOTION_TIMING, MOTION_EASING } from '../animations/motionTokens';
+
+interface ContributionItem {
+  number: string;
+  heading: string;
+  description: string;
+}
+
+const verifiedContributions: ContributionItem[] = [
+  {
+    number: '01',
+    heading: 'DATA PREPROCESSING',
+    description:
+      'Designed and implemented data preprocessing pipelines for machine learning workflows.',
+  },
+  {
+    number: '02',
+    heading: 'DATA ANALYSIS',
+    description:
+      'Developed exploratory data analysis scripts to evaluate data quality and feature distributions.',
+  },
+  {
+    number: '03',
+    heading: 'MODEL INTEGRATION',
+    description:
+      'Collaborated with engineering teams to integrate machine learning models into staging environments.',
+  },
+];
+
+const verifiedTools = ['PYTHON', 'PANDAS', 'NUMPY', 'SCIKIT-LEARN', 'GIT'];
 
 export const ExperienceSection: React.FC = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isCardHovered, setIsCardHovered] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const [isDesktop, setIsDesktop] = useState(false);
   const data = internshipExperienceData;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(typeof window !== 'undefined' && window.innerWidth >= 1024);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Subtle Parallax (Left: 6–8px vertical movement, Right: 3–5px; disabled on mobile/reduced-motion)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const leftY = useTransform(scrollYProgress, [0, 1], [7, -7]);
+  const rightY = useTransform(scrollYProgress, [0, 1], [4, -4]);
+
+  const easeCurve = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
   return (
     <section
       id="experience"
-      aria-label="Experience Section"
-      className="py-20 md:py-28 border-b border-[#292720] bg-[#090907] relative scroll-mt-20 overflow-hidden"
+      ref={containerRef}
+      aria-label="Professional Experience"
+      className="py-20 md:py-28 lg:py-32 border-b border-[#292720] bg-transparent relative scroll-mt-24 overflow-hidden"
     >
-      <Container size="wide">
-        {/* Section Heading with 02 / EXPERIENCE title */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: MOTION_TIMING.slow, ease: MOTION_EASING.smooth }}
-          className="mb-12 md:mb-16 max-w-3xl"
+      {/* =========================================================================
+          ATMOSPHERIC DEPTH: Soft Amber Highlight & Large Partial Arc
+          (Subordinate, adhering strictly to global background language)
+          ========================================================================= */}
+      <div className="absolute inset-0 pointer-events-none -z-10" aria-hidden="true">
+        {/* Soft Amber Glow */}
+        <div className="absolute top-1/3 left-1/4 w-[480px] h-[480px] bg-[#D49A46]/[0.016] blur-[140px] rounded-full" />
+        
+        {/* Architectural Partial Arc Motif */}
+        <svg
+          className="absolute -right-24 top-1/4 w-[600px] h-[600px] opacity-[0.035] hidden md:block"
+          fill="none"
+          viewBox="0 0 600 600"
         >
-          <div className="flex items-center gap-2 mb-3">
+          <circle cx="300" cy="300" r="260" stroke="#D49A46" strokeWidth="1" strokeDasharray="6 12" />
+          <circle cx="300" cy="300" r="180" stroke="#D49A46" strokeWidth="0.75" />
+        </svg>
+      </div>
+
+      <Container size="wide">
+        {/* Section Header: Compact & Refined */}
+        <div className="mb-10 sm:mb-14 lg:mb-16">
+          <div className="inline-flex items-center gap-2 mb-2.5">
             <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
-            <span className="font-mono text-xs uppercase tracking-widest text-[#D49A46]">
-              PROFESSIONAL TRAJECTORY // INDUSTRY PRACTICE
+            <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#D49A46] font-semibold">
+              03 / EXPERIENCE
             </span>
           </div>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl uppercase font-bold tracking-tight text-[#F2EBDD] leading-tight">
-            02 / EXPERIENCE
+          <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold uppercase tracking-tight text-[#F2EBDD]">
+            PROFESSIONAL EXPERIENCE
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-[#AAA398] font-normal leading-relaxed max-w-2xl">
-            Formal professional industry engagement grounded in computational rigor, machine intelligence workflows, and data-driven systems architecture.
-          </p>
-        </motion.div>
+        </div>
 
-        {/* Premium Editorial Timeline */}
-        <div className="relative pl-6 sm:pl-10 md:pl-12 lg:pl-16">
-          {/* Vertical Timeline Axis with subtle illumination on card hover */}
-          <div
-            className={cn(
-              'absolute left-2 sm:left-3 md:left-4 top-2 bottom-6 w-0.5 transition-all duration-500',
-              isCardHovered
-                ? 'bg-gradient-to-b from-[#D49A46] via-[#D49A46]/60 to-[#292720]'
-                : 'bg-gradient-to-b from-[#D49A46] via-[#38352C] to-[#292720]'
-            )}
-            aria-hidden="true"
-          />
-
-          {/* Start Date Marker */}
-          <div className="relative -left-6 sm:-left-10 md:-left-12 lg:-left-16 flex items-center gap-3 sm:gap-4 mb-6">
-            <div
-              className={cn(
-                'w-5 h-5 rounded-full border-2 bg-[#090907] flex items-center justify-center shrink-0 z-10 transition-all duration-300',
-                isCardHovered
-                  ? 'border-[#D49A46] shadow-[0_0_16px_rgba(212,154,70,0.6)] scale-105'
-                  : 'border-[#D49A46] shadow-[0_0_10px_rgba(212,154,70,0.3)]'
-              )}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-            </div>
-            <div className="flex items-center gap-2 font-mono text-xs tracking-wider text-[#D49A46] uppercase font-semibold">
-              <Calendar className="w-3.5 h-3.5 text-[#D49A46]" aria-hidden="true" />
-              <span>{data.startDate} — {data.endDate}</span>
-              <span className="hidden sm:inline-block text-[#68645C]">·</span>
-              <span className="hidden sm:inline-block text-[#AAA398]">{data.duration}</span>
-            </div>
-          </div>
-
-          {/* Primary Editorial Experience Card */}
-          <motion.article
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: MOTION_TIMING.slow, ease: MOTION_EASING.smooth }}
-            onPointerEnter={() => setIsCardHovered(true)}
-            onPointerLeave={() => setIsCardHovered(false)}
-            className={cn(
-              'rounded-xs border border-[#292720] bg-[#11110E] p-6 sm:p-8 md:p-10',
-              'hover:border-[#38352C] hover:bg-[#14130F] transition-all duration-380',
-              'hover:shadow-[0_12px_32px_rgba(0,0,0,0.45)] group',
-              'focus-within:border-[#D49A46]/60 focus-within:ring-1 focus-within:ring-[#D49A46]/30',
-              'relative overflow-hidden'
-            )}
+        {/* Asymmetric Editorial Layout: Left ~40% (lg:col-span-5), Right ~60% (lg:col-span-7) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-start">
+          
+          {/* =========================================================================
+              LEFT COLUMN (~40%): CAREER MILESTONE & REFINED TIMELINE
+              Contains: Timeline, Date range, Role, Company, Location
+              ========================================================================= */}
+          <motion.div
+            style={!shouldReduceMotion && isDesktop ? { y: leftY } : {}}
+            className="lg:col-span-5 relative w-full min-w-0"
           >
-            {/* Top Accent Line */}
-            <div
-              className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-[#D49A46] via-[#E5BA70] to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] origin-left pointer-events-none"
-              aria-hidden="true"
-            />
+            <div className="flex gap-5 sm:gap-6 items-stretch">
+              
+              {/* Vertical Timeline Track */}
+              <div
+                className="flex flex-col items-center shrink-0 select-none pt-1"
+                aria-hidden="true"
+              >
+                {/* Main Amber Node Marker */}
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.35, delay: 0.1, ease: easeCurve }}
+                  className="w-2.5 h-2.5 rounded-full bg-[#D49A46] shadow-[0_0_8px_rgba(212,154,70,0.35)]"
+                />
 
-            {/* Top Metadata Header Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-[#292720]">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-[#D49A46]/10 border border-[#D49A46]/30 text-[#E5BA70] font-mono text-xs uppercase font-medium group-hover:border-[#D49A46]/50 transition-colors">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
-                  {data.verificationBadge}
-                </span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xs bg-[#171612] border border-[#292720] text-[#AAA398] font-mono text-xs uppercase group-hover:text-[#F2EBDD] transition-colors">
-                  <Building2 className="w-3 h-3 text-[#D49A46]" aria-hidden="true" />
-                  {data.company}
-                </span>
+                {/* Animated Vertical Line Draw */}
+                <motion.div
+                  initial={shouldReduceMotion ? { scaleY: 1 } : { scaleY: 0 }}
+                  whileInView={{ scaleY: 1 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.55, delay: 0.05, ease: easeCurve }}
+                  className="w-px flex-grow my-2.5 bg-gradient-to-b from-[#D49A46] via-[#2E2B22] to-[#22201A] origin-top"
+                />
+
+                {/* Bottom Node */}
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.35, delay: 0.3, ease: easeCurve }}
+                  className="w-2 h-2 rounded-full border border-[#D49A46]/50 bg-[#080806]"
+                />
               </div>
 
-              <div className="flex items-center gap-3 text-xs font-mono text-[#68645C]">
-                <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-[#D49A46]" aria-hidden="true" />
-                  {data.location}
-                </span>
-                <span>·</span>
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-[#D49A46]" aria-hidden="true" />
-                  {data.duration}
-                </span>
+              {/* Career Milestone Identity Content */}
+              <div className="flex flex-col justify-start min-w-0 flex-grow">
+                {/* Small Milestone Label */}
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.4, delay: 0.12, ease: easeCurve }}
+                  className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-[#6E6A62] font-semibold mb-2"
+                >
+                  01 / CAREER MILESTONE
+                </motion.div>
+
+                {/* Date: 15 JUL 2026 — 14 JAN 2027 (IBM Plex Mono) */}
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.45, delay: 0.18, ease: easeCurve }}
+                  className="font-mono text-xs sm:text-sm tracking-[0.08em] text-[#8E887D] uppercase font-medium mb-3.5 leading-relaxed"
+                >
+                  <span className="lg:hidden">15 JUL 2026 — 14 JAN 2027</span>
+                  <span className="hidden lg:block">
+                    15 JUL 2026
+                    <br />
+                    <span className="text-[#D49A46]">—</span>
+                    <br />
+                    14 JAN 2027
+                  </span>
+                </motion.div>
+
+                {/* Role: DATA SCIENCE INTERN (Manrope Display, Bold) */}
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.5, delay: 0.25, ease: easeCurve }}
+                >
+                  <h3 className="font-display text-2xl sm:text-3xl lg:text-[2.25rem] xl:text-[2.5rem] font-bold text-[#F2EBDD] uppercase leading-[1.08] tracking-tight">
+                    DATA SCIENCE
+                    <br />
+                    INTERN
+                  </h3>
+                </motion.div>
+
+                {/* Company: AMINOBOTS (Accent Color) */}
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.45, delay: 0.32, ease: easeCurve }}
+                  className="mt-3"
+                >
+                  <div className="font-mono text-sm sm:text-base text-[#D49A46] font-semibold tracking-[0.08em] uppercase">
+                    {data.company}
+                  </div>
+                </motion.div>
+
+                {/* Location: HYDERABAD, INDIA (Small & Understated) */}
+                <motion.div
+                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.4, delay: 0.38, ease: easeCurve }}
+                  className="mt-1"
+                >
+                  <div className="font-mono text-[11px] text-[#6E6A62] tracking-[0.10em] uppercase">
+                    {data.location}
+                  </div>
+                </motion.div>
               </div>
+
+            </div>
+          </motion.div>
+
+          {/* =========================================================================
+              RIGHT COLUMN (~60%): SCOPE STATEMENT, CONTRIBUTIONS & TOOLS
+              Contains: Scope statement, 3 structured contribution rows, Technology stack
+              ========================================================================= */}
+          <motion.div
+            style={!shouldReduceMotion && isDesktop ? { y: rightY } : {}}
+            className="lg:col-span-7 relative w-full min-w-0"
+          >
+            {/* Scope Statement (Inter, 2–3 lines, visually distinct) */}
+            <motion.div
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: 0.22, ease: easeCurve }}
+              className="mb-8 pb-7 border-b border-[#22201A]"
+            >
+              <div className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.10em] text-[#6E6A62] font-semibold mb-3">
+                PROFESSIONAL EXPERIENCE
+              </div>
+              <p className="font-body text-base sm:text-lg text-[#AAA398] font-normal leading-[1.65] max-w-2xl">
+                {data.scopeNote}
+              </p>
+            </motion.div>
+
+            {/* Editorial Contribution Rows (Structured: number + horizontal rule + heading + description) */}
+            <div className="space-y-0 w-full mb-8 sm:mb-10">
+              {verifiedContributions.map((item, idx) => (
+                <motion.div
+                  key={item.number}
+                  initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{
+                    duration: 0.45,
+                    delay: 0.32 + idx * 0.1,
+                    ease: easeCurve,
+                  }}
+                  className="group relative py-5 sm:py-6 border-b border-[#22201A] transition-transform duration-300 ease-out hover:translate-x-1 cursor-default"
+                >
+                  {/* Row Header: Number, Expanding Horizontal Rule, Heading */}
+                  <div className="flex items-center gap-3 sm:gap-4 mb-2.5">
+                    <span className="font-mono text-xs sm:text-sm text-[#6E6A62] group-hover:text-[#D49A46] font-semibold transition-colors shrink-0">
+                      {item.number}
+                    </span>
+                    <div
+                      className="w-5 sm:w-6 h-px bg-[#2E2B22] group-hover:w-9 sm:group-hover:w-10 group-hover:bg-[#D49A46]/70 transition-all duration-300 shrink-0"
+                      aria-hidden="true"
+                    />
+                    <h4 className="font-mono text-xs sm:text-sm text-[#AAA398] group-hover:text-[#F2EBDD] font-bold uppercase tracking-[0.08em] transition-colors">
+                      {item.heading}
+                    </h4>
+                  </div>
+
+                  {/* Description: Indented to align with heading */}
+                  <p className="font-body text-sm sm:text-base text-[#8E887D] group-hover:text-[#AAA398] font-normal leading-relaxed pl-8 sm:pl-10 transition-colors">
+                    {item.description}
+                  </p>
+                </motion.div>
+              ))}
             </div>
 
-            {/* Role & Company Typography */}
-            <div className="pt-6 sm:pt-8">
-              <div className="font-mono text-xs text-[#D49A46] uppercase tracking-widest mb-1.5">
-                INDUSTRY INTERNSHIP
+            {/* Technology Stack: Deliberate Footer Area */}
+            <motion.div
+              initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.45, delay: 0.64, ease: easeCurve }}
+              className="pt-2"
+            >
+              <div className="font-mono text-[10px] sm:text-[11px] text-[#6E6A62] uppercase tracking-[0.12em] font-semibold mb-3">
+                TECHNOLOGY STACK
               </div>
-              <h3 className="font-display text-2xl sm:text-3xl md:text-4xl uppercase font-bold text-[#F2EBDD] tracking-tight leading-tight group-hover:text-[#FFFDF9] transition-colors">
-                {data.role}
-              </h3>
-              <div className="font-mono text-base sm:text-lg text-[#E5BA70] font-semibold uppercase tracking-wider mt-2 flex items-center gap-2">
-                <span>@ {data.company}</span>
-              </div>
-            </div>
-
-            {/* High-Level Focus Labels */}
-            <div className="mt-6 pt-6 border-t border-[#292720]">
-              <div className="font-mono text-[11px] text-[#68645C] uppercase tracking-wider mb-3">
-                CORE FOCUS AREAS
-              </div>
-              <div className="flex flex-wrap gap-2.5">
-                {data.focusLabels.map((label) => (
+              <div className="flex flex-wrap gap-2 sm:gap-2.5">
+                {verifiedTools.map((tool) => (
                   <span
-                    key={label}
-                    className="px-3 py-1.5 rounded-xs border border-[#D49A46]/30 bg-[#D49A46]/8 text-[#F2EBDD] font-mono text-xs sm:text-sm font-medium uppercase tracking-wider hover:border-[#D49A46] hover:bg-[#D49A46]/15 transition-all duration-200"
+                    key={tool}
+                    className="px-3 py-1.5 border border-[#24221C] bg-[#0E0D0A] text-[#8E887D] font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.08em] font-medium rounded-xs hover:border-[#D49A46]/60 hover:text-[#D49A46] transition-colors"
                   >
-                    {label}
+                    {tool}
                   </span>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
-            {/* Verified Scope Narrative */}
-            <p className="mt-6 text-sm sm:text-base text-[#AAA398] leading-relaxed max-w-3xl font-light">
-              Hands-on industry internship focusing on data science pipelines, automated preprocessing workflows, and applied machine learning integration at {data.company}.
-            </p>
+          </motion.div>
 
-            {/* Expandable Detail Component */}
-            <div className="mt-8 pt-6 border-t border-[#292720]">
-              <button
-                type="button"
-                id="experience-expand-button"
-                onClick={() => setIsExpanded(!isExpanded)}
-                aria-expanded={isExpanded}
-                aria-controls="experience-detail-aminobots"
-                className={cn(
-                  'w-full sm:w-auto inline-flex items-center justify-between sm:justify-start gap-3',
-                  'px-4 py-2.5 min-h-[44px] rounded-xs border border-[#292720] bg-[#171612] text-[#F2EBDD]',
-                  'hover:border-[#D49A46] hover:text-[#E5BA70] transition-colors',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D49A46]',
-                  'font-mono text-xs uppercase tracking-wider font-medium'
-                )}
-              >
-                <span>
-                  {isExpanded
-                    ? 'COLLAPSE ENGAGEMENT DETAILS'
-                    : 'VIEW ENGAGEMENT DETAILS'}
-                </span>
-                <ChevronDown
-                  className={cn(
-                    'w-4 h-4 text-[#D49A46] transition-transform duration-300',
-                    isExpanded && 'rotate-180'
-                  )}
-                  aria-hidden="true"
-                />
-              </button>
-
-              {/* Subtle Reveal Content */}
-              {isExpanded && (
-                <div
-                  id="experience-detail-aminobots"
-                  role="region"
-                  aria-labelledby="experience-expand-button"
-                  className="mt-6 pt-6 border-t border-[#292720]/80 space-y-6 animate-in fade-in duration-200"
-                >
-                  {/* Verified Information Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="p-4 rounded-xs bg-[#090907] border border-[#292720]">
-                      <div className="font-mono text-[11px] text-[#68645C] uppercase tracking-wider">
-                        ORGANIZATION
-                      </div>
-                      <div className="font-mono text-sm text-[#F2EBDD] font-bold mt-1">
-                        {data.company}
-                      </div>
-                    </div>
-
-                    <div className="p-4 rounded-xs bg-[#090907] border border-[#292720]">
-                      <div className="font-mono text-[11px] text-[#68645C] uppercase tracking-wider">
-                        ROLE
-                      </div>
-                      <div className="font-mono text-sm text-[#F2EBDD] font-bold mt-1">
-                        {data.role}
-                      </div>
-                    </div>
-
-                    <div className="p-4 rounded-xs bg-[#090907] border border-[#292720]">
-                      <div className="font-mono text-[11px] text-[#68645C] uppercase tracking-wider">
-                        PERIOD
-                      </div>
-                      <div className="font-mono text-sm text-[#F2EBDD] font-bold mt-1">
-                        {data.period}
-                      </div>
-                    </div>
-
-                    <div className="p-4 rounded-xs bg-[#090907] border border-[#292720]">
-                      <div className="font-mono text-[11px] text-[#68645C] uppercase tracking-wider">
-                        DOMAIN
-                      </div>
-                      <div className="font-mono text-sm text-[#E5BA70] font-bold mt-1">
-                        DATA SCIENCE & AI
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Factual Scope */}
-                  <div className="p-5 rounded-xs bg-[#090907] border border-[#292720] flex items-start gap-3">
-                    <ShieldCheck className="w-4 h-4 text-[#D49A46] shrink-0 mt-0.5" aria-hidden="true" />
-                    <div className="text-xs text-[#AAA398] leading-relaxed">
-                      <strong className="text-[#F2EBDD] font-mono uppercase block mb-1">
-                        Industry Scope
-                      </strong>
-                      {data.scopeNote}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </motion.article>
-
-          {/* Terminal Date Marker (Conclusion / Horizon) */}
-          <div className="relative -left-6 sm:-left-10 md:-left-12 lg:-left-16 flex items-center gap-3 sm:gap-4 mt-6">
-            <div className="w-5 h-5 rounded-full border border-[#68645C] bg-[#11110E] flex items-center justify-center shrink-0 z-10">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#68645C]" />
-            </div>
-            <div className="font-mono text-xs text-[#68645C] uppercase tracking-wider">
-              FORMAL TERM COMPLETION TARGET // {data.endDate}
-            </div>
-          </div>
         </div>
       </Container>
     </section>
   );
 };
-

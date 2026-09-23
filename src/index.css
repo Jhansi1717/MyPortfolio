@@ -10,9 +10,9 @@
   --color-border-light: #38352C;
   --color-accent: #D49A46;
   --color-accent-light: #E5BA70;
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'Outfit', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Manrope', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
 }
 
 :root {
@@ -35,7 +35,7 @@ html {
 body {
   background-color: #090907;
   color: #F2EBDD;
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
 }
 
@@ -132,12 +132,230 @@ body {
                     linear-gradient(to bottom, rgba(41, 39, 32, 0.4) 1px, transparent 1px);
 }
 
+/* 6-second seamless looping cinematic camera & light animation */
+@keyframes cinematic6sLoop {
+  0% {
+    transform: scale(1) translate(0px, 0px);
+    filter: brightness(1) contrast(1);
+  }
+  25% {
+    transform: scale(1.02) translate(-2px, -1.5px);
+    filter: brightness(1.03) contrast(1.01);
+  }
+  50% {
+    transform: scale(1.035) translate(-4px, -3px);
+    filter: brightness(1.05) contrast(1.02);
+  }
+  75% {
+    transform: scale(1.02) translate(-2px, -1.5px);
+    filter: brightness(1.03) contrast(1.01);
+  }
+  100% {
+    transform: scale(1) translate(0px, 0px);
+    filter: brightness(1) contrast(1);
+  }
+}
+
+.animate-cinematic-6s-loop {
+  animation: cinematic6sLoop 6s ease-in-out infinite;
+}
+
+/* react-pdf centered and responsive overrides */
+.react-pdf__Document {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.react-pdf__Page {
+  max-width: 100%;
+  height: auto !important;
+}
+
+.react-pdf__Page canvas {
+  max-width: 100%;
+  height: auto !important;
+  margin: 0 auto;
+}
+
+/* Global Ambient Background System animations (Compositor-only, GPU accelerated) */
+@keyframes ambientLight14s {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-14px, 12px, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes ambientLight21s {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(16px, -14px, 0) scale(0.97);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes ambientGridDrift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-2px, -2px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes ambientArcDrift1 {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(14px, -12px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes ambientArcDrift2 {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-18px, 15px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes ambientArcDrift3 {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(12px, 16px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes ambientNodePulse1 {
+  0%, 100% {
+    opacity: 0.10;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.24;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes ambientNodePulse2 {
+  0%, 100% {
+    opacity: 0.08;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.20;
+    transform: scale(1.20);
+  }
+}
+
+.animate-ambient-light-1 {
+  animation: ambientLight14s 14s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-light-2 {
+  animation: ambientLight21s 21s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-grid {
+  animation: ambientGridDrift 26s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-arc-1 {
+  animation: ambientArcDrift1 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-arc-2 {
+  animation: ambientArcDrift2 23s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-arc-3 {
+  animation: ambientArcDrift3 29s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-node-1 {
+  animation: ambientNodePulse1 4s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.animate-ambient-node-2 {
+  animation: ambientNodePulse2 5.5s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+@keyframes heroPortraitLightDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8px, -6px, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.animate-hero-portrait-light {
+  animation: heroPortraitLightDrift 10s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Visibility API pause override */
+.bg-animation-paused * {
+  animation-play-state: paused !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .animate-ambient-light-1,
+  .animate-ambient-light-2,
+  .animate-ambient-grid,
+  .animate-ambient-arc-1,
+  .animate-ambient-arc-2,
+  .animate-ambient-arc-3,
+  .animate-ambient-node-1,
+  .animate-ambient-node-2,
+  .animate-hero-portrait-light {
+    animation: none !important;
+    transform: none !important;
   }
 }
 

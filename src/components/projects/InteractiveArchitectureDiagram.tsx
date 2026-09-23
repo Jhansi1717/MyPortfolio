@@ -164,11 +164,12 @@ export const InteractiveArchitectureDiagram: React.FC<InteractiveArchitectureDia
             </svg>
           </div>
 
-          {/* Node Grid / Row */}
+          {/* Node Grid / Row with mobile scroll snap */}
           <div
             role="tablist"
             aria-label="Pipeline Stages"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap items-stretch gap-3"
+            className="flex overflow-x-auto snap-x snap-mandatory pb-3 gap-2.5 sm:gap-3 lg:grid lg:grid-flow-col lg:auto-cols-fr scrollbar-none"
+            style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {nodes.map((node, idx) => {
               const isActive = idx === activeNodeIndex;
@@ -177,7 +178,7 @@ export const InteractiveArchitectureDiagram: React.FC<InteractiveArchitectureDia
               return (
                 <div
                   key={node.id}
-                  className="flex-1 min-w-[140px] flex flex-col"
+                  className="snap-start shrink-0 w-[220px] sm:w-[240px] lg:w-auto flex flex-col"
                 >
                   <button
                     type="button"

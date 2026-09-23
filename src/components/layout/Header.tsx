@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight, Github, FileText, Sparkles, Search, Command } from 'lucide-react';
+import { motion } from 'motion/react';
 import { navigationItems, resumeConfig } from '../../data/portfolioData';
 import { authoritativeProfile } from '../../data/profile';
 import { useActiveSection } from '../../hooks/useActiveSection';
@@ -9,6 +10,7 @@ import { Link, useLocation } from 'react-router-dom';
 export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -16,9 +18,39 @@ export const Header: React.FC = () => {
   const activeSection = useActiveSection(sectionIds, 200);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let accumulatedDelta = 0;
+    const threshold = 40; // Avoid jitter on minor scroll fluctuations
+
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      
+      // Transparent at top, subtle translucent dark when scrolled past 20px
+      setScrolled(currentScrollY > 20);
+
+      const delta = currentScrollY - lastScrollY;
+      
+      // Track directional accumulation
+      if ((delta > 0 && accumulatedDelta < 0) || (delta < 0 && accumulatedDelta > 0)) {
+        accumulatedDelta = 0; // Reset accumulation on direction change
+      }
+      accumulatedDelta += delta;
+
+      if (currentScrollY <= 20) {
+        setVisible(true);
+      } else if (accumulatedDelta > 160) { // Higher threshold for hiding
+        // Scrolled down past threshold: hide navbar
+        setVisible(false);
+        accumulatedDelta = 0;
+      } else if (accumulatedDelta < -80) { // Lower threshold for showing (more responsive)
+        // Scrolled up past threshold: reveal navbar
+        setVisible(true);
+        accumulatedDelta = 0;
+      }
+
+      lastScrollY = currentScrollY;
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -35,111 +67,98 @@ export const Header: React.FC = () => {
     window.dispatchEvent(new CustomEvent('open-ask-jhansi'));
   };
 
+  // If mobile menu is expanded, force visible to true to avoid layout hiding
+  const isHeaderVisible = visible || mobileMenuOpen;
+
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-40 transition-colors duration-200 border-b',
+        'fixed top-0 left-0 right-0 z-40 transition-all duration-500 border-b select-none',
+        isHeaderVisible ? 'translate-y-0' : '-translate-y-full',
         scrolled
-          ? 'bg-[#090907]/95 backdrop-blur-md border-[#292720]'
-          : 'bg-[#090907]/85 backdrop-blur-sm border-[#292720]/80'
+          ? 'bg-[#090907]/90 backdrop-blur-md border-[#292720]/90 py-3'
+          : 'bg-transparent border-transparent py-5'
       )}
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 md:px-12 flex items-center justify-between h-16 md:h-18">
-        {/* Left: JHANSI */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 flex items-center justify-between">
+        {/* Left: JHANSI Logo */}
         <Link
           to="/"
           onClick={closeMobileMenu}
-          className="group flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-[#D49A46] rounded-xs shrink-0"
+          className="group focus-visible:outline-2 focus-visible:outline-[#D49A46] rounded-xs shrink-0"
           aria-label="Jhansi - Home"
         >
-          <span className="font-display font-extrabold text-lg sm:text-xl tracking-[0.18em] uppercase text-[#F2EBDD] group-hover:text-[#E5BA70] transition-colors">
-            JHANSI
-          </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46] group-hover:scale-125 transition-transform" />
+          <div className="flex items-center gap-2">
+            <span className="font-display font-bold text-lg sm:text-xl tracking-[0.12em] text-[#F2EBDD] group-hover:text-[#E5BA70] transition-colors">
+              JHANSI
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46] group-hover:scale-125 transition-transform" />
+          </div>
         </Link>
 
-        {/* Desktop: Clean One-Line Navigation & Utility Links */}
-        <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-          {/* Main Navigation */}
-          <nav className="flex items-center gap-5 xl:gap-6" aria-label="Main Navigation">
+        {/* Desktop Navigation */}
+        <div className={cn(
+          "hidden lg:flex items-center gap-8 transition-opacity duration-500",
+          !scrolled && "opacity-80"
+        )}>
+          <nav className="flex items-center gap-6" aria-label="Main Navigation">
             {navigationItems.map((item) => {
               const sectionTarget = item.href.replace('#', '');
               const isActive = isHomePage && activeSection === sectionTarget;
 
-              return isHomePage ? (
+              return (
                 <a
                   key={item.label}
                   href={item.href}
                   className={cn(
-                    'font-mono text-xs uppercase tracking-[0.14em] transition-all py-1 px-1 relative select-none rounded-xs flex items-center gap-1.5 whitespace-nowrap',
-                    'focus-visible:outline-2 focus-visible:outline-[#D49A46]',
-                    isActive
-                      ? 'text-[#E5BA70] font-medium'
-                      : 'text-[#AAA398] hover:text-[#F2EBDD]'
+                    'font-mono text-[11px] uppercase tracking-[0.08em] font-medium transition-all relative group/nav',
+                    isActive ? 'text-[#D49A46]' : 'text-[#AAA398] hover:text-[#F2EBDD]'
                   )}
                 >
-                  {isActive && (
-                    <span className="w-1 h-1 rounded-full bg-[#D49A46] inline-block" />
-                  )}
                   <span>{item.label}</span>
-                  {isActive && (
-                    <span className="absolute -bottom-1 left-1 right-1 h-[1.5px] bg-[#D49A46] rounded-full" />
-                  )}
+                  <span className={cn(
+                    "absolute -bottom-1 left-0 right-0 h-px bg-[#D49A46] transform scale-x-0 group-hover/nav:scale-x-100 transition-transform duration-300 origin-left",
+                    isActive && "scale-x-100"
+                  )} />
                 </a>
-              ) : (
-                <Link
-                  key={item.label}
-                  to={`/${item.href}`}
-                  className="font-mono text-xs uppercase tracking-[0.14em] text-[#AAA398] hover:text-[#F2EBDD] transition-colors py-1 px-1 select-none focus-visible:outline-2 focus-visible:outline-[#D49A46] rounded-xs whitespace-nowrap"
-                >
-                  {item.label}
-                </Link>
               );
             })}
-          </nav>
 
-          {/* Hairline Divider */}
-          <div className="h-4 w-px bg-[#292720]" aria-hidden="true" />
-
-          {/* Utility Actions */}
-          <div className="flex items-center gap-3 xl:gap-4 shrink-0" aria-label="Utility Actions">
-            {/* GitHub */}
-            <a
-              href={authoritativeProfile.github.profileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-mono text-xs tracking-wider uppercase text-[#AAA398] hover:text-[#F2EBDD] transition-colors flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-[#D49A46] rounded-xs group px-2 py-1"
-              aria-label="Jhansi's GitHub Profile"
-            >
-              <Github className="w-3.5 h-3.5 text-[#D49A46]" />
-              <span>GitHub</span>
-            </a>
-
-            {/* Resume static link */}
             <a
               href={resumeConfig.filePath}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-xs tracking-wider uppercase text-[#AAA398] hover:text-[#E5BA70] transition-colors flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-[#D49A46] rounded-xs group px-2 py-1"
-              aria-label="View Resume PDF"
+              className="font-mono text-[11px] uppercase tracking-[0.08em] font-medium text-[#AAA398] hover:text-[#D49A46] transition-all relative group/nav"
             >
-              <FileText className="w-3.5 h-3.5 text-[#D49A46]" />
-              <span>Resume</span>
+              <span>RESUME</span>
+              <span className="absolute -bottom-1 left-0 right-0 h-px bg-[#D49A46] transform scale-x-0 group-hover/nav:scale-x-100 transition-transform duration-300 origin-left" />
+            </a>
+          </nav>
+
+          <div className="h-4 w-px bg-[#292720]" aria-hidden="true" />
+
+          <div className="flex items-center gap-5">
+            <a
+              href={authoritativeProfile.github.profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[11px] tracking-[0.08em] font-medium uppercase text-[#AAA398] hover:text-[#F2EBDD] transition-colors flex items-center gap-2"
+            >
+              <Github className="w-3.5 h-3.5" />
+              <span>GITHUB</span>
             </a>
 
-            {/* Search command */}
             <button
               onClick={openCommandPalette}
-              className="p-1.5 rounded-xs bg-[#14130F] hover:bg-[#1C1A14] border border-[#292720] hover:border-[#D49A46]/60 text-[#AAA398] hover:text-[#F2EBDD] transition-all cursor-pointer"
-              aria-label="Search portfolio (Cmd + K)"
-              title="Search (Cmd + K)"
+              className="text-[#AAA398] hover:text-[#D49A46] transition-colors"
+              aria-label="Search"
             >
-              <Search className="w-3.5 h-3.5 text-[#D49A46]" />
+              <Search className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* Mobile menu trigger */}
+        {/* Mobile controls */}
         <div className="flex lg:hidden items-center gap-2">
           <button
             onClick={openCommandPalette}
@@ -163,7 +182,6 @@ export const Header: React.FC = () => {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-b border-[#292720] bg-[#090907] px-6 py-6 transition-all max-h-[85vh] overflow-y-auto">
-          {/* Quick Command Trigger in Mobile Menu */}
           <button
             onClick={() => {
               closeMobileMenu();
@@ -192,7 +210,7 @@ export const Header: React.FC = () => {
                   onClick={closeMobileMenu}
                   className={cn(
                     'flex items-center justify-between font-display text-base font-bold uppercase tracking-wider py-3 border-b border-[#292720]/50 transition-colors',
-                    isActive ? 'text-[#E5BA70] pl-2 border-l-2 border-l-[#D49A46]' : 'text-[#F2EBDD] hover:text-[#D49A46]'
+                    isActive ? 'text-[#E5BA70]' : 'text-[#AAA398] hover:text-[#F2EBDD]'
                   )}
                 >
                   <span className="flex items-center gap-2">
@@ -205,8 +223,8 @@ export const Header: React.FC = () => {
             })}
           </nav>
 
-          {/* Mobile Utility Links */}
-          <div className="pt-6 space-y-3">
+          {/* Compact Utilities */}
+          <div className="pt-6">
             <div className="grid grid-cols-2 gap-2">
               <a
                 href={authoritativeProfile.github.profileUrl}

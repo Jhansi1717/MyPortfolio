@@ -38,17 +38,16 @@ export const profileData: Profile = {
   status: 'OPEN FOR AI/ML & ENGINEERING OPPORTUNITIES',
   contact: {
     email: 'jhansibhukya17@gmail.com',
-    phone: '+91 7207653560',
+    
     location: 'Hyderabad, India',
   },
 };
 
 export const navigationItems: NavigationItem[] = [
-  { label: 'WORK', href: '#projects', index: '01' },
+  { label: 'WORK', href: '#selected-work', index: '01' },
   { label: 'EXPERIENCE', href: '#experience', index: '02' },
-  { label: 'SYSTEMS', href: '#systems-lab', index: '03' },
-  { label: 'ABOUT', href: '#about', index: '04' },
-  { label: 'CONTACT', href: '#contact', index: '05' },
+  { label: 'ABOUT', href: '#about', index: '03' },
+  { label: 'CONTACT', href: '#contact', index: '04' },
 ];
 
 export const socialLinks: SocialLink[] = [
@@ -181,10 +180,10 @@ export const educationData: EducationItem[] = [
     degree: 'Intermediate (MPC — Mathematics, Physics, Chemistry)',
     period: '2021 – 2023',
     location: 'Hanamkonda, Telangana',
-    cgpaOrGrade: '98.8% (IPE)',
+    cgpaOrGrade: '98.8% (IPE) — 80 Percentile in JEE Main',
     highlights: [
       'Scored 98.8% distinction in Telangana State Board (IPE).',
-      'High-percentile academic standing across core analytical sciences.',
+      'Achieved 80 Percentile in JEE Main examination.',
     ],
   },
 ];
@@ -255,6 +254,7 @@ export const engineeringSnapshotData: SnapshotCategory[] = [
     skills: [
       'Python',
       'JavaScript',
+      'TypeScript',
       'React',
       'Node.js',
       'Express.js',
@@ -268,11 +268,11 @@ export const engineeringSnapshotData: SnapshotCategory[] = [
     subtitle: 'Storage Engines & Analytical Pipelines',
     evidence: 'APPLIED IN: Signal Processing, Document Clustering',
     skills: [
+      'SQL',
       'MongoDB',
       'MySQL',
-      'NumPy',
       'Pandas',
-      'Scikit-Learn',
+      'NumPy',
     ],
   },
   {
@@ -307,8 +307,18 @@ export const internshipExperienceData: InternshipExperience = {
   duration: '6 MONTHS',
   location: 'HYDERABAD, INDIA',
   type: 'INDUSTRY INTERNSHIP',
-  focusLabels: ['DATA SCIENCE', 'MACHINE LEARNING', 'SYSTEM INTEGRATION'],
+  focusLabels: ['DATA SCIENCE', 'MACHINE LEARNING', 'DATA PROCESSING'],
   scopeNote:
-    'Professional industry internship focused on data science pipelines, automated preprocessing workflows, and applied machine learning integration.',
+    'Focused on developing data science pipelines, automated preprocessing workflows, and applied machine learning integration.',
   verificationBadge: 'VERIFIED APPOINTMENT',
+  contributions: [
+    'Designed and implemented data preprocessing pipelines for machine learning workflows.',
+    'Developed exploratory data analysis scripts to evaluate data quality and feature distributions.',
+    'Collaborated with engineering teams to integrate machine learning models into staging environments.',
+  ],
+  tools: ['Python', 'Pandas', 'NumPy', 'Scikit-Learn', 'Git'],
+  outcomes: [
+    'Standardized data ingestion and cleansing procedures across analytical datasets.',
+    'Delivered robust feature extraction modules supporting model development.',
+  ],
 };

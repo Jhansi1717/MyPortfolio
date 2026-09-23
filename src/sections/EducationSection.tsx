@@ -9,12 +9,12 @@ export const EducationSection: React.FC = () => {
     <section
       id="education"
       aria-label="Education Section"
-      className="py-20 md:py-28 border-b border-[#292720]"
+      className="py-20 md:py-28 lg:py-32 border-b border-[#292720] scroll-mt-24 bg-transparent"
     >
       <Container size="wide">
         <SectionHeading
-          indexTag="07 // EDUCATION"
-          title="07 / EDUCATION: ACADEMIC FOUNDATIONS"
+          indexTag="07 / EDUCATION"
+          title="EDUCATION"
           description="Consistent high academic performance across computer science theory, advanced mathematics, and artificial intelligence specialization."
         />
 
@@ -38,11 +38,11 @@ export const EducationSection: React.FC = () => {
                 </h3>
 
                 <div className="font-mono text-base sm:text-lg font-medium text-[#E5BA70] mb-1">
-                  B.E. Computer Science & Engineering
+                  B.E. Computer Science &amp; Engineering
                 </div>
 
                 <div className="font-mono text-xs sm:text-sm text-[#AAA398] mb-6">
-                  Specialization: <span className="text-[#F2EBDD] font-medium">Artificial Intelligence & Machine Learning</span>
+                  Specialization: <span className="text-[#F2EBDD] font-medium">Artificial Intelligence &amp; Machine Learning</span>
                 </div>
 
                 {/* Metadata badges */}
@@ -60,22 +60,22 @@ export const EducationSection: React.FC = () => {
               </div>
 
               {/* Coursework highlights */}
-              <div className="mt-6 pt-4 border-t border-[#201F19] grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#AAA398]">
+              <div className="mt-6 pt-4 border-t border-[#201F19] grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-[#AAA398]">
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-                  <span>Deep Learning & Neural Architectures</span>
+                  <span>Deep Learning &amp; Neural Architectures</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-                  <span>Data Structures & Algorithmic Complexity</span>
+                  <span>Data Structures &amp; Algorithmic Complexity</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-                  <span>Computer Vision & NLP Systems</span>
+                  <span>Computer Vision &amp; NLP Systems</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-                  <span>Database Engineering & Operating Systems</span>
+                  <span>Database Engineering &amp; Operating Systems</span>
                 </div>
               </div>
             </div>
@@ -109,7 +109,7 @@ export const EducationSection: React.FC = () => {
                   CGPA · ACADEMIC DISTINCTION
                 </div>
 
-                <p className="text-xs text-[#888175] mt-3 leading-relaxed font-light">
+                <p className="font-body text-sm text-[#AAA398] mt-3 leading-relaxed font-normal">
                   Continuous top-tier performance evaluated across theoretical coursework, system lab projects, and computational rigor at Chaitanya Bharathi Institute of Technology.
                 </p>
 
@@ -131,7 +131,7 @@ export const EducationSection: React.FC = () => {
             <div className="font-mono text-sm sm:text-base font-bold text-[#F2EBDD]">
               Rudrama Devi Junior College
             </div>
-            <div className="text-xs text-[#AAA398] mt-0.5">
+            <div className="font-body text-sm text-[#AAA398] mt-0.5">
               Mathematics, Physics, Chemistry (MPC) · Hanamkonda, Telangana · 2021 – 2023
             </div>
           </div>
@@ -139,10 +139,10 @@ export const EducationSection: React.FC = () => {
           <div className="flex items-center gap-4 shrink-0">
             <div className="text-right">
               <div className="font-mono text-xl font-bold text-[#E5BA70]">
-                98.8%
+                98.8% (IPE)
               </div>
               <div className="font-mono text-[10px] uppercase text-[#888175]">
-                TELANGANA STATE BOARD (IPE)
+                STATE BOARD (IPE) · 80 PERCENTILE IN JEE MAIN
               </div>
             </div>
           </div>

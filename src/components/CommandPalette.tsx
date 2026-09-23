@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { authoritativeProfile } from '../data/profile';
+import { resumeConfig } from '../data/portfolioData';
 
 export interface CommandItem {
   id: string;
@@ -80,14 +81,14 @@ export const CommandPalette: React.FC = () => {
   const commands: CommandItem[] = useMemo(
     () => [
       {
-        id: 'projects',
-        title: 'Projects',
+        id: 'selected-work',
+        title: 'Work',
         category: 'Navigation',
         description: 'Flagship deep learning & full-stack systems',
         icon: <FolderGit2 className="w-4 h-4 text-[#D49A46]" />,
-        action: () => handleScrollToSection('projects'),
-        keywords: ['projects', 'respiratory', 'mental health', 'pizza', 'code', 'portfolio', 'efficientnet', 'rag'],
-        shortcut: '03',
+        action: () => handleScrollToSection('selected-work'),
+        keywords: ['work', 'selected work', 'projects', 'respiratory', 'pizza', 'code', 'portfolio', 'efficientnet', 'deep learning'],
+        shortcut: '02',
       },
       {
         id: 'experience',
@@ -97,17 +98,27 @@ export const CommandPalette: React.FC = () => {
         icon: <Briefcase className="w-4 h-4 text-[#D49A46]" />,
         action: () => handleScrollToSection('experience'),
         keywords: ['experience', 'work', 'internship', 'aminobots', 'data science', 'role', 'jobs', 'history'],
-        shortcut: '02',
+        shortcut: '03',
       },
       {
-        id: 'systems-lab',
-        title: 'Systems Lab',
+        id: 'how-i-build',
+        title: 'How I Build',
         category: 'Navigation',
-        description: 'Interactive neural pipelines & architecture diagrams',
+        description: 'Systematic engineering workflow for AI systems & scalable software',
         icon: <Layers className="w-4 h-4 text-[#D49A46]" />,
-        action: () => handleScrollToSection('systems-lab'),
-        keywords: ['systems lab', 'architecture', 'interactive', 'neural', 'pipeline', 'spectrogram', 'ssl'],
+        action: () => handleScrollToSection('how-i-build'),
+        keywords: ['how i build', 'workflow', 'architecture', 'process', 'pipeline', 'engineering'],
         shortcut: '04',
+      },
+      {
+        id: 'technical-profile',
+        title: 'Technical Profile',
+        category: 'Navigation',
+        description: 'Structured capability matrix across AI/ML, engineering, data & core CS',
+        icon: <Layers className="w-4 h-4 text-[#D49A46]" />,
+        action: () => handleScrollToSection('technical-profile'),
+        keywords: ['technical profile', 'skills', 'capabilities', 'matrix', 'architecture'],
+        shortcut: '05',
       },
       {
         id: 'about',
@@ -133,21 +144,31 @@ export const CommandPalette: React.FC = () => {
         id: 'certifications',
         title: 'Certifications',
         category: 'Navigation',
-        description: 'Stanford, DeepLearning.AI & AWS certified credentials',
+        description: 'Oracle, NPTEL, Microsoft & Infosys verified credentials',
         icon: <Award className="w-4 h-4 text-[#D49A46]" />,
         action: () => handleScrollToSection('certifications'),
-        keywords: ['certifications', 'stanford', 'deeplearning.ai', 'aws', 'credentials', 'courses', 'certificates'],
+        keywords: ['certifications', 'oracle', 'nptel', 'credentials', 'courses', 'certificates'],
         shortcut: '08',
       },
       {
         id: 'resume',
         title: 'Resume',
         category: 'Navigation',
-        description: 'Formal curriculum vitae & engineering dossier',
+        description: 'Open formal PDF curriculum vitae & engineering dossier',
         icon: <FileText className="w-4 h-4 text-[#D49A46]" />,
-        action: handleOpenResume,
+        action: () => handleScrollToSection('resume'),
         keywords: ['resume', 'cv', 'curriculum vitae', 'pdf', 'download', 'dossier', 'printable'],
         shortcut: '09',
+      },
+      {
+        id: 'contact',
+        title: 'Contact',
+        category: 'Navigation',
+        description: 'Get in touch for engineering roles & collaborations',
+        icon: <Mail className="w-4 h-4 text-[#D49A46]" />,
+        action: () => handleScrollToSection('contact'),
+        keywords: ['contact', 'email', 'message', 'hire', 'phone', 'location', 'reach out'],
+        shortcut: '10',
       },
       {
         id: 'github',
@@ -178,26 +199,6 @@ export const CommandPalette: React.FC = () => {
         action: () => handleExternalLink(authoritativeProfile.leetcode.profileUrl),
         keywords: ['leetcode', 'dsa', 'algorithms', 'data structures', 'problem solving', 'competitive'],
         shortcut: '↗',
-      },
-      {
-        id: 'contact',
-        title: 'Contact',
-        category: 'Navigation',
-        description: 'Get in touch for engineering roles & collaborations',
-        icon: <Mail className="w-4 h-4 text-[#D49A46]" />,
-        action: () => handleScrollToSection('contact'),
-        keywords: ['contact', 'email', 'message', 'hire', 'phone', 'location', 'reach out'],
-        shortcut: '10',
-      },
-      {
-        id: 'ask-jhansi',
-        title: 'Ask Jhansi',
-        category: 'AI & Tools',
-        description: 'AI Portfolio Copilot powered by Gemini',
-        icon: <Sparkles className="w-4 h-4 text-[#E5BA70]" />,
-        action: handleOpenAskJhansi,
-        keywords: ['ask jhansi', 'ai', 'copilot', 'assistant', 'chat', 'gemini', 'questions', 'bot'],
-        shortcut: 'AI',
       },
     ],
     [location.pathname]

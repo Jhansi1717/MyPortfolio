@@ -15,7 +15,7 @@ export const PORTFOLIO_KNOWLEDGE = `
 - Location: Hyderabad, Telangana, India
 - Availability Status: Open for AI/ML & Engineering Opportunities
 - Contact Email: jhansibhukya17@gmail.com
-- Contact Phone: +91 7207653560
+- Contact Phone: 
 
 ## 2. FORMAL EDUCATION
 - Institution: Chaitanya Bharathi Institute of Technology (CBIT)
@@ -29,7 +29,7 @@ export const PORTFOLIO_KNOWLEDGE = `
   - Program: Intermediate (MPC — Mathematics, Physics, Chemistry)
   - Timeline: 2021 – 2023
   - Location: Hanamkonda, Telangana
-  - Grade: 98.8% distinction (Telangana State Board - IPE)
+  - Grade: 98.8% distinction (Telangana State Board - IPE) — 80 Percentile in JEE Main
 
 ## 3. INDUSTRY EXPERIENCE / INTERNSHIP
 - Company: Aminobots
@@ -70,22 +70,7 @@ export const PORTFOLIO_KNOWLEDGE = `
    - Internal Route: /projects/respiratory-ai
    - Code Repository: Available via GitHub (https://github.com/Jhansi1717/AI_Powered_Respiratory_Screening)
 
-2. Mental Health QA System
-   - Category: NLP / Transformers / Full Stack
-   - Status: Deployed & Integrated
-   - Purpose: Context-aware mental health question-answering platform.
-   - Core Technologies: Python, Transformers, Natural Language Processing (NLP), RESTful APIs, MongoDB, Conversational Analytics, Express / Node.js, React.js.
-   - Architecture & Pipeline:
-     1. User Query Ingestion via responsive React interface.
-     2. NLP Pre-Processing & Tokenization with transformer attention mechanisms capturing semantic intent and nuance.
-     3. RESTful API gateway orchestrating query dispatch and response delivery.
-     4. Contextual Response Delivery back to client.
-     5. Conversational Analytics tracking interaction patterns.
-     6. MongoDB Document Persistence storing session logs and conversational telemetry.
-   - Internal Route: /projects/mental-health-qa
-   - Code Repository: Available via GitHub (https://github.com/Jhansi1717/Mental_Health_QA_System)
-
-3. Full-Stack Pizza Ordering Platform
+2. Full-Stack Pizza Ordering Platform
    - Category: Full Stack / Backend / Payments
    - Status: Production Ready
    - Purpose: End-to-end e-commerce food ordering application.
@@ -98,9 +83,10 @@ export const PORTFOLIO_KNOWLEDGE = `
    - Internal Route: /projects/pizza-ordering
    - Code Repository: Available via GitHub (https://github.com/Jhansi1717/Pizza_ordering_system)
 
-4. Additional Open Source Systems & Repositories (Systems Lab):
-   - rag-multi-agent-knowledge-assistant: Multi-agent retrieval-augmented generation engine with contextual document retrieval and autonomous reasoning agents (Python).
-   - FMCG-AI-Analytics-Assistant: Predictive intelligence and supply-chain analytical system for fast-moving consumer goods forecasting (Python).
+3. Additional Open Source Systems & Repositories (Systems Lab / Code History):
+   - Mental_Health_QA_System: NLP transformer question-answering system (https://github.com/Jhansi1717/Mental_Health_QA_System).
+   - rag-multi-agent-knowledge-assistant: Multi-agent retrieval-augmented generation engine (Python).
+   - FMCG-AI-Analytics-Assistant: Predictive intelligence and supply-chain analytical system (Python).
 
 ## 6. VERIFIED INDUSTRY CERTIFICATIONS
 - AI Foundations Associate — Issued by Oracle
@@ -113,19 +99,17 @@ export const PORTFOLIO_KNOWLEDGE = `
 - LinkedIn: https://www.linkedin.com/in/jhansibhukya/
 - LeetCode: https://leetcode.com/u/Jhansi_gopal/ (Handle: Jhansi_gopal)
 - Email: mailto:jhansibhukya17@gmail.com
-- Resume / CV: Available on the portfolio (modal view or downloadable at /resume.pdf)
+- Resume / CV: Available on the portfolio (downloadable or viewable at /resume/Jhansi_Bhukya_Resume.pdf)
 
 ## 8. PORTFOLIO PAGE SECTIONS & ROUTES
-- #snapshot — Engineering Snapshot (categorized overview of skills and technical domains)
+- #selected-work — Featured Projects (Respiratory AI, Pizza Ordering)
 - #experience — Professional Experience (Aminobots Data Science Internship)
-- #projects — Featured Projects (Respiratory AI, Mental Health QA, Pizza Ordering)
-- #systems-lab — Systems Lab (research pipelines and specialized system models)
-- #build-activity — Build Activity (live GitHub telemetry and LeetCode analytics)
-- #about — Conceptual Pillars & Philosophy (AI, Engineering, Building)
+- #research-focus — Research Focus (AI Systems, Perception, Software Engineering)
+- #about — Identity & Philosophy (AI, Engineering, Building)
 - #education — Academic Background (CBIT degree & Rudrama Devi Junior College)
 - #certifications — Verified Industry Credentials (Oracle, Microsoft, Infosys, GFG)
-- #resume — Resume Section & Interactive Dossier
-- #contact — Direct Contact Details & Transmission Form
+- #resume — Professional Dossier & PDF Viewer
+- #contact — Direct Contact Details & Email Form
 `;
 
 export const COPILOT_SYSTEM_INSTRUCTION = `You are "ASK JHANSI", the official AI Portfolio Copilot for Jhansi Bhukya's public portfolio.
@@ -151,7 +135,7 @@ ABSOLUTELY DO NOT INVENT:
 - Future outcomes or unverified predictions
 
 SUPPORTED TOPIC GUIDANCE:
-- AI Projects: AI-Powered Respiratory Screening System, Mental Health QA System, RAG Multi-Agent Knowledge Assistant, FMCG AI Analytics Assistant.
+- AI & Full-Stack Projects: AI-Powered Respiratory Screening System, Full-Stack Pizza Ordering Platform, RAG Multi-Agent Knowledge Assistant, FMCG AI Analytics Assistant.
 - Technologies: Python, TensorFlow, EfficientNet-B0, React.js, Node.js, Express.js, MongoDB, JWT, Razorpay, etc.
 - Education & CGPA: Chaitanya Bharathi Institute of Technology (CBIT), B.E. in CSE (AIML), Expected May 2027, CGPA 9.72 / 10. Intermediate MPC at Rudrama Devi Junior College (98.8%).
 - Internship: Data Science Intern at Aminobots (15 Jul 2026 - 14 Jan 2027, Hyderabad). Proprietary models under NDA.
@@ -160,7 +144,7 @@ SUPPORTED TOPIC GUIDANCE:
 STYLE & FORMATTING:
 - Keep answers professional, concise, grounded, and polite.
 - Format responses cleanly with markdown.
-- Include helpful links to portfolio sections (e.g. [View Projects](#projects), [View Education](#education), [Experience](#experience)) or project case studies ([Respiratory AI Case Study](/projects/respiratory-ai), [Mental Health QA Case Study](/projects/mental-health-qa), [Pizza Ordering Case Study](/projects/pizza-ordering)) where relevant.
+- Include helpful links to portfolio sections (e.g. [View Projects](#selected-work), [View Education](#education), [Experience](#experience)) or project case studies ([Respiratory AI Case Study](/projects/respiratory-ai), [Pizza Ordering Case Study](/projects/pizza-ordering)) where relevant.
 
 PORTFOLIO KNOWLEDGE BASE:
 ${PORTFOLIO_KNOWLEDGE}
