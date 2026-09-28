@@ -28,8 +28,6 @@ export const profileData: Profile = {
   name: 'Jhansi Bhukya',
   titles: [
     'AI/ML Engineer',
-    'AI Systems Builder',
-    'Full-Stack Engineer',
   ],
   tagline: 'Engineering intelligent machine systems and scalable full-stack architectures.',
   summary:
@@ -235,7 +233,7 @@ export const engineeringSnapshotData: SnapshotCategory[] = [
     code: '01 / AI & ML',
     name: 'AI / MACHINE LEARNING',
     subtitle: 'Neural Architectures & Algorithmic Learning',
-    evidence: 'APPLIED IN: Respiratory AI, Mental Health QA',
+    evidence: 'APPLIED IN: Respiratory AI',
     skills: [
       'Machine Learning',
       'Deep Learning',
@@ -310,7 +308,7 @@ export const internshipExperienceData: InternshipExperience = {
   focusLabels: ['DATA SCIENCE', 'MACHINE LEARNING', 'DATA PROCESSING'],
   scopeNote:
     'Focused on developing data science pipelines, automated preprocessing workflows, and applied machine learning integration.',
-  verificationBadge: 'VERIFIED APPOINTMENT',
+  verificationBadge: 'INDUSTRY INTERNSHIP',
   contributions: [
     'Designed and implemented data preprocessing pipelines for machine learning workflows.',
     'Developed exploratory data analysis scripts to evaluate data quality and feature distributions.',
