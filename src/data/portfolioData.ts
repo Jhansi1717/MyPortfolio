@@ -28,6 +28,8 @@ export const profileData: Profile = {
   name: 'Jhansi Bhukya',
   titles: [
     'AI/ML Engineer',
+    'Software Engineer',
+    'Full-Stack Developer',
   ],
   tagline: 'Engineering intelligent machine systems and scalable full-stack architectures.',
   summary:
