@@ -27,7 +27,7 @@ export const CertificationsSection: React.FC = () => {
   return (
     <section
       id="certifications"
-      aria-label="Certifications Section: Verified Technical Credentials"
+      aria-label="Professional Certifications"
       className="py-20 md:py-28 lg:py-32 border-b border-[#292720] scroll-mt-24 bg-transparent"
     >
       <Container size="wide">
@@ -42,7 +42,7 @@ export const CertificationsSection: React.FC = () => {
           <div className="flex items-center gap-2 mb-3">
             <Award className="w-3.5 h-3.5 text-[#D49A46]" />
             <span className="font-mono text-xs font-bold text-[#E5BA70] uppercase tracking-wider">
-              PRIMARY SPECIALIZATION CREDENTIAL
+              FEATURED CERTIFICATION
             </span>
           </div>
           <FeaturedCertificateCard
@@ -57,11 +57,11 @@ export const CertificationsSection: React.FC = () => {
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-3.5 h-3.5 text-[#D49A46]" />
               <span className="font-mono text-xs font-bold text-[#E5BA70] uppercase tracking-wider">
-                SUPPORTING CREDENTIALS & ALGORITHMIC PROVING ({supportingCerts.length})
+                ADDITIONAL CERTIFICATIONS ({supportingCerts.length})
               </span>
             </div>
             <span className="font-mono text-[10px] text-[#888175] uppercase hidden sm:inline-block">
-              CLICK CARD TO EXPAND AUTHENTICATED BREAKDOWN
+              SELECT A CERTIFICATION TO VIEW DETAILS
             </span>
           </div>
 
@@ -77,15 +77,15 @@ export const CertificationsSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Factual Integrity Footer Note */}
+        {/* Certification information note */}
         <div className="p-4 rounded-xs bg-[#11100C] border border-[#201F19] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono text-[#68645C]">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
             <span>
-              SOURCE TRUTH: All credentials verified against respective issuing authorities (Oracle University, NPTEL / IIT Kharagpur, Microsoft, Infosys, GFG).
+              Certification details are presented as recorded by the issuing organizations.
             </span>
           </div>
-          <span className="text-[#888175] shrink-0">STRICT FACTUAL INTEGRITY</span>
+          <span className="text-[#888175] shrink-0">CERTIFICATION RECORD</span>
         </div>
 
         {/* Certificate Detail Inspection Modal */}
