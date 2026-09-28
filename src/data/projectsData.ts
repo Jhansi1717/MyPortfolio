@@ -191,8 +191,8 @@ export const projectsData: Project[] = [
         },
       ],
       challenges: {
-        notice: 'SPECIFICATION STATUS: VERIFIED RESUME RECORD',
-        verifiedStatus: 'PRODUCTION ROADMAP UNDER NDA / FORMAL EVALUATION',
+        notice: 'CURRENT STATUS',
+        verifiedStatus: 'ACTIVE DEVELOPMENT & EVALUATION',
         placeholderNote:
           'Detailed edge-case failure mode logs, specific clinical hospital cohort calibrations, and proprietary deployment telemetry remain under institutional evaluation. Factual technical challenges will be documented here following peer-reviewed release.',
       },
@@ -204,7 +204,7 @@ export const projectsData: Project[] = [
           'Created automated reporting modules providing structured decision support for healthcare practitioners.',
         ],
         disclaimer:
-          'In adherence to rigorous engineering integrity, unverified statistical percentages, simulated clinical trials, and fabricated benchmark numbers are strictly excluded.',
+          'Public metrics are shown only where supported by project documentation.',
       },
       technologyGroups: [
         {
@@ -263,7 +263,7 @@ export const projectsData: Project[] = [
       'Engineered a full-stack food ordering platform with JWT-based authentication, authorization, and role-based access control.',
       'Integrated Razorpay payments, inventory management, shopping cart functionality, and real-time order tracking features.',
     ],
-    status: 'VERIFIED IMPLEMENTATION',
+    status: 'FEATURED PROJECT',
     caseStudy: {
       problemStatement:
         'Food ordering platforms require reliable coordination across shopping cart state, inventory validation, authenticated payments, and order fulfillment.',
@@ -391,8 +391,8 @@ export const projectsData: Project[] = [
         },
       ],
       challenges: {
-        notice: 'SPECIFICATION STATUS: VERIFIED RESUME RECORD',
-        verifiedStatus: 'PRODUCTION ROADMAP UNDER NDA / FORMAL EVALUATION',
+        notice: 'CURRENT STATUS',
+        verifiedStatus: 'ACTIVE DEVELOPMENT & EVALUATION',
         placeholderNote:
           'High-throughput concurrency stress tests, automated delivery driver GPS integration logs, and localized payment reconciliation benchmarks will be published here following subsequent infrastructure audits.',
       },
@@ -404,7 +404,7 @@ export const projectsData: Project[] = [
           'Implemented real-time order tracking from placement to delivery completion.',
         ],
         disclaimer:
-          'In adherence to factual engineering integrity, unverified sales volumes, simulated user totals, and fabricated performance benchmarks are strictly omitted.',
+          'Public metrics are shown only where supported by project documentation.',
       },
       technologyGroups: [
         {
