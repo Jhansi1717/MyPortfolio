@@ -9,7 +9,6 @@ export interface GitHubConfig {
   avatarUrl: string;
   repositories: {
     respiratoryScreening: string;
-    mentalHealthQA: string;
     pizzaOrdering: string;
     foodHealthApp: string;
     upscOS: string;
@@ -42,7 +41,6 @@ export const authoritativeProfile: AuthoritativeProfile = {
     avatarUrl: 'https://avatars.githubusercontent.com/u/193582333?v=4',
     repositories: {
       respiratoryScreening: 'https://github.com/Jhansi1717/AI_Powered_Respiratory_Screening',
-      mentalHealthQA: 'https://github.com/Jhansi1717/Mental_Health_QA_System',
       pizzaOrdering: 'https://github.com/Jhansi1717/Pizza_ordering_system',
       foodHealthApp: 'https://github.com/Jhansi1717/Food-Health_App',
       upscOS: 'https://github.com/Jhansi1717/UPSC-OS',
