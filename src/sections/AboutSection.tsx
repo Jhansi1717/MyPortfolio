@@ -14,7 +14,6 @@ export const AboutSection: React.FC = () => {
   });
 
   const primaryShiftY = useTransform(scrollYProgress, [0, 1], [15, -15]);
-  const secondaryShiftY = useTransform(scrollYProgress, [0, 1], [25, -25]);
 
   const easeCurve = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -29,10 +28,9 @@ export const AboutSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-center">
           
           {/* =========================================================================
-              LEFT: DUAL PORTRAIT COMPOSITION (REAL PHOTOGRAPHS)
+              LEFT: PRIMARY PORTRAIT COMPOSITION
               Primary: clip-path reveal + opacity + translateY (700-900ms)
-              Secondary: opacity + translateX (Stagger: 120ms, 700-900ms)
-              No face animation. Real <img> elements.
+              No face animation. Real <img> element.
               ========================================================================= */}
           <div className="lg:col-span-5 relative h-[380px] sm:h-[480px] md:h-[540px] flex items-center justify-center lg:justify-start">
             <div className="relative w-full max-w-[380px] aspect-[4/5]">
@@ -95,7 +93,7 @@ export const AboutSection: React.FC = () => {
                 <div className="w-full h-full p-[1px] bg-[#1C1B15] border border-[#D49A46]/35 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85)] relative overflow-hidden group">
                   <img
                     src="/Jhansi_Profile_Primary.jpeg"
-                    alt="Jhansi Bhukya - AI and Full-Stack Engineer"
+                    alt="Jhansi Bhukya - AI / ML Engineer"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.015]"
                   />
                   {/* Subtle Light Tone */}
@@ -149,7 +147,7 @@ export const AboutSection: React.FC = () => {
 
               {/* Subtitle Identity */}
               <div className="font-mono text-xs sm:text-sm tracking-[0.08em] text-[#AAA398] uppercase mb-8 font-medium">
-                AI SYSTEMS BUILDER &nbsp;·&nbsp; FULL-STACK ENGINEER
+                AI / ML ENGINEER
               </div>
 
               {/* Concise Personal Narrative */}
