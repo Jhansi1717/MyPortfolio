@@ -275,7 +275,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 ))}
               </div>
 
-              {/* Live deployment proof */
+              {/* Live deployment proof */}
               {project.liveDemoUrl && (
                 <div className="w-full sm:w-auto sm:mr-auto flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.10em] text-[#68645C]">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
