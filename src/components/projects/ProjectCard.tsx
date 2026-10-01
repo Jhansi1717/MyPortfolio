@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
-import { ArrowUpRight, Github } from 'lucide-react';
+import { ArrowUpRight, Github, ExternalLink } from 'lucide-react';
 import { Project } from '../../types/project';
 import { ArchitecturePreview } from './ArchitecturePreview';
 import { ProjectVisualStack } from './ProjectVisualStack';
@@ -341,27 +341,50 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 ))}
               </div>
 
-              {/* CTAs: GitHub + Case Study with Arrow hover translateX 3-4px */}
-              <div className="flex items-center gap-4 shrink-0">
+              {/* Live deployment proof */}
+              {project.liveDemoUrl && (
+                <div className="w-full sm:w-auto sm:mr-auto flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.10em] text-[#68645C]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
+                  <span>{project.liveDemoUrl.includes('vercel.app') ? 'LIVE · VERCEL' : 'LIVE · RENDER'}</span>
+                </div>
+              )}
+
+              {/* Proof + navigation actions */}
+              <div className="flex flex-wrap items-center justify-end gap-2.5 shrink-0">
+                {project.liveDemoUrl && (
+                  <a
+                    href={project.liveDemoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    referrerPolicy="no-referrer"
+                    className="group/live inline-flex items-center justify-center gap-2 bg-[#D49A46] hover:bg-[#E5BA70] text-[#090907] font-mono text-[11px] font-bold uppercase tracking-[0.08em] px-4 py-2.5 rounded-xs transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+                    aria-label={`Open live demo for ${project.title}`}
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 transition-transform duration-300 group-hover/live:translate-x-[2px] group-hover/live:-translate-y-[2px]" />
+                    <span>LIVE DEMO</span>
+                  </a>
+                )}
+
+                <Link
+                  to={project.caseStudyRoute}
+                  className="group/btn inline-flex items-center justify-center gap-2 border border-[#D49A46]/70 hover:border-[#D49A46] hover:bg-[#D49A46]/10 text-[#E5BA70] font-mono text-[11px] font-bold uppercase tracking-[0.08em] px-4 py-2.5 rounded-xs transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+                  aria-label={`View full case study for ${project.title}`}
+                >
+                  <span>CASE STUDY</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-[3px] group-hover/btn:-translate-y-[2px]" />
+                </Link>
+
                 <a
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  referrerPolicy="no-referrer"
                   className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-[#AAA398] hover:text-[#F2EBDD] transition-colors py-2 focus-visible:outline-2 focus-visible:outline-[#D49A46]"
                   aria-label={`View source code for ${project.title} on GitHub`}
                 >
                   <Github className="w-3.5 h-3.5 text-[#D49A46]" />
                   <span>GITHUB</span>
                 </a>
-
-                <Link
-                  to={project.caseStudyRoute}
-                  className="group/btn inline-flex items-center justify-center gap-2 bg-[#D49A46] hover:bg-[#E5BA70] text-[#090907] font-mono text-[11px] font-bold uppercase tracking-[0.08em] px-5 py-2.5 rounded-xs transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-[#D49A46]"
-                  aria-label={`View full case study for ${project.title}`}
-                >
-                  <span>VIEW CASE STUDY</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-[3px] group-hover/btn:-translate-y-[2px]" />
-                </Link>
               </div>
             </motion.div>
 
