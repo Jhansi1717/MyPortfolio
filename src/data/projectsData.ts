@@ -16,12 +16,11 @@ export const projectsData: Project[] = [
       'A respiratory disease screening system combining self-supervised learning, EfficientNet-B0, audio signal processing, explainability and automated reporting.',
     technologies: [
       'Python',
-      'TensorFlow',
+      'PyTorch',
+      'timm',
       'EfficientNet-B0',
-      'Self-Supervised Learning',
-      'Audio Signal Processing',
-      'Explainable AI (XAI)',
-      'Automated Reporting',
+      'FastAPI',
+      'PostgreSQL',
     ],
     architecture: {
       summary:
@@ -44,9 +43,6 @@ export const projectsData: Project[] = [
     liveDemoUrl: 'https://respiratory-ai-frontend.onrender.com',
     caseStudyRoute: '/projects/respiratory-ai',
     metrics: [
-      { label: "Precision", value: "94.2%" },
-      { label: "Model", value: "EfficientNet-B0" },
-      { label: "Explainability", value: "Grad-CAM" }
     ],
     bullets: [
       'Designed and developed a respiratory disease screening system using Self-Supervised Learning and EfficientNet-B0 for lung sound classification.',
@@ -229,18 +225,18 @@ export const projectsData: Project[] = [
     title: 'Full-Stack Pizza Ordering Platform',
     category: 'FULL-STACK ENGINEERING',
     description:
-      'A full-stack ordering platform implementing authentication, role-based access, payments, inventory, cart management, and order tracking.',
+      'Full-stack pizza ordering platform with a React/Vite client, FastAPI backend, SQL persistence, and ordering workflows.',
     technologies: [
-      'FULL-STACK',
-      'AUTHENTICATION',
-      'RBAC',
-      'PAYMENTS',
-      'DATABASE',
-      'ORDER MANAGEMENT',
+      'React',
+      'FastAPI',
+      'SQLAlchemy',
+      'PostgreSQL / SQLite',
+      'OTP Authentication',
+      'Tailwind CSS',
     ],
     architecture: {
       summary:
-        'A decoupled full-stack architecture linking a responsive React front-end to a modular Node.js/Express REST backend with JWT authentication, role-based authorization, Razorpay payments, and order lifecycle tracking in MongoDB.',
+        'A React/Vite client connected to a FastAPI backend with SQL persistence, OTP authentication, and order workflows.',
       pipeline: [
         'CLIENT',
         'API',
