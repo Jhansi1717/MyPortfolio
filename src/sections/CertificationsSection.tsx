@@ -34,7 +34,7 @@ export const CertificationsSection: React.FC = () => {
         <SectionHeading
           indexTag="08 / CERTIFICATIONS"
           title="CERTIFICATIONS"
-          description="Verified accreditations across artificial intelligence, autonomous agent architectures, algorithmic foundations, database systems, and cybersecurity auditing."
+          description="Selected certifications in AI, GenAI, programming, databases, and cybersecurity."
         />
 
         {/* Featured Primary Accreditation */}
@@ -61,7 +61,7 @@ export const CertificationsSection: React.FC = () => {
               </span>
             </div>
             <span className="font-mono text-[10px] text-[#888175] uppercase hidden sm:inline-block">
-              SELECT A CERTIFICATION TO VIEW DETAILS
+              CLICK TO VIEW DETAILS
             </span>
           </div>
 
@@ -75,17 +75,6 @@ export const CertificationsSection: React.FC = () => {
               />
             ))}
           </div>
-        </div>
-
-        {/* Certification information note */}
-        <div className="p-4 rounded-xs bg-[#11100C] border border-[#201F19] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono text-[#68645C]">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-            <span>
-              Certification details are presented as recorded by the issuing organizations.
-            </span>
-          </div>
-          <span className="text-[#888175] shrink-0">CERTIFICATION RECORD</span>
         </div>
 
         {/* Certificate Detail Inspection Modal */}
