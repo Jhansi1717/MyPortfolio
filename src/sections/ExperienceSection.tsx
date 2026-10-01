@@ -14,19 +14,19 @@ const verifiedContributions: ContributionItem[] = [
     number: '01',
     heading: 'DATA PREPROCESSING',
     description:
-      'Designed and implemented data preprocessing pipelines for machine learning workflows.',
+      'Built preprocessing pipelines for machine learning workflows.',
   },
   {
     number: '02',
     heading: 'DATA ANALYSIS',
     description:
-      'Developed exploratory data analysis scripts to evaluate data quality and feature distributions.',
+      'Used EDA to assess data quality and feature distributions.',
   },
   {
     number: '03',
     heading: 'MODEL INTEGRATION',
     description:
-      'Collaborated with engineering teams to integrate machine learning models into staging environments.',
+      'Helped integrate machine learning models into staging environments.',
   },
 ];
 
@@ -154,7 +154,7 @@ export const ExperienceSection: React.FC = () => {
                   transition={{ duration: 0.4, delay: 0.12, ease: easeCurve }}
                   className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-[#6E6A62] font-semibold mb-2"
                 >
-                  01 / CAREER MILESTONE
+                  EXPERIENCE
                 </motion.div>
 
                 {/* Date: 15 JUL 2026 — 14 JAN 2027 (IBM Plex Mono) */}
@@ -167,11 +167,7 @@ export const ExperienceSection: React.FC = () => {
                 >
                   <span className="lg:hidden">15 JUL 2026 — 14 JAN 2027</span>
                   <span className="hidden lg:block">
-                    15 JUL 2026
-                    <br />
-                    <span className="text-[#D49A46]">—</span>
-                    <br />
-                    14 JAN 2027
+                    15 JUL 2026 — 14 JAN 2027
                   </span>
                 </motion.div>
 
@@ -183,9 +179,7 @@ export const ExperienceSection: React.FC = () => {
                   transition={{ duration: 0.5, delay: 0.25, ease: easeCurve }}
                 >
                   <h3 className="font-display text-2xl sm:text-3xl lg:text-[2.25rem] xl:text-[2.5rem] font-bold text-[#F2EBDD] uppercase leading-[1.08] tracking-tight">
-                    DATA SCIENCE
-                    <br />
-                    INTERN
+                    DATA SCIENCE INTERN
                   </h3>
                 </motion.div>
 
@@ -236,7 +230,7 @@ export const ExperienceSection: React.FC = () => {
               className="mb-8 pb-7 border-b border-[#22201A]"
             >
               <div className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.10em] text-[#6E6A62] font-semibold mb-3">
-                PROFESSIONAL EXPERIENCE
+                ROLE SUMMARY
               </div>
               <p className="font-body text-base sm:text-lg text-[#AAA398] font-normal leading-[1.65] max-w-2xl">
                 {data.scopeNote}
