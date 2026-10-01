@@ -117,14 +117,14 @@ export const ProjectVisualStack: React.FC<ProjectVisualStackProps> = ({
               XAI ATTRIBUTION
             </span>
             <span className="font-mono text-[8px] sm:text-[9px] text-[#D49A46] font-bold">
-              GRAD-CAM 94.2%
+              4-CLASS MODEL
             </span>
           </div>
           <div className="h-1 w-full bg-[#201F19] rounded-full overflow-hidden mb-2">
             <div className="h-full bg-[#D49A46] w-[94.2%]" />
           </div>
           <p className="font-mono text-[8px] sm:text-[9px] text-[#787368] leading-tight">
-            Localized adventitious sound regions identified on spectrogram
+            normal · crackle · wheeze · mixed
           </p>
         </motion.div>
 
@@ -163,7 +163,7 @@ export const ProjectVisualStack: React.FC<ProjectVisualStackProps> = ({
             </span>
           </div>
           <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-widest text-[#55524B]">
-            REACT · EXPRESS · MONGODB
+            REACT · FASTAPI · SQL
           </span>
         </div>
 
@@ -194,10 +194,10 @@ export const ProjectVisualStack: React.FC<ProjectVisualStackProps> = ({
             {/* Architecture Node 2: REST Gateway & Auth / RBAC */}
             <rect x="128" y="16" width="94" height="54" rx="2" fill="#14130F" stroke="#3D372B" strokeWidth="1" />
             <rect x="128" y="16" width="94" height="12" rx="2" fill="#24211A" />
-            <text x="134" y="25" fill="#F2EBDD" fontSize="7" fontFamily="IBM Plex Mono" fontWeight="600">EXPRESS REST API</text>
-            <text x="134" y="38" fill="#D49A46" fontSize="6.5" fontFamily="IBM Plex Mono">AUTH &amp; RBAC GATE</text>
-            <text x="134" y="49" fill="#AAA398" fontSize="6" fontFamily="IBM Plex Mono">BEARER TOKEN CHECK</text>
-            <text x="134" y="60" fill="#68645C" fontSize="6" fontFamily="IBM Plex Mono">ROLE: USER / ADMIN</text>
+            <text x="134" y="25" fill="#F2EBDD" fontSize="7" fontFamily="IBM Plex Mono" fontWeight="600">FASTAPI SERVICE</text>
+            <text x="134" y="38" fill="#D49A46" fontSize="6.5" fontFamily="IBM Plex Mono">OTP AUTH &amp; API</text>
+            <text x="134" y="49" fill="#AAA398" fontSize="6" fontFamily="IBM Plex Mono">REQUEST VALIDATION</text>
+            <text x="134" y="60" fill="#68645C" fontSize="6" fontFamily="IBM Plex Mono">USER &amp; ORDER FLOW</text>
 
             {/* Path 2: API -> Persistence & Payment */}
             <path d="M 222 36 L 248 28" stroke="#D49A46" strokeWidth="0.85" />
@@ -207,13 +207,13 @@ export const ProjectVisualStack: React.FC<ProjectVisualStackProps> = ({
 
             {/* Architecture Node 3A: MongoDB */}
             <rect x="250" y="14" width="78" height="28" rx="2" fill="#14130F" stroke="#2B2821" strokeWidth="1" />
-            <text x="256" y="24" fill="#D49A46" fontSize="7" fontFamily="IBM Plex Mono" fontWeight="600">MONGODB</text>
+            <text x="256" y="24" fill="#D49A46" fontSize="7" fontFamily="IBM Plex Mono" fontWeight="600">SQL DATABASE</text>
             <text x="256" y="35" fill="#8E887D" fontSize="6" fontFamily="IBM Plex Mono">USERS · ORDERS</text>
 
             {/* Architecture Node 3B: Razorpay Payment Gateway */}
             <rect x="250" y="46" width="78" height="28" rx="2" fill="#14130F" stroke="#2B2821" strokeWidth="1" />
-            <text x="256" y="56" fill="#F2EBDD" fontSize="7" fontFamily="IBM Plex Mono" fontWeight="600">RAZORPAY</text>
-            <text x="256" y="67" fill="#8E887D" fontSize="6" fontFamily="IBM Plex Mono">HMAC SIGNATURE</text>
+            <text x="256" y="56" fill="#F2EBDD" fontSize="7" fontFamily="IBM Plex Mono" fontWeight="600">ORDER SERVICES</text>
+            <text x="256" y="67" fill="#8E887D" fontSize="6" fontFamily="IBM Plex Mono">ORDER · CHAT · RECOMMEND</text>
 
             {/* Bottom Track: Order State Machine Flow */}
             <line x1="16" y1="92" x2="324" y2="92" stroke="#2E2B22" strokeWidth="1" />
@@ -242,8 +242,8 @@ export const ProjectVisualStack: React.FC<ProjectVisualStackProps> = ({
 
         {/* Footer Metadata */}
         <div className="flex items-center justify-between pt-2 border-t border-[#1C1B15] font-mono text-[8px] sm:text-[9px] text-[#68645C]">
-          <span>PIPELINE: CLIENT → API → AUTH/RBAC → DB → PAYMENT → ORDER</span>
-          <span className="text-[#D49A46]">HMAC_SHA256 // VERIFIED</span>
+          <span>PIPELINE: CLIENT → API → OTP/AUTH → DB → ORDER → TRACKING</span>
+          <span className="text-[#D49A46]">FASTAPI // SQL</span>
         </div>
       </motion.div>
 
@@ -261,17 +261,17 @@ export const ProjectVisualStack: React.FC<ProjectVisualStackProps> = ({
       >
         <div className="flex items-center justify-between mb-1.5">
           <span className="font-mono text-[8px] sm:text-[9px] text-[#AAA398] uppercase font-medium tracking-wide">
-            TRANSACTION INTEGRITY
+            ORDER FLOW
           </span>
           <span className="font-mono text-[8px] sm:text-[9px] text-[#D49A46] font-bold">
-            HMAC SHA-256
+            SQLALCHEMY
           </span>
         </div>
         <div className="h-1 w-full bg-[#201F19] rounded-full overflow-hidden mb-2">
           <div className="h-full bg-[#D49A46] w-full" />
         </div>
         <p className="font-mono text-[8px] sm:text-[9px] text-[#787368] leading-tight">
-          Server-side cryptographic signature validation enforces tamper-proof checkout transitions
+          FastAPI services coordinate menu, order, account, and recommendation workflows
         </p>
       </motion.div>
 
