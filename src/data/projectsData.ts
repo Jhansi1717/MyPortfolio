@@ -13,7 +13,7 @@ export const projectsData: Project[] = [
     title: 'AI-Powered Respiratory Screening System',
     category: 'AI / MACHINE LEARNING',
     description:
-      'A respiratory disease screening system combining self-supervised learning, EfficientNet-B0, audio signal processing, explainability and automated reporting.',
+      'AI-assisted respiratory sound screening with bounded audio preprocessing and EfficientNet-B0 inference.',
     technologies: [
       'Python',
       'PyTorch',
@@ -42,13 +42,12 @@ export const projectsData: Project[] = [
     githubUrl: authoritativeProfile.github.repositories.respiratoryScreening,
     liveDemoUrl: 'https://respiratory-ai-frontend.onrender.com',
     caseStudyRoute: '/projects/respiratory-ai',
-    metrics: [
-    ],
+    metrics: null,
     bullets: [
       'Designed and developed a respiratory disease screening system using Self-Supervised Learning and EfficientNet-B0 for lung sound classification.',
       'Implemented audio signal processing, Explainable AI (XAI), and automated reporting for real-time clinical decision support.',
     ],
-    status: 'SYSTEM DESIGNED',
+    status: 'ACTIVE DEVELOPMENT',
     caseStudy: {
       problemStatement:
         'Early pulmonary screening relies on detecting subtle acoustic anomalies—such as adventitious sounds (crackles, wheezes, rhonchi)—in lung auscultation recordings. Traditional diagnostic auscultation requires specialized clinical expertise, can exhibit significant intra-observer variance, and lacks automated objective interpretability at scale.',
