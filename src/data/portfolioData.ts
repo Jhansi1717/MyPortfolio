@@ -180,10 +180,9 @@ export const educationData: EducationItem[] = [
     degree: 'Intermediate (MPC — Mathematics, Physics, Chemistry)',
     period: '2021 – 2023',
     location: 'Hanamkonda, Telangana',
-    cgpaOrGrade: '98.8% (IPE) — 80 Percentile in JEE Main',
+    cgpaOrGrade: '98.8% (IPE)',
     highlights: [
-      'Scored 98.8% distinction in Telangana State Board (IPE).',
-      'Achieved 80 Percentile in JEE Main examination.',
+      'Scored 98.8% in Telangana State Board (IPE).',
     ],
   },
 ];
@@ -309,7 +308,7 @@ export const internshipExperienceData: InternshipExperience = {
   type: 'INDUSTRY INTERNSHIP',
   focusLabels: ['DATA SCIENCE', 'MACHINE LEARNING', 'DATA PROCESSING'],
   scopeNote:
-    'Focused on developing data science pipelines, automated preprocessing workflows, and applied machine learning integration.',
+    'Built data science pipelines, preprocessing workflows, and ML integrations.',
   verificationBadge: 'INDUSTRY INTERNSHIP',
   contributions: [
     'Designed and implemented data preprocessing pipelines for machine learning workflows.',
