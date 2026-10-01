@@ -41,7 +41,7 @@ export const projectsData: Project[] = [
       ],
     },
     githubUrl: authoritativeProfile.github.repositories.respiratoryScreening,
-    liveDemoUrl: null,
+    liveDemoUrl: 'https://respiratory-ai-frontend.onrender.com',
     caseStudyRoute: '/projects/respiratory-ai',
     metrics: [
       { label: "Precision", value: "94.2%" },
@@ -256,7 +256,7 @@ export const projectsData: Project[] = [
       ],
     },
     githubUrl: authoritativeProfile.github.repositories.pizzaOrdering,
-    liveDemoUrl: null,
+    liveDemoUrl: 'https://pizza-ordering-system-sand.vercel.app',
     caseStudyRoute: '/projects/pizza-ordering',
     metrics: null,
     bullets: [
