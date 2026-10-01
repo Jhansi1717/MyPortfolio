@@ -46,7 +46,7 @@ export const ProjectsSection: React.FC = () => {
           <SectionHeading
             indexTag="02 / SELECTED WORK"
             title="SYSTEMS I BUILT"
-            description="A small selection of AI and full-stack systems built from problem definition through implementation."
+            description="Two selected systems across AI/ML and full-stack engineering."
           />
         </motion.div>
 
