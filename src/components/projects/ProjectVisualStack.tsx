@@ -120,9 +120,7 @@ export const ProjectVisualStack: React.FC<ProjectVisualStackProps> = ({
               4-CLASS MODEL
             </span>
           </div>
-          <div className="h-1 w-full bg-[#201F19] rounded-full overflow-hidden mb-2">
-            <div className="h-full bg-[#D49A46] w-[94.2%]" />
-          </div>
+          <div className="h-px w-full bg-[#2A271F] mb-2" aria-hidden="true" />
           <p className="font-mono text-[8px] sm:text-[9px] text-[#787368] leading-tight">
             normal · crackle · wheeze · mixed
           </p>
