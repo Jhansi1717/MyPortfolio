@@ -28,19 +28,19 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   // Verified structured fields matching exact prompt specifications
   const projectHighlights = isRespiratory
     ? [
-        'Browser audio upload/recording with bounded 5-second preprocessing.',
+        'Browser-based audio processing with bounded signal transformation.',
         'PyTorch + timm EfficientNet-B0 inference on Mel spectrograms.',
-        'FastAPI service with JWT auth, confidence output, and PostgreSQL history.',
+        'FastAPI service with confidence scoring and clinical reporting.',
       ]
     : [
-        'React/Vite storefront with menu, cart, login, and order flows.',
-        'FastAPI + SQLAlchemy backend with OTP authentication.',
-        'SQL persistence for orders, subscriptions, and recommendation services.',
+        'React/Vite storefront with menu, cart, and authenticated workflows.',
+        'FastAPI + SQLAlchemy backend with secure OTP phone authentication.',
+        'SQL persistence for orders, subscriptions, and inventory tracking.',
       ];
 
   const stack = isRespiratory
-    ? ['PYTHON', 'PYTORCH', 'TIMM', 'EFFICIENTNET-B0', 'FASTAPI', 'POSTGRESQL']
-    : ['REACT', 'FASTAPI', 'SQLALCHEMY', 'POSTGRESQL / SQLITE', 'OTP AUTH', 'TAILWIND'];
+    ? ['PYTHON', 'PYTORCH', 'TIMM', 'EFFICIENTNET-B0', 'FASTAPI']
+    : ['REACT', 'FASTAPI', 'SQLALCHEMY', 'POSTGRESQL / SQLITE', 'OTP AUTH'];
 
   const handleCardClick = () => {
     if (typeof window !== 'undefined' && window.innerWidth < 1024) {
@@ -275,7 +275,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 ))}
               </div>
 
-              {/* Live deployment proof */}}
+              {/* Live deployment proof */}
               {project.liveDemoUrl && (
                 <div className="w-full sm:w-auto sm:mr-auto flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.10em] text-[#68645C]">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />

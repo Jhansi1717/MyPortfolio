@@ -113,55 +113,28 @@ export const AboutSection: React.FC = () => {
               </div>
 
               {/* Heading: Hi, I’m Jhansi Bhukya. */}
-              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-[#F2EBDD] leading-[1.1] mb-4">
-                Hi, I’m{' '}
-                <span className="text-[#D49A46]">Jhansi Bhukya.</span>
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-[#F2EBDD] leading-[1.1] mb-8">
+                Hi, I’m <span className="text-[#D49A46]">Jhansi Bhukya.</span>
               </h2>
 
-              {/* Subtitle Identity */}
-              <div className="font-mono text-xs sm:text-sm tracking-[0.08em] text-[#AAA398] uppercase mb-8 font-medium">
-                AI / ML ENGINEER
-              </div>
-
               {/* Concise Personal Narrative */}
-              <div className="space-y-5 max-w-2xl border-l border-[#292720] pl-6 sm:pl-8">
+              <div className="space-y-6 max-w-2xl border-l border-[#292720] pl-6 sm:pl-8">
                 <p className="font-body text-base sm:text-lg text-[#DCD6CA] font-normal leading-relaxed">
-                  I build software at the intersection of applied machine learning and reliable system architecture. Rather than treating models as isolated experiments, I design end-to-end workflows where data preprocessing, model inference, and client interfaces reinforce each other.
+                  I build software at the intersection of applied machine learning and reliable system architecture. I design end-to-end workflows where data preprocessing, model inference, and user-facing applications work together.
                 </p>
 
-                <p className="font-body text-sm sm:text-base text-[#AAA398] leading-relaxed font-normal">
-                  Based in Hyderabad, India, I enjoy solving problems that demand precision — from analyzing respiratory acoustic signals through spectrograms to architecting authenticated full-stack applications.
-                </p>
-
-                <p className="font-body text-sm sm:text-base text-[#8E887D] leading-relaxed font-normal">
-                  When I am not writing code or reading model architecture papers, I invest time into core data structures, algorithmic challenges, and exploring scalable software patterns.
+                <p className="font-body text-base sm:text-lg text-[#DCD6CA] font-normal leading-relaxed">
+                  Based in Hyderabad, I work across machine learning, computer vision, and full-stack engineering, with a focus on turning models into usable software.
                 </p>
               </div>
 
-              {/* Core Philosophy Highlights */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10 pt-8 border-t border-[#292720] max-w-2xl">
-                <div className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#D49A46] mt-2 shrink-0" aria-hidden="true" />
-                  <div>
-                    <div className="font-mono text-xs font-bold text-[#F2EBDD] uppercase tracking-wider">
-                      SYSTEMS-FIRST MINDSET
-                    </div>
-                    <p className="font-body text-xs text-[#8E887D] mt-1 leading-normal">
-                      Every model requires scalable pipelines, testing, and responsive interfaces to provide true utility.
-                    </p>
-                  </div>
+              {/* Focus Strip */}
+              <div className="mt-10 pt-8 border-t border-[#292720] max-w-2xl">
+                <div className="font-mono text-[11px] text-[#8E887D] uppercase tracking-[0.12em] font-semibold mb-3">
+                  FOCUS
                 </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#D49A46] mt-2 shrink-0" aria-hidden="true" />
-                  <div>
-                    <div className="font-mono text-xs font-bold text-[#F2EBDD] uppercase tracking-wider">
-                      CLEAR EXPLAINABILITY
-                    </div>
-                    <p className="font-body text-xs text-[#8E887D] mt-1 leading-normal">
-                      Deep learning decisions should be transparent, verifiable, and backed by attribution tools.
-                    </p>
-                  </div>
+                <div className="font-mono text-sm text-[#F2EBDD] tracking-[0.04em]">
+                  MACHINE LEARNING · COMPUTER VISION · AI SYSTEMS · FULL-STACK ENGINEERING
                 </div>
               </div>
 

@@ -20,7 +20,6 @@ export const projectsData: Project[] = [
       'timm',
       'EfficientNet-B0',
       'FastAPI',
-      'PostgreSQL',
     ],
     architecture: {
       summary:
