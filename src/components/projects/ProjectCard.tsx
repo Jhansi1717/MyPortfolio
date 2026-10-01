@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowUpRight, Github, ExternalLink } from 'lucide-react';
 import { Project } from '../../types/project';
-import { ArchitecturePreview } from './ArchitecturePreview';
 import { ProjectVisualStack } from './ProjectVisualStack';
 
 export interface ProjectCardProps {
@@ -27,39 +26,21 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const isRespiratory = project.id === 'respiratory-ai';
 
   // Verified structured fields matching exact prompt specifications
-  const structuredFields = isRespiratory
-    ? {
-        problem:
-          'Early pulmonary screening relies on detecting subtle acoustic anomalies (crackles, wheezes) in lung auscultation; traditional manual stethoscopy has high intra-observer variance and lacks objective interpretability at scale.',
-        approach:
-          'Converts acoustic lung audio into Log-Mel spectrograms, processed via Self-Supervised Learning representation models coupled with an EfficientNet-B0 convolutional neural network backbone.',
-        engineering:
-          'End-to-end signal processing with bandpass filtering and windowed STFT, paired with Grad-CAM visual saliency heatmaps for clinical attribution and automated diagnostic report synthesis.',
-        stack: [
-          'Python',
-          'TensorFlow',
-          'EfficientNet-B0',
-          'Self-Supervised Learning',
-          'Audio Signal Processing',
-          'Explainable AI (XAI)',
-        ],
-      }
-    : {
-        problem:
-          'Food ordering platforms require reliable coordination across shopping cart state, inventory validation, authenticated payments, and order fulfillment.',
-        approach:
-          'Responsive React client → Node.js / Express REST backend → JWT authentication → role-based authorization → MongoDB persistence.',
-        engineering:
-          'JWT authentication, Role-Based Access Control, Razorpay payment integration, shopping cart management, inventory handling, and order lifecycle tracking.',
-        stack: [
-          'FULL-STACK',
-          'AUTHENTICATION',
-          'RBAC',
-          'PAYMENTS',
-          'DATABASE',
-          'ORDER MANAGEMENT',
-        ],
-      };
+  const projectHighlights = isRespiratory
+    ? [
+        'Browser audio upload/recording with bounded 5-second preprocessing.',
+        'PyTorch + timm EfficientNet-B0 inference on Mel spectrograms.',
+        'FastAPI service with JWT auth, confidence output, and PostgreSQL history.',
+      ]
+    : [
+        'React/Vite storefront with menu, cart, login, and order flows.',
+        'FastAPI + SQLAlchemy backend with OTP authentication.',
+        'SQL persistence for orders, subscriptions, and recommendation services.',
+      ];
+
+  const stack = isRespiratory
+    ? ['PYTHON', 'PYTORCH', 'TIMM', 'EFFICIENTNET-B0', 'FASTAPI', 'POSTGRESQL']
+    : ['REACT', 'FASTAPI', 'SQLALCHEMY', 'POSTGRESQL / SQLITE', 'OTP AUTH', 'TAILWIND'];
 
   const handleCardClick = () => {
     if (typeof window !== 'undefined' && window.innerWidth < 1024) {
@@ -117,24 +98,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     visible: {
       opacity: 1,
       transition: { duration: 0.55, ease: easeCurve },
-    },
-  };
-
-  const problemVariants = {
-    hidden: shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.55, ease: easeCurve },
-    },
-  };
-
-  const architectureVariants = {
-    hidden: shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: easeCurve },
     },
   };
 
@@ -275,73 +238,44 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               </motion.p>
             </div>
 
-            {/* Short Structured Story: THE PROBLEM / APPROACH / ENGINEERING */}
+            {/* Concise engineering signal */}
             <motion.div
-              variants={problemVariants}
-              className="space-y-3.5 mb-6 pt-5 pb-6 border-y border-[#201F19]"
+              variants={technologyVariants}
+              className="pt-4 pb-5 border-y border-[#201F19]"
             >
-              {/* The Problem */}
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-1 sm:gap-4 items-baseline">
-                <span className="sm:col-span-3 font-mono text-[10px] uppercase tracking-[0.10em] text-[#8E887D] font-medium">
-                  THE PROBLEM
-                </span>
-                <p className="sm:col-span-9 font-body text-xs sm:text-[13px] text-[#C2BCB0] leading-relaxed">
-                  {structuredFields.problem}
-                </p>
+              <div className="font-mono text-[10px] uppercase tracking-[0.10em] text-[#D49A46] font-semibold mb-3">
+                KEY ENGINEERING
               </div>
-
-              {/* Approach */}
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-1 sm:gap-4 items-baseline">
-                <span className="sm:col-span-3 font-mono text-[10px] uppercase tracking-[0.10em] text-[#D49A46] font-medium">
-                  APPROACH
-                </span>
-                <p className="sm:col-span-9 font-body text-xs sm:text-[13px] text-[#C2BCB0] leading-relaxed">
-                  {structuredFields.approach}
-                </p>
-              </div>
-
-              {/* Engineering */}
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-1 sm:gap-4 items-baseline">
-                <span className="sm:col-span-3 font-mono text-[10px] uppercase tracking-[0.10em] text-[#8E887D] font-medium">
-                  ENGINEERING
-                </span>
-                <p className="sm:col-span-9 font-body text-xs sm:text-[13px] text-[#C2BCB0] leading-relaxed">
-                  {structuredFields.engineering}
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Interactive Architecture Pipeline Trace */}
-            <motion.div variants={architectureVariants} className="mb-6">
-              <ArchitecturePreview
-                architecture={project.architecture}
-                projectNumber={project.number}
-                isCardHovered={isHovered}
-                isMobileActive={isMobileActive}
-              />
+              <ul className="space-y-2.5">
+                {projectHighlights.map((highlight) => (
+                  <li key={highlight} className="flex items-start gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46] mt-2 shrink-0" aria-hidden="true" />
+                    <span className="font-body text-xs sm:text-[13px] text-[#C2BCB0] leading-relaxed">
+                      {highlight}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </motion.div>
 
             {/* Action Footer: Technical Tags + Links */}
             <motion.div
               variants={technologyVariants}
-              className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 pt-2"
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2"
             >
-              {/* Compact Technical Metadata Tags */}
+              {/* Compact technical stack */}
               <div className="flex flex-wrap gap-1.5 items-center">
-                <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#68645C] mr-1">
-                  STACK:
-                </span>
-                {structuredFields.stack.map((tech) => (
+                {stack.map((tech) => (
                   <span
                     key={tech}
-                    className="font-mono text-[10px] uppercase tracking-[0.06em] text-[#8E887D] px-2 py-0.5 border border-[#24221C] rounded-xs bg-[#11110E]"
+                    className="font-mono text-[9px] uppercase tracking-[0.06em] text-[#8E887D] px-2 py-1 border border-[#24221C] rounded-xs bg-[#11110E]"
                   >
                     {tech}
                   </span>
                 ))}
               </div>
 
-              {/* Live deployment proof */}
+              {/* Live deployment proof */
               {project.liveDemoUrl && (
                 <div className="w-full sm:w-auto sm:mr-auto flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.10em] text-[#68645C]">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
