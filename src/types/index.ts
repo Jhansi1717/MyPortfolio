@@ -1,6 +1,6 @@
 /**
  * Core Data Models & TypeScript Types
- * Grounded strictly in the resume source of truth
+ * Grounded strictly in resume data
  */
 
 export * from './project';

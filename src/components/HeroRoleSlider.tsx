@@ -39,14 +39,14 @@ export const HeroRoleSlider: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -6 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="font-mono text-[11px] sm:text-xs tracking-[0.05em] text-[#6E6A62] uppercase font-normal flex items-center"
+            className="font-mono text-[11px] sm:text-xs tracking-[0.05em] text-[#AAA398] uppercase font-normal flex items-center"
           >
             {currentRole.article}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <div className="relative h-[1.2em] flex items-center overflow-hidden justify-center lg:justify-start w-full">
+      <div className="relative h-[75px] sm:h-[95px] md:h-[115px] lg:h-[120px] xl:h-[135px] flex items-center overflow-hidden justify-center lg:justify-start w-full">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={`title-${roleIndex}`}

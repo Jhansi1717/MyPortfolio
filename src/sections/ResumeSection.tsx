@@ -122,7 +122,7 @@ export const ResumeSection: React.FC = () => {
             <div className="flex-1 text-center sm:text-left">
               <div className="inline-flex items-center gap-1.5 mb-1 font-mono text-[10px] uppercase tracking-wider text-[#68645C]">
                 <CheckCircle2 className="w-3 h-3 text-[#D49A46]" />
-                <span>CANONICAL RESUME RECORD</span>
+                <span>RESUME</span>
               </div>
               <h3 className="font-display text-xl sm:text-2xl font-bold uppercase text-[#F2EBDD] tracking-tight">
                 JHANSI BHUKYA

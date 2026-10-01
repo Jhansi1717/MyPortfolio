@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 export const CustomCursor: React.FC = () => {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
   const [isInteractive, setIsInteractive] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
 
   const requestRef = useRef<number | null>(null);
   const targetPos = useRef({ x: -100, y: -100 });
@@ -48,17 +50,21 @@ export const CustomCursor: React.FC = () => {
     document.addEventListener('mouseenter', handleMouseEnter);
     document.addEventListener('mouseleave', handleMouseLeave);
 
-    // Smooth lerp frame loop
+    // High performance RAF loop modifying DOM styles directly without React re-renders
     const animate = () => {
-      // Small lerp factor for expensive, subtle tracking
       const ease = 0.35;
       currentPos.current.x += (targetPos.current.x - currentPos.current.x) * ease;
       currentPos.current.y += (targetPos.current.y - currentPos.current.y) * ease;
 
-      setPosition({
-        x: Math.round(currentPos.current.x * 10) / 10,
-        y: Math.round(currentPos.current.y * 10) / 10,
-      });
+      const px = Math.round(currentPos.current.x * 10) / 10;
+      const py = Math.round(currentPos.current.y * 10) / 10;
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${px}px, ${py}px, 0) translate(-50%, -50%)`;
+      }
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${px}px, ${py}px, 0) translate(-50%, -50%)`;
+      }
 
       requestRef.current = requestAnimationFrame(animate);
     };
@@ -86,20 +92,20 @@ export const CustomCursor: React.FC = () => {
     >
       {/* Small dot (center origin) */}
       <div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-[#E5BA70] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150"
+        ref={dotRef}
+        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-[#E5BA70] transition-opacity duration-150"
         style={{
-          transform: `translate3d(${position.x}px, ${position.y}px, 0) translate(-50%, -50%) scale(${isInteractive ? 0 : 1})`,
           opacity: isVisible ? (isInteractive ? 0 : 0.9) : 0,
         }}
       />
 
       {/* Subtle expanded ring when hovering interactive elements */}
       <div
-        className="fixed top-0 left-0 rounded-full border border-[#D49A46]/70 bg-[#D49A46]/10 -translate-x-1/2 -translate-y-1/2 transition-all duration-200 ease-out"
+        ref={ringRef}
+        className="fixed top-0 left-0 rounded-full border border-[#D49A46]/70 bg-[#D49A46]/10 transition-all duration-200 ease-out"
         style={{
           width: isInteractive ? '36px' : '0px',
           height: isInteractive ? '36px' : '0px',
-          transform: `translate3d(${position.x}px, ${position.y}px, 0) translate(-50%, -50%) scale(${isInteractive ? 1 : 0.5})`,
           opacity: isInteractive ? 1 : 0,
         }}
       />

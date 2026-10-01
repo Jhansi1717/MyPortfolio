@@ -207,31 +207,22 @@ export const AskJhansi: React.FC = () => {
 
   return (
     <>
-      {/* Floating Launcher Button */}
-      <div className="fixed bottom-6 right-6 z-40">
+      {/* Discreet, Professional AI Assistant Trigger */}
+      <div className="fixed bottom-5 right-5 z-30">
         <motion.button
           id="ask-jhansi-trigger"
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.96 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={() => setIsOpen((prev) => !prev)}
-          className={`flex items-center gap-2.5 px-4 py-3 rounded-full text-xs font-mono font-medium tracking-wider uppercase transition-all duration-300 shadow-xl border cursor-pointer ${
+          className={`flex items-center gap-2 px-3 py-2 sm:px-3.5 sm:py-2 rounded-xs text-xs font-mono font-medium tracking-wider uppercase transition-colors duration-200 shadow-lg border cursor-pointer ${
             isOpen
-              ? 'bg-[#E5BA70] text-[#090907] border-[#E5BA70] shadow-[#E5BA70]/20'
-              : 'bg-[#14130F] text-[#F2EBDD] border-[#38352A] hover:border-[#D49A46] hover:text-[#E5BA70] shadow-black/80'
+              ? 'bg-[#E5BA70] text-[#090907] border-[#E5BA70]'
+              : 'bg-[#14130F]/90 backdrop-blur-xs text-[#AAA398] hover:text-[#F2EBDD] border-[#292720] hover:border-[#D49A46]'
           }`}
           aria-label="Open Jhansi AI Portfolio Assistant"
         >
-          <div className="relative flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-[#D49A46]" />
-            <span className="absolute -top-1 -right-1 flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]"></span>
-            </span>
-          </div>
-          <div className="flex flex-col items-start leading-tight">
-            <span className="font-bold">JHANSI AI</span>
-            <span className="text-[9px] text-[#A39E93] tracking-normal lowercase font-sans">portfolio assistant</span>
-          </div>
+          <Sparkles className="w-3.5 h-3.5 text-[#D49A46]" />
+          <span className="font-semibold text-[11px]">AI COPILOT</span>
         </motion.button>
       </div>
 
@@ -321,7 +312,7 @@ export const AskJhansi: React.FC = () => {
                       <Bot className="w-6 h-6" />
                     </div>
                     <h3 className="text-sm sm:text-base font-medium text-[#F2EBDD] mb-2 leading-relaxed">
-                      Welcome. I’m Jhansi’s AI portfolio assistant. Ask me about his projects, skills, education, experience, or technical work.
+                      Welcome. I’m Jhansi’s AI portfolio assistant. Ask me about her projects, skills, education, experience, or technical work.
                     </h3>
                     <p className="text-xs text-[#A39E93] max-w-xs mb-6 leading-relaxed">
                       Grounded strictly in verified portfolio data across AI systems, machine learning, and full-stack engineering.

@@ -38,8 +38,8 @@ export const SectionReveal: React.FC<SectionRevealProps> = ({
       },
       {
         root: null,
-        rootMargin: '0px 0px -60px 0px',
-        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.05,
       }
     );
 
@@ -68,10 +68,10 @@ export const SectionReveal: React.FC<SectionRevealProps> = ({
     <div
       ref={domRef}
       className={cn(
-        'transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]',
+        'transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]',
         isVisible
           ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-6 pointer-events-none',
+          : 'opacity-0 translate-y-4',
         className
       )}
       style={{
@@ -81,7 +81,7 @@ export const SectionReveal: React.FC<SectionRevealProps> = ({
       {showLineReveal && (
         <div
           className={cn(
-            'h-px bg-gradient-to-r from-[#D49A46]/60 via-[#292720] to-transparent mb-8 transition-all duration-1000 ease-out origin-left',
+            'h-px bg-gradient-to-r from-[#D49A46]/60 via-[#292720] to-transparent mb-8 transition-all duration-500 ease-out origin-left',
             isVisible ? 'w-full scale-x-100 opacity-100' : 'w-0 scale-x-0 opacity-0'
           )}
           aria-hidden="true"

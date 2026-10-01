@@ -109,35 +109,20 @@ export const SupportingCertificateCard: React.FC<SupportingCertificateCardProps>
           {certification.title}
         </h3>
 
-        {/* NPTEL Score & Period Metadata */}
-        {(certification.score || certification.period) && (
+        {/* Period Metadata */}
+        {certification.period && (
           <div className="p-3 rounded-xs bg-[#11100C] border border-[#201F19] mb-4 flex items-center justify-between gap-3">
-            {certification.score && (
-              <div>
-                <div className="font-mono text-[9px] text-[#888175] uppercase tracking-wider">
-                  CONSOLIDATED SCORE
-                </div>
-                <div className="font-mono text-base font-bold text-[#E5BA70]">
-                  {certification.score}
-                </div>
-              </div>
-            )}
-
-            {certification.period && (
-              <div className="text-right">
-                <div className="font-mono text-[9px] text-[#888175] uppercase tracking-wider">
-                  SESSION
-                </div>
-                <div className="font-mono text-xs font-semibold text-[#DCD6CA]">
-                  {certification.period}
-                </div>
-              </div>
-            )}
+            <div className="font-mono text-[9px] text-[#888175] uppercase tracking-wider">
+              PROGRAM PERIOD
+            </div>
+            <div className="font-mono text-xs font-semibold text-[#DCD6CA]">
+              {certification.period}
+            </div>
           </div>
         )}
 
-        {/* Summary snippet if no score box */}
-        {!certification.score && certification.summary && (
+        {/* Summary snippet */}
+        {certification.summary && (
           <p className="text-xs text-[#AAA398] leading-relaxed line-clamp-2 mb-4 font-light">
             {certification.summary}
           </p>

@@ -1,6 +1,9 @@
 /**
  * Factual Systems Lab Architecture Data
- * Grounded strictly in Jhansi Bhukya's verified resume record
+ * Grounded strictly in Jhansi Bhukya's verified portfolio record
+ * Curated to the two featured systems:
+ * 01. Respiratory AI (Acoustic Perception & Clinical Decision Support)
+ * 02. SliceMind (Full-Stack Pizza Platform & Transactional Fulfillment Engine)
  */
 
 export interface SystemLayerNode {
@@ -10,7 +13,7 @@ export interface SystemLayerNode {
   description: string;
   verifiedApplication: {
     respiratory: string;
-    mentalHealth: string;
+    pizzaPlatform: string;
   };
   technologies: string[];
 }
@@ -47,54 +50,54 @@ export const systemsLabLayers: SystemLayer[] = [
     id: 'DATA',
     number: '01',
     title: 'DATA',
-    subtitle: 'Signal Ingestion & Signal Conditioning',
+    subtitle: 'Signal Ingestion & Data Transformation',
     description:
-      'Ingests raw physical signals or conversational queries, filters noise, transforms waveforms into mathematical matrices, and validates structural integrity before feeding downstream models.',
+      'Ingests raw physical signals or commercial transaction payloads, filters noise, validates schemas, and structures state before downstream processing.',
     color: '#D49A46',
     nodes: [
       {
         id: 'collection',
         name: 'Collection',
         step: '01',
-        description: 'Ingestion of raw physical auscultation audio waveforms or digital conversational user prompts.',
+        description: 'Ingestion of raw physical auscultation waveforms or transactional menu ordering payloads.',
         verifiedApplication: {
           respiratory: 'Raw WAV acoustic recordings gathered via digital stethoscopes and acoustic sensors.',
-          mentalHealth: 'Natural language text queries submitted through client input fields.',
+          pizzaPlatform: 'Client shopping cart mutations and customizable pizza configuration state.',
         },
-        technologies: ['Digital Sensors', 'WAV Files', 'Raw Text Streams'],
+        technologies: ['Digital Sensors', 'WAV Files', 'JSON Payloads'],
       },
       {
         id: 'cleaning',
         name: 'Cleaning',
         step: '02',
-        description: 'Noise attenuation, frequency filtering, and string sanitization eliminating ambient artifacts.',
+        description: 'Noise attenuation, frequency filtering, and request sanitization.',
         verifiedApplication: {
-          respiratory: 'Bandpass filtering (50 Hz - 2000 Hz) to isolate breath sounds and remove cardiac interference.',
-          mentalHealth: 'Input sanitization, whitespace normalization, and character encoding safety checks.',
+          respiratory: 'Bandpass filtering (50 Hz - 2000 Hz) isolating breath sounds from cardiac interference.',
+          pizzaPlatform: 'Server-side request sanitization, item availability checks, and price validation.',
         },
-        technologies: ['NumPy', 'SciPy Bandpass', 'Regex Sanitizers'],
+        technologies: ['NumPy', 'SciPy Bandpass', 'Express Validators'],
       },
       {
         id: 'preprocessing',
         name: 'Preprocessing',
         step: '03',
-        description: 'Transformation of 1D time-series into 2D frequency spectra or tokenized text sequences.',
+        description: 'Transformation of 1D waveforms into 2D spectrograms or transactional state payloads.',
         verifiedApplication: {
           respiratory: 'Short-Time Fourier Transform (STFT) converting sound waves into Log-Mel spectrogram matrices.',
-          mentalHealth: 'Transformer tokenization, subword encoding, and vocabulary index mapping.',
+          pizzaPlatform: 'Order line item aggregation and tax/discount computational preprocessing.',
         },
-        technologies: ['STFT Log-Mel', 'Mel Filterbanks', 'Subword Tokenizers'],
+        technologies: ['STFT Log-Mel', 'Mel Filterbanks', 'Mongoose Schemas'],
       },
       {
         id: 'validation',
         name: 'Validation',
         step: '04',
-        description: 'Verification of tensor dimensions, signal-to-noise thresholds, and schema conformance.',
+        description: 'Verification of tensor dimensions, cryptographic tokens, and schema integrity.',
         verifiedApplication: {
           respiratory: 'Spectrogram dimension shape check and dynamic amplitude range verification.',
-          mentalHealth: 'Prompt sequence length validation and token boundary assertions.',
+          pizzaPlatform: 'HMAC-SHA256 signature verification for payment payloads and JWT validation.',
         },
-        technologies: ['Tensor Dimension Assertions', 'Schema Validators'],
+        technologies: ['Tensor Dimension Assertions', 'HMAC Signatures', 'JWT Token Guards'],
       },
     ],
   },
@@ -102,54 +105,54 @@ export const systemsLabLayers: SystemLayer[] = [
     id: 'MODEL',
     number: '02',
     title: 'MODEL',
-    subtitle: 'Neural Representation, Inference & Explainability',
+    subtitle: 'Representation, Inference & State Machines',
     description:
-      'Extracts hierarchical acoustic patterns and deep semantic representations using deep convolutional or transformer backbones, followed by visual interpretability attribution.',
+      'Extracts hierarchical acoustic representations via deep convolutional networks or executes deterministic business state transitions.',
     color: '#E5BA70',
     nodes: [
       {
         id: 'training',
-        name: 'Training',
+        name: 'Architecture',
         step: '01',
-        description: 'Model optimization using Self-Supervised Learning representation pre-training and supervised fine-tuning.',
+        description: 'Deep neural backbone pre-training or deterministic fulfillment state machine setup.',
         verifiedApplication: {
-          respiratory: 'Self-Supervised Learning (SSL) on unannotated acoustic data followed by EfficientNet-B0 fine-tuning.',
-          mentalHealth: 'Transformer language model training and domain-specific QA dataset alignment.',
+          respiratory: 'Self-Supervised Learning (SSL) on acoustic data coupled with EfficientNet-B0 backbone.',
+          pizzaPlatform: '5-stage deterministic order fulfillment state machine (Placed → Delivered).',
         },
-        technologies: ['TensorFlow', 'Self-Supervised Learning', 'Transformers'],
+        technologies: ['TensorFlow', 'EfficientNet-B0', 'Fulfillment State Machine'],
       },
       {
         id: 'evaluation',
         name: 'Evaluation',
         step: '02',
-        description: 'Validation against cross-entropy loss, class convergence, and multi-turn response coherence.',
+        description: 'Loss monitoring, categorical class convergence, and permission integrity checks.',
         verifiedApplication: {
           respiratory: 'Categorical cross-entropy monitoring and lung sound anomaly discrimination metrics.',
-          mentalHealth: 'Validation loss tracking, perplexity checks, and conversational relevance checks.',
+          pizzaPlatform: 'Role-Based Access Control (RBAC) middleware verifying customer vs admin routes.',
         },
-        technologies: ['Validation Loss', 'Categorical Cross-Entropy', 'Evaluation Scripts'],
+        technologies: ['Categorical Cross-Entropy', 'RBAC Middleware', 'Evaluation Scripts'],
       },
       {
         id: 'inference',
-        name: 'Inference',
+        name: 'Execution',
         step: '03',
-        description: 'Low-latency forward propagation computing probabilistic class distributions or attention weights.',
+        description: 'Low-latency forward propagation or atomic order state progression.',
         verifiedApplication: {
-          respiratory: 'EfficientNet-B0 forward pass outputting probabilities for normal, crackles, wheezes, or combined.',
-          mentalHealth: 'Transformer multi-head attention forward pass generating context-aware semantic embeddings.',
+          respiratory: 'EfficientNet-B0 forward pass outputting probabilities for adventitious sounds.',
+          pizzaPlatform: 'Atomic database transaction updates advancing order status in real time.',
         },
-        technologies: ['EfficientNet-B0', 'Softmax Heads', 'Attention Layers'],
+        technologies: ['EfficientNet-B0', 'Softmax Heads', 'Atomic Transactions'],
       },
       {
         id: 'explainability',
-        name: 'Explainability',
+        name: 'Attribution',
         step: '04',
-        description: 'Explainable AI (XAI) computing visual gradient attribution and attention saliency heatmaps.',
+        description: 'Explainable AI visual saliency mapping or cryptographic audit verification.',
         verifiedApplication: {
-          respiratory: 'Grad-CAM visual overlays on spectrograms pinpointing exact time-frequency wheeze regions.',
-          mentalHealth: 'Attention weight inspection displaying token importance for generated answers.',
+          respiratory: 'Grad-CAM visual overlays on spectrograms pinpointing exact time-frequency anomalies.',
+          pizzaPlatform: 'Cryptographic receipt generation and payment verification audit logging.',
         },
-        technologies: ['Explainable AI (XAI)', 'Grad-CAM', 'Saliency Mapping'],
+        technologies: ['Grad-CAM XAI', 'Saliency Heatmaps', 'Audit Logs'],
       },
     ],
   },
@@ -159,52 +162,52 @@ export const systemsLabLayers: SystemLayer[] = [
     title: 'SYSTEM',
     subtitle: 'Full-Stack Integration, Middleware & Persistence',
     description:
-      'Encapsulates neural models within scalable software services, orchestrating requests through RESTful API gateways, backend controllers, and persistent document databases.',
+      'Encapsulates neural models and business services within scalable software architectures, RESTful API gateways, and MongoDB persistence.',
     color: '#D49A46',
     nodes: [
       {
         id: 'frontend',
         name: 'Frontend',
         step: '01',
-        description: 'Client user interfaces providing interactive workflows, visual attribution inspection, and query input.',
+        description: 'Client user interfaces providing interactive workflows and live state management.',
         verifiedApplication: {
           respiratory: 'Interactive web-based clinical screening console rendering spectrograms and XAI heatmaps.',
-          mentalHealth: 'Responsive React.js conversational question-answering application.',
+          pizzaPlatform: 'Responsive React.js e-commerce catalog with live cart Context and checkout.',
         },
-        technologies: ['React.js', 'Tailwind CSS', 'Responsive UI'],
+        technologies: ['React.js', 'Tailwind CSS', 'React Context API'],
       },
       {
         id: 'api',
-        name: 'API',
+        name: 'API Gateway',
         step: '02',
-        description: 'Stateless RESTful gateway mediating client requests, serialization, and model dispatch.',
+        description: 'Stateless RESTful gateway mediating client requests and model/payment dispatch.',
         verifiedApplication: {
-          respiratory: 'REST endpoints receiving audio payloads and returning structured inference and XAI data.',
-          mentalHealth: 'RESTful API gateway routing questions to inference workers and returning answers.',
+          respiratory: 'REST endpoints receiving audio payloads and returning structured classification reports.',
+          pizzaPlatform: 'RESTful API controllers routing authentication, order creation, and payment verification.',
         },
-        technologies: ['RESTful APIs', 'Express / Flask', 'JSON Payloads'],
+        technologies: ['RESTful APIs', 'Express.js', 'JSON Payloads'],
       },
       {
         id: 'backend',
         name: 'Backend',
         step: '03',
-        description: 'Server runtime coordinating conversational analytics, authorization, and background jobs.',
+        description: 'Server runtime coordinating authentication, payment webhooks, and background processing.',
         verifiedApplication: {
           respiratory: 'Python backend orchestrating audio signal processing libraries and TensorFlow model runs.',
-          mentalHealth: 'Node.js & Python backend running conversational analytics and response filters.',
+          pizzaPlatform: 'Node.js & Express server managing JWT authentication, bcrypt hashing, and Razorpay.',
         },
-        technologies: ['Node.js', 'Python Runtimes', 'Conversational Analytics'],
+        technologies: ['Node.js', 'Python Runtimes', 'bcrypt', 'Razorpay SDK'],
       },
       {
         id: 'database',
         name: 'Database',
         step: '04',
-        description: 'Persistent document store saving session records, analytical telemetry, and metadata.',
+        description: 'Persistent document store saving session records, transaction logs, and schemas.',
         verifiedApplication: {
           respiratory: 'Record storage indexing screening runs, patient session IDs, and output report logs.',
-          mentalHealth: 'MongoDB document database persisting query histories, sessions, and analytics.',
+          pizzaPlatform: 'MongoDB document database persisting orders, users, products, and receipts.',
         },
-        technologies: ['MongoDB', 'NoSQL Document Store', 'JSON Schemas'],
+        technologies: ['MongoDB', 'Mongoose ODM', 'JSON Schemas'],
       },
     ],
   },
@@ -212,65 +215,65 @@ export const systemsLabLayers: SystemLayer[] = [
     id: 'PRODUCT',
     number: '04',
     title: 'PRODUCT',
-    subtitle: 'User Interaction, Decision Support & Real-World Utility',
+    subtitle: 'User Interaction, Decision Support & Commercial Utility',
     description:
-      'Translates raw engineering computations into accessible human-centric tools that provide actionable decision support and clinical utility.',
+      'Translates engineering computations into accessible human-centric software providing real-world utility.',
     color: '#E5BA70',
     nodes: [
       {
         id: 'user',
         name: 'User',
         step: '01',
-        description: 'Primary human stakeholder interacting with the deployed intelligent system.',
+        description: 'Primary human stakeholder interacting with the deployed application.',
         verifiedApplication: {
           respiratory: 'Clinical healthcare practitioner conducting patient pulmonary screening auscultations.',
-          mentalHealth: 'End user seeking context-aware mental health and wellness information.',
+          pizzaPlatform: 'Online customer placing custom pizza orders or administrator tracking orders.',
         },
-        technologies: ['Physician / Clinician', 'End User / Seeker'],
+        technologies: ['Physician / Clinician', 'Customer / Admin'],
       },
       {
         id: 'interface',
         name: 'Interface',
         step: '02',
-        description: 'Touchpoint for uploading acoustic audio or submitting multi-turn text dialogues.',
+        description: 'Touchpoint for uploading acoustic audio or completing multi-item checkout.',
         verifiedApplication: {
           respiratory: 'Screening intake dashboard with audio playback and waveform visualizer.',
-          mentalHealth: 'Dialogue interface with instant message rendering and session history.',
+          pizzaPlatform: 'Interactive menu catalog with dynamic topping builder and live order tracker.',
         },
-        technologies: ['Screening Dashboard', 'Conversational View'],
+        technologies: ['Screening Dashboard', 'E-Commerce Catalog'],
       },
       {
         id: 'inference-prod',
-        name: 'Inference',
+        name: 'Execution',
         step: '03',
-        description: 'Seamless background execution without stalling human workflow.',
+        description: 'Seamless execution without stalling user workflow.',
         verifiedApplication: {
           respiratory: 'Asynchronous model inference processing audio in seconds without blocking clinic UI.',
-          mentalHealth: 'Sub-second transformer inference generating empathetic, context-aware answers.',
+          pizzaPlatform: 'Real-time payment handshake and automated order fulfillment progression.',
         },
-        technologies: ['Real-Time Inference', 'Async Pipeline'],
+        technologies: ['Async Pipeline', 'Payment Handshake'],
       },
       {
         id: 'result',
         name: 'Result',
         step: '04',
-        description: 'Clear, transparent presentation of predictive outcome and visual justification.',
+        description: 'Clear, transparent presentation of predictive outcome or fulfillment receipt.',
         verifiedApplication: {
           respiratory: 'Screening classification score accompanied by visual Grad-CAM attribution heatmap.',
-          mentalHealth: 'Verified context-aware guidance with relevant informational sources.',
+          pizzaPlatform: 'Verified payment confirmation receipt and real-time order tracking stage.',
         },
-        technologies: ['Classification Score', 'Grad-CAM Heatmap', 'Answer Text'],
+        technologies: ['Classification Score', 'Grad-CAM Heatmap', 'Digital Receipt'],
       },
       {
         id: 'action',
         name: 'Action',
         step: '05',
-        description: 'Real-world clinical decision support or conversational follow-up execution.',
+        description: 'Real-world clinical decision support or delivery execution.',
         verifiedApplication: {
           respiratory: 'Automated clinical report synthesis assisting referral and diagnostic follow-up.',
-          mentalHealth: 'Longitudinal dialogue session logged in MongoDB for continuous tracking.',
+          pizzaPlatform: 'Kitchen preparation handoff and synchronized delivery fulfillment.',
         },
-        technologies: ['Automated Clinical Report', 'Longitudinal Session Record'],
+        technologies: ['Automated Clinical Report', 'Kitchen Fulfillment Machine'],
       },
     ],
   },
@@ -320,44 +323,44 @@ export const concreteProjectExamples: ConcreteProjectExample[] = [
     ],
   },
   {
-    id: 'mental-health-qa',
-    title: 'Mental Health QA',
-    category: 'NLP / TRANSFORMERS / FULL STACK',
-    flow: ['Query', 'Retrieval/Processing', 'Response', 'MongoDB'],
+    id: 'slicemind-platform',
+    title: 'SliceMind Pizza Platform',
+    category: 'FULL-STACK SOFTWARE ENGINEERING / MERN',
+    flow: ['Cart UI', 'Auth & RBAC', 'Razorpay HMAC', 'MongoDB & State Machine'],
     description:
-      'Processes natural language user questions through transformer representations and REST APIs, persisting conversational analytics in MongoDB.',
+      'Full-stack MERN food platform with stateless JWT authentication, cryptographic Razorpay payment verification, and 5-stage order fulfillment.',
     traceSteps: [
       {
-        label: 'Query',
+        label: 'Cart UI',
         layer: 'DATA',
         nodeRef: 'collection',
         detail:
-          'User submits natural language question through the responsive React client interface with session identification.',
-        technicalArtifact: 'Sanitized Natural Language Prompt',
+          'User configures custom pizza toppings and submits shopping cart items through the responsive React client.',
+        technicalArtifact: 'Dynamic Cart State & Pricing Context',
       },
       {
-        label: 'Retrieval/Processing',
-        layer: 'MODEL',
-        nodeRef: 'inference',
-        detail:
-          'Transformer attention models encode deep semantic context, and RESTful APIs orchestrate conversational analytics workflows.',
-        technicalArtifact: 'Transformer Attention & REST API Middleware',
-      },
-      {
-        label: 'Response',
-        layer: 'PRODUCT',
-        nodeRef: 'result',
-        detail:
-          'Context-aware, ranked answer payload is formatted and delivered back to the client interface in real time.',
-        technicalArtifact: 'Contextual Conversational Answer Payload',
-      },
-      {
-        label: 'MongoDB',
+        label: 'Auth & RBAC',
         layer: 'SYSTEM',
-        nodeRef: 'database',
+        nodeRef: 'api',
         detail:
-          'Interaction logs, query session histories, and conversational analytics are stored in MongoDB document collections.',
-        technicalArtifact: 'MongoDB Document Session Record',
+          'Node.js and Express RESTful API gateway authenticates user session with stateless JWT tokens and enforces role-based access.',
+        technicalArtifact: 'JWT Authentication & RBAC Middleware',
+      },
+      {
+        label: 'Razorpay HMAC',
+        layer: 'DATA',
+        nodeRef: 'validation',
+        detail:
+          'Server-side HMAC-SHA256 signature verification confirms payment transaction authenticity before state advancement.',
+        technicalArtifact: 'Cryptographic HMAC-SHA256 Signature Verification',
+      },
+      {
+        label: 'MongoDB & State Machine',
+        layer: 'PRODUCT',
+        nodeRef: 'action',
+        detail:
+          'Order data is persisted in MongoDB and advanced across the synchronized 5-stage fulfillment state machine.',
+        technicalArtifact: 'Mongoose Schemas & 5-Stage Order State Machine',
       },
     ],
   },

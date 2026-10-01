@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState } from 'react';
+import { AnimatePresence } from 'motion/react';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { AskJhansi } from '../copilot/AskJhansi';
@@ -17,11 +17,12 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({ children }) => {
     if (typeof window !== 'undefined') {
       const isProjectRoute = window.location.pathname.startsWith('/projects/');
       if (isProjectRoute) return false;
-      
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) return false;
       const hasSeen = sessionStorage.getItem('jhansi_portfolio_preloader_seen');
       return hasSeen !== 'true';
     }
-    return true;
+    return false;
   });
 
   const handlePreloadComplete = () => {
@@ -47,33 +48,28 @@ export const LayoutShell: React.FC<LayoutShellProps> = ({ children }) => {
       {/* Quick Navigation Command Palette */}
       <CommandPalette />
 
-      <AnimatePresence mode="wait">
-        {isPreloading ? (
-          <Preloader key="preloader" onComplete={handlePreloadComplete} />
-        ) : (
-          <motion.div
-            key="main-layout"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="flex-1 flex flex-col"
-          >
-            {/* Top sticky navigation */}
-            <Header />
-
-            {/* Main body content */}
-            <main id="main-content" className="flex-1 pt-16 md:pt-20">
-              {children}
-            </main>
-
-            {/* Persistent technical footer */}
-            <Footer />
-
-            {/* Global AI Portfolio Copilot */}
-            <AskJhansi />
-          </motion.div>
+      {/* Preloader Overlay (Shows only on first unvisited load, smoothly exits without withholding DOM) */}
+      <AnimatePresence>
+        {isPreloading && (
+          <Preloader onComplete={handlePreloadComplete} />
         )}
       </AnimatePresence>
+
+      <div className="flex-1 flex flex-col">
+        {/* Top sticky navigation */}
+        <Header />
+
+        {/* Main body content */}
+        <main id="main-content" className="flex-1">
+          {children}
+        </main>
+
+        {/* Persistent technical footer */}
+        <Footer />
+
+        {/* Global AI Portfolio Copilot */}
+        <AskJhansi />
+      </div>
     </div>
   );
 };

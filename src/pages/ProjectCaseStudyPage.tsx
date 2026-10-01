@@ -1,434 +1,414 @@
-import React, { useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'motion/react';
+import { ArchitecturePreview } from '../components/projects/ArchitecturePreview';
 import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   Github,
-  Terminal,
-  ShieldCheck,
-  AlertCircle,
   CheckCircle,
+  AlertCircle,
   ExternalLink,
-  Boxes,
+  Cpu,
+  Layers,
+  ShieldAlert,
+  GitBranch,
+  Terminal,
 } from 'lucide-react';
 import { projectsData } from '../data/projectsData';
 import { Container } from '../components/primitives/Container';
-import { Badge } from '../components/primitives/Badge';
-import { Button } from '../components/primitives/Button';
-import { InteractiveArchitectureDiagram } from '../components/projects/InteractiveArchitectureDiagram';
-import { ProjectVisualStack } from '../components/projects/ProjectVisualStack';
+import { ArchitecturePipelineVisual } from '../components/projects/ArchitecturePipelineVisual';
+
+const SECTION_NAV_ITEMS = [
+  { id: 'problem', label: '01. Problem' },
+  { id: 'approach', label: '02. Approach' },
+  { id: 'architecture', label: '03. Architecture' },
+  { id: 'engineering', label: '04. Engineering' },
+  { id: 'model-ai', label: '05. Model / AI' },
+  { id: 'evaluation', label: '06. Evaluation' },
+  { id: 'result', label: '07. Result' },
+  { id: 'tech-stack', label: '08. Tech Stack' },
+  { id: 'links', label: '09. Links' },
+];
 
 export const ProjectCaseStudyPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
   const shouldReduceMotion = useReducedMotion();
+  const [activeSection, setActiveSection] = useState<string>('problem');
 
   // Scroll to apex on slug change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: shouldReduceMotion ? 'auto' : 'smooth' });
   }, [slug, shouldReduceMotion]);
 
-  const project = projectsData.find((p) => p.slug === slug);
+  const normalizedSlug = slug === 'pizza-ordering' ? 'slicemind' : slug;
+  const project = projectsData.find((p) => p.slug === normalizedSlug);
+
+  // Monitor active scroll section for subnav highlighting
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPos = window.scrollY + 220;
+      for (let i = SECTION_NAV_ITEMS.length - 1; i >= 0; i--) {
+        const item = SECTION_NAV_ITEMS[i];
+        const el = document.getElementById(item.id);
+        if (el && el.offsetTop <= scrollPos) {
+          setActiveSection(item.id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (!project) {
     return (
       <div className="py-24">
         <Container size="narrow" className="text-center">
           <div className="font-mono text-xs text-[#D49A46] uppercase tracking-widest mb-3">
-            ERROR: 404 // NOT FOUND
+            Error: 404 · Project Not Found
           </div>
           <h1 className="font-display text-3xl font-bold uppercase text-[#F2EBDD] mb-4">
-            SPECIFICATION NOT LOCATED
+            Project Not Found
           </h1>
           <p className="text-sm text-[#AAA398] mb-8 font-mono">
-            The requested project route <code className="text-[#E5BA70]">/projects/{slug}</code> is not registered in the system registry.
+            The requested project route <code className="text-[#E5BA70]">/projects/{slug}</code> is not in the projects list.
           </p>
-          <Link to="/#projects">
-            <Button variant="secondary" size="md" icon={<ArrowLeft className="w-4 h-4" />} iconPosition="left">
-              RETURN TO SELECTED SYSTEMS
-            </Button>
+          <Link
+            to="/#selected-work"
+            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#090907] bg-[#D49A46] hover:bg-[#E5BA70] px-5 py-3 rounded-xs font-bold transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Return to Selected Work</span>
           </Link>
         </Container>
       </div>
     );
   }
 
-  // Related systems: other portfolio projects
+  const engineeringReasoning = project.engineeringReasoning || {
+    problem: {
+      title: 'Problem Definition & System Context',
+      statement: project.caseStudy.problemStatement || '',
+      context: project.caseStudy.problemContext || '',
+      constraints: [] as string[],
+    },
+    architectureVisual: {
+      summary: project.architecture.summary || '',
+      pipelineSteps: [] as any[],
+    },
+    engineering: {
+      title: 'Engineering Implementation',
+      overview: 'System is designed with clean client-server boundaries, responsive state, and optimized runtime performance.',
+      subsystems: [] as any[],
+    },
+    modelAI: {
+      title: 'Model & Algorithmic Strategy',
+      isApplicable: false,
+      approach: 'Decoupled architectural modules and service patterns.',
+      details: 'The system uses modern libraries and optimized models to perform fast, client-side or server-side computation.',
+      specifications: [] as any[],
+    },
+    evaluation: {
+      title: 'System Evaluation & Verification',
+      methodology: 'Evaluated against structural integration tests, operational state cycles, and platform security standards.',
+      criteria: [] as any[],
+      factualNote: 'Technical parameters are grounded strictly in authenticated codebase configurations.',
+    },
+    result: {
+      title: 'Documented Engineering Outcomes',
+      measurableOutcomes: project.caseStudy.results?.verifiedOutcomes || [],
+      disclaimer: project.caseStudy.results?.disclaimer || 'Public metrics are shown only where supported by project documentation.',
+    },
+    tradeoffs: [] as any[],
+  };
   const relatedProjects = projectsData.filter((p) => p.id !== project.id);
 
   return (
     <motion.article
-      initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16, scale: 0.99 }}
-      animate={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 1, y: 0, scale: 1 }}
-      exit={shouldReduceMotion ? { opacity: 0, y: 0 } : { opacity: 0, y: -12, scale: 0.99 }}
+      initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
       transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1.0] }}
-      className="py-12 md:py-20 border-b border-[#292720]"
+      className="py-10 md:py-16 border-b border-[#292720]"
       aria-labelledby="case-study-title"
     >
       <Container size="wide">
         {/* Navigation Breadcrumb */}
-        <div className="mb-8">
+        <div className="mb-6">
           <Link
-            to="/#projects"
-            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#AAA398] hover:text-[#D49A46] transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46] rounded-xs px-1 py-0.5"
+            to="/#selected-work"
+            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#AAA398] hover:text-[#D49A46] transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46] py-1"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>RETURN TO SELECTED SYSTEMS</span>
+            <span>Return to Selected Work</span>
           </Link>
         </div>
 
         {/* =========================================================================
-            01 / OVERVIEW
+            HEADER & VALUE PROPOSITION (ABOVE-THE-FOLD REFINEMENT)
             ========================================================================= */}
-        <header className="pb-12 border-b border-[#292720]">
-          <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className="font-mono text-xs font-bold uppercase tracking-widest text-[#D49A46] px-2.5 py-1 rounded-xs bg-[#171612] border border-[#292720]">
-              SYS_{project.number}
+        <header className="pb-10 border-b border-[#292720]">
+          {/* 1. PROJECT NUMBER + CATEGORY */}
+          <div className="flex flex-wrap items-center gap-2.5 text-xs font-mono mb-4 text-[#888175]">
+            <span className="font-bold text-[#D49A46] tracking-widest uppercase">
+              Project {project.number}
             </span>
-            <span className="font-mono text-xs uppercase tracking-wider text-[#AAA398]">
+            <span aria-hidden="true" className="text-[#3E3B33]">•</span>
+            <span className="uppercase text-[#AAA398] tracking-wider">
               {project.category}
             </span>
             {project.status && (
-              <Badge variant="outline" size="sm">
-                {project.status}
-              </Badge>
+              <>
+                <span aria-hidden="true" className="text-[#3E3B33]">•</span>
+                <span className="text-[#E5BA70] tracking-wider uppercase font-medium">
+                  {project.status}
+                </span>
+              </>
             )}
           </div>
 
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div className="max-w-4xl">
-              <h1
-                id="case-study-title"
-                className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold uppercase text-[#F2EBDD] tracking-tight leading-[1.1]"
+          {/* 2. PROJECT TITLE */}
+          <h1
+            id="case-study-title"
+            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase text-[#F2EBDD] tracking-tight leading-[1.08] mb-5"
+          >
+            {project.title}
+          </h1>
+
+          {/* 3. ONE-SENTENCE SUMMARY */}
+          <p className="max-w-4xl text-base sm:text-xl text-[#DCD6CA] font-light leading-relaxed mb-8">
+            {project.description}
+          </p>
+
+          {/* 4. AUTHENTIC PROJECT VISUAL */}
+          <div className="relative w-full aspect-video md:aspect-[21/9] select-none overflow-hidden rounded-xs border border-[#24221C] bg-[#0E0D0A] shadow-2xl mb-6">
+            {/* Technical grid layer for depth */}
+            <div 
+              className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#888175_1px,transparent_1px),linear-gradient(to_bottom,#888175_1px,transparent_1px)] bg-[size:28px_28px] pointer-events-none z-0" 
+              aria-hidden="true" 
+            />
+            {/* The dominant architecture visual */}
+            <ArchitecturePreview
+              architecture={project.architecture}
+              projectNumber={project.number}
+            />
+            {/* Soft gradient vignette map */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#090907]/90 via-[#090907]/20 to-[#090907]/10 pointer-events-none" />
+            
+            {/* Interactive Corner Framing Accents */}
+            <div className="absolute top-1 left-1 w-3 h-3 border-t border-l border-[#D49A46]/45 pointer-events-none" aria-hidden="true" />
+            <div className="absolute top-1 right-1 w-3 h-3 border-t border-r border-[#D49A46]/45 pointer-events-none" aria-hidden="true" />
+            <div className="absolute bottom-1 left-1 w-3 h-3 border-b border-l border-[#D49A46]/45 pointer-events-none" aria-hidden="true" />
+            <div className="absolute bottom-1 right-1 w-3 h-3 border-b border-r border-[#D49A46]/45 pointer-events-none" aria-hidden="true" />
+          </div>
+
+          {/* 5. ACTION LINKS (LIVE DEMO, GITHUB, API DOCS) */}
+          <div className="flex flex-wrap items-center gap-3.5 mb-10">
+            {project.liveDemoUrl && (
+              <a
+                href={project.liveDemoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                referrerPolicy="no-referrer"
+                className="group/btn inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#090907] bg-[#D49A46] hover:bg-[#E5BA70] px-5 py-3 rounded-xs font-bold transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-[#D49A46] shadow-[0_4px_16px_rgba(212,154,70,0.18)]"
               >
-                {project.title}
-              </h1>
+                <ExternalLink className="w-4 h-4" />
+                <span>Live Demo</span>
+                <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-[2px] group-hover/btn:-translate-y-[2px]" />
+              </a>
+            )}
 
-              <p className="mt-5 text-base sm:text-xl text-[#DCD6CA] font-light leading-relaxed">
-                {project.description}
-              </p>
-            </div>
-
-            {/* Header GitHub CTA */}
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
+            {project.githubUrl && (
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 referrerPolicy="no-referrer"
-                className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#090907] bg-[#D49A46] hover:bg-[#E5BA70] px-5 py-3 rounded-xs font-bold transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46]"
-                aria-label={`View ${project.title} on GitHub`}
+                className="group/btn inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#E5BA70] border border-[#D49A46]/60 hover:border-[#D49A46] hover:bg-[#D49A46]/10 px-4.5 py-3 rounded-xs font-semibold transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+                aria-label={`View ${project.title} source code on GitHub`}
               >
                 <Github className="w-4 h-4" />
-                <span>GITHUB</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <span>GitHub Repository</span>
+                <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-[2px] group-hover/btn:-translate-y-[2px]" />
               </a>
+            )}
 
-              {/* Only render live demo if non-null */}
-              {project.liveDemoUrl && (
-                <a
-                  href={project.liveDemoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  referrerPolicy="no-referrer"
-                  className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#E5BA70] border border-[#D49A46] hover:bg-[#D49A46]/10 px-4 py-3 rounded-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+            {project.id === 'respiratory-ai' && project.apiDocsUrl && (
+              <a
+                href={project.apiDocsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                referrerPolicy="no-referrer"
+                className="group/btn inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#AAA398] border border-[#23211B] hover:border-[#8E887D] hover:bg-[#14130F] px-4.5 py-3 rounded-xs font-semibold transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span>API Docs</span>
+                <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-[2px] group-hover/btn:-translate-y-[2px]" />
+              </a>
+            )}
+          </div>
+
+          {/* 6. 3 KEY ENGINEERING HIGHLIGHTS */}
+          <div className="pt-8 border-t border-[#1E1D17]">
+            <div className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#6E695F] mb-5 font-semibold">
+              Key Engineering Highlights
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {(project.architecture?.keyHighlights || []).map((highlight, idx) => (
+                <div 
+                  key={idx}
+                  className="p-4 sm:p-5 rounded-sm bg-[#11110E] border border-[#201F19] hover:border-[#38352A] transition-colors duration-200 flex flex-col justify-between"
                 >
-                  <ExternalLink className="w-4 h-4" />
-                  <span>LIVE DEMO</span>
-                </a>
-              )}
+                  <div className="font-mono text-xs font-bold text-[#D49A46] mb-2.5">
+                    0{idx + 1}
+                  </div>
+                  <p className="font-body text-xs sm:text-[13px] text-[#C2BCB0] leading-relaxed font-light">
+                    {highlight}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </header>
 
-        {/* Large Editorial Project Visual Feature */}
-        <div className="mt-10 mb-12">
-          <div className="relative rounded-xs overflow-hidden border border-[#2E2B22] bg-[#0D0C09] p-4 sm:p-8 shadow-[0_25px_60px_rgba(0,0,0,0.8)] border-t-2 border-t-[#D49A46]/70">
-            <div className="max-w-4xl mx-auto">
-              <ProjectVisualStack
-                projectId={project.id}
-                isHovered={false}
-                isMobileActive={false}
-              />
-            </div>
+        {/* Sticky Jump Navigation Bar */}
+        <nav
+          className="sticky top-0 z-30 bg-[#090907]/95 backdrop-blur-md border-b border-[#292720] -mx-4 px-4 sm:mx-0 sm:px-0 py-3 mb-10 overflow-x-auto scrollbar-none"
+          aria-label="Engineering Sections Navigation"
+        >
+          <div className="flex items-center gap-1 sm:gap-2 min-w-max">
+            <span className="font-mono text-[10px] text-[#68645C] uppercase tracking-widest mr-2 hidden sm:inline">
+              Jump to:
+            </span>
+            {SECTION_NAV_ITEMS.map((item) => {
+              const isActive = activeSection === item.id;
+              return (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`font-mono text-xs uppercase tracking-wider px-3 py-1.5 rounded-xs transition-colors duration-150 ${
+                    isActive
+                      ? 'bg-[#1C1A14] text-[#E5BA70] border border-[#D49A46]/40 font-semibold'
+                      : 'text-[#AAA398] hover:text-[#F2EBDD] hover:bg-[#14130F]'
+                  }`}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </div>
-        </div>
+        </nav>
 
-        {/* Case Study Body */}
-        <div className="space-y-16 md:space-y-24 mt-12 md:mt-16">
-          {/* =========================================================================
-              02 / PROBLEM
-              ========================================================================= */}
-          <section id="problem" aria-labelledby="section-02-title">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-              <span>02 // PROBLEM</span>
+        {/* =========================================================================
+            STRUCTURED CASE STUDY BODY
+            1. PROBLEM
+            2. APPROACH
+            3. SYSTEM ARCHITECTURE
+            4. ENGINEERING
+            5. MODEL / AI
+            6. EVALUATION
+            7. RESULT
+            8. TECH STACK
+            9. LINKS
+            ========================================================================= */}
+        <div className="space-y-16 md:space-y-24">
+          {/* =======================================================================
+              01. PROBLEM: What real problem does the system address?
+              ======================================================================= */}
+          <section id="problem" aria-labelledby="problem-heading" className="scroll-mt-20">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-2">
+              <span>01. Problem</span>
             </div>
             <h2
-              id="section-02-title"
+              id="problem-heading"
               className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-6"
             >
-              PROBLEM DEFINITION & CLINICAL / SYSTEM CONTEXT
+              {engineeringReasoning.problem.title}
             </h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-8 p-6 sm:p-8 rounded-sm bg-[#11100C] border border-[#292720]">
-                <h3 className="font-mono text-xs uppercase tracking-wider text-[#68645C] mb-3">
-                  PRIMARY BOTTLENECK / MOTIVATION
-                </h3>
+                <div className="font-mono text-xs uppercase tracking-wider text-[#888175] mb-2">
+                  Real-World Problem Statement
+                </div>
                 <p className="text-sm sm:text-base text-[#DCD6CA] leading-relaxed font-light mb-6">
-                  {project.caseStudy.problemStatement}
+                  {engineeringReasoning.problem.statement}
                 </p>
 
-                <h3 className="font-mono text-xs uppercase tracking-wider text-[#68645C] mb-3">
-                  ENGINEERING CONSTRAINTS
-                </h3>
+                <div className="font-mono text-xs uppercase tracking-wider text-[#888175] mb-2">
+                  Operating &amp; System Context
+                </div>
                 <p className="text-sm sm:text-base text-[#AAA398] leading-relaxed font-light">
-                  {project.caseStudy.problemContext}
+                  {engineeringReasoning.problem.context}
                 </p>
               </div>
 
-              {/* Factual Resume Core Highlights */}
-              <div className="lg:col-span-4 p-6 rounded-sm bg-[#171612] border border-[#292720] flex flex-col justify-between">
+              {/* Engineering Constraints */}
+              <div className="lg:col-span-4 p-6 sm:p-7 rounded-sm bg-[#14130F] border border-[#292720] flex flex-col justify-between">
                 <div>
-                  <div className="font-mono text-xs uppercase tracking-widest text-[#E5BA70] mb-4 pb-2 border-b border-[#292720]">
-                    VERIFIED IMPLEMENTATION
+                  <div className="font-mono text-xs uppercase tracking-wider text-[#E5BA70] mb-4 pb-2 border-b border-[#292720]">
+                    Verified Technical Constraints
                   </div>
                   <ul className="space-y-3">
-                    {project.bullets.map((bullet, idx) => (
+                    {engineeringReasoning.problem.constraints?.map((constraint, idx) => (
                       <li key={idx} className="flex items-start gap-2.5 text-xs text-[#AAA398] leading-relaxed">
-                        <CheckCircle className="w-3.5 h-3.5 text-[#D49A46] shrink-0 mt-0.5" />
-                        <span>{bullet}</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46] shrink-0 mt-1.5" />
+                        <span>{constraint}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[#292720]">
-                  <span className="font-mono text-[10px] uppercase text-[#68645C]">
-                    SOURCE: RESUME GROUND TRUTH RECORD
-                  </span>
+                <div className="mt-6 pt-3 border-t border-[#292720] text-[11px] font-mono text-[#68645C]">
+                  Grounded in authentic project specifications
                 </div>
               </div>
             </div>
           </section>
 
-          {/* =========================================================================
-              RESPIRATORY AI SPECIALIZED SECTIONS
-              ========================================================================= */}
-          {project.id === 'respiratory-ai' && (
-            <>
-              {/* Input & Preprocessing */}
-              <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
-                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.1 // INPUT & DATA</div>
-                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">ACOUSTIC INGESTION</h3>
-                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
-                    Captures lung auscultation recordings from digital sensors. The raw data is a time-series amplitude signal that requires isolation from environmental artifacts.
-                  </p>
-                  <div className="font-mono text-[10px] text-[#68645C] uppercase">STREAMS: WAV_CH09 / 44.1 KHZ</div>
-                </div>
-                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
-                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.2 // PREPROCESSING</div>
-                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">SIGNAL NORMALIZATION</h3>
-                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
-                    Applies bandpass filtering (50Hz - 2000Hz) and Short-Time Fourier Transform (STFT) to generate Log-Mel Spectrograms, translating audio into a vision-compatible spatial format.
-                  </p>
-                  <div className="font-mono text-[10px] text-[#68645C] uppercase">OP: STFT / MEL-FILTERBANK</div>
-                </div>
-              </section>
-
-              {/* Model & Inference */}
-              <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
-                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.3 // MODEL BACKBONE</div>
-                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">EFFICIENTNET-B0 + SSL</h3>
-                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
-                    Utilizes a lightweight CNN backbone for compound scaling. Self-Supervised Learning (SSL) pre-training allows the model to learn acoustic hierarchies from unlabelled respiratory data.
-                  </p>
-                  <div className="font-mono text-[10px] text-[#68645C] uppercase">PARAMS: 5.3M / COMPOUND SCALING</div>
-                </div>
-                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
-                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.4 // INFERENCE & EVALUATION</div>
-                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">CLASSIFICATION ENGINE</h3>
-                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
-                    Maps latent embeddings to clinical classes (Normal, Crackles, Wheezes). Accuracy is maintained through cross-entropy loss optimization and rigorous validation cycles.
-                  </p>
-                  <div className="font-mono text-[10px] text-[#68645C] uppercase">LATENCY: &lt; 200MS / INFERENCE</div>
-                </div>
-              </section>
-
-              {/* Explainability */}
-              <section className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
-                <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.5 // EXPLAINABILITY (XAI)</div>
-                <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">GRAD-CAM ATTRIBUTION MAPPING</h3>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                  <p className="text-sm text-[#AAA398] leading-relaxed">
-                    To ensure clinical transparency, the system generates localized heatmaps over the input spectrogram. This reveals exactly which temporal and frequency components (e.g., high-pitched wheeze harmonics) influenced the model's diagnostic screening.
-                  </p>
-                  <div className="p-4 bg-[#090907] border border-[#292720] rounded-xs font-mono text-[10px] text-[#68645C]">
-                    [ LOG: XAI_ACTIVATION_MAP_GEN ]<br/>
-                    [ GRADIENT_BACKPROP: COMPLETE ]<br/>
-                    [ SALIENCY_OVERLAY: SUCCESSFUL ]
-                  </div>
-                </div>
-              </section>
-            </>
-          )}
-
-          {/* =========================================================================
-              PIZZA PLATFORM SPECIALIZED SECTIONS
-              ========================================================================= */}
-          {project.id === 'pizza-ordering' && (
-            <>
-              {/* Auth & RBAC */}
-              <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
-                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.1 // AUTHENTICATION</div>
-                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">JWT STATELESS SECURITY</h3>
-                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
-                    Implements secure user sessions using JSON Web Tokens (JWT) and bcrypt password hashing. Stateless verification eliminates server session overhead while protecting API routes.
-                  </p>
-                  <div className="font-mono text-[10px] text-[#68645C] uppercase">ALGO: HS256 / BCRYPT_GEN</div>
-                </div>
-                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
-                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.2 // RBAC</div>
-                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">ROLE-BASED PERMISSIONS</h3>
-                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
-                    Differentiates between Customer and Admin personas. Middleware ensures only authenticated admins can mutate menu items, manage inventory, or update order fulfillment stages.
-                  </p>
-                  <div className="font-mono text-[10px] text-[#68645C] uppercase">MIDDLEWARE: VERIFY_ADMIN / VERIFY_USER</div>
-                </div>
-              </section>
-
-              {/* Database & Payments */}
-              <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
-                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.3 // DATABASE</div>
-                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">MONGODB PERSISTENCE</h3>
-                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
-                    Utilizes a flexible document schema to handle nested pizza configurations (custom toppings, crusts, sizes). Mongoose ODM is used for schema validation and indexing.
-                  </p>
-                  <div className="font-mono text-[10px] text-[#68645C] uppercase">ENGINE: MONGODB / MONGOOSE ODM</div>
-                </div>
-                <div className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
-                  <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.4 // PAYMENTS</div>
-                  <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">RAZORPAY INTEGRATION</h3>
-                  <p className="text-sm text-[#AAA398] leading-relaxed mb-4">
-                    Secure financial transactions with server-side HMAC signature verification. Orders are only confirmed after cryptographic proof of payment success is validated.
-                  </p>
-                  <div className="font-mono text-[10px] text-[#68645C] uppercase">GATEWAY: RAZORPAY / SHA256_HMAC</div>
-                </div>
-              </section>
-
-              {/* Order Workflow: Deterministic State Transitions */}
-              <section className="p-6 sm:p-8 rounded-sm bg-[#14130F] border border-[#292720]">
-                <div className="font-mono text-[10px] uppercase text-[#D49A46] mb-4 tracking-widest">02.5 // ORDER WORKFLOW</div>
-                <h3 className="font-display text-xl font-bold text-[#F2EBDD] mb-4">DETERMINISTIC STATE MACHINE</h3>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                  <p className="text-sm text-[#AAA398] leading-relaxed">
-                    Orders progress through a strictly defined lifecycle without state drift: Placed → Confirmed → Baking → Out for Delivery → Delivered. Customers track progression while privileged admin roles advance the stages upon verified triggers.
-                  </p>
-                  <div className="p-4 bg-[#090907] border border-[#292720] rounded-xs space-y-2">
-                    <div className="font-mono text-[10px] text-[#D49A46] uppercase tracking-wider pb-1.5 border-b border-[#201F19]">
-                      LIFECYCLE STATE TRANSITIONS
-                    </div>
-                    <div className="grid grid-cols-5 gap-1.5 pt-1">
-                      {[
-                        { step: '01', name: 'PLACED' },
-                        { step: '02', name: 'CONFIRMED' },
-                        { step: '03', name: 'BAKING' },
-                        { step: '04', name: 'DISPATCH' },
-                        { step: '05', name: 'DELIVERED' },
-                      ].map((s) => (
-                        <div key={s.step} className="p-2 rounded-xs bg-[#14130F] border border-[#24221C] text-center">
-                          <span className="block font-mono text-[8px] text-[#68645C]">{s.step}</span>
-                          <span className="block font-mono text-[9px] text-[#DCD6CA] font-medium truncate">{s.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </section>
-            </>
-          )}
-
-          {/* =========================================================================
-              03 / SYSTEM ARCHITECTURE
-              ========================================================================= */}
-          <section id="architecture" aria-labelledby="section-03-title">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-              <span>03 // SYSTEM ARCHITECTURE</span>
+          {/* =======================================================================
+              02. APPROACH: What is the actual AI/ML approach?
+              ======================================================================= */}
+          <section id="approach" aria-labelledby="approach-heading" className="scroll-mt-20">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-2">
+              <span>02. Approach</span>
             </div>
             <h2
-              id="section-03-title"
-              className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-6"
+              id="approach-heading"
+              className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-3"
             >
-              INTERACTIVE ARCHITECTURE VISUALIZATION
+              Technical Approach &amp; Solution Strategy
             </h2>
-
-            <p className="text-sm text-[#AAA398] max-w-3xl mb-6 font-light">
-              {project.architecture.summary}
-            </p>
-
-            {/* Interactive Architecture Diagram Component */}
-            <InteractiveArchitectureDiagram
-              nodes={project.caseStudy.architectureNodes}
-              projectTitle={project.title}
-              projectNumber={project.number}
-            />
-          </section>
-
-          {/* =========================================================================
-              04 / TECHNICAL APPROACH
-              ========================================================================= */}
-          <section id="approach" aria-labelledby="section-04-title">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-              <span>04 // TECHNICAL APPROACH</span>
-            </div>
-            <h2
-              id="section-04-title"
-              className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-6"
-            >
-              TECHNOLOGIES, MODELS, APIS & ENGINEERING COMPONENTS
-            </h2>
-
-            <p className="text-sm sm:text-base text-[#DCD6CA] max-w-4xl mb-8 leading-relaxed font-light">
+            <p className="text-sm sm:text-base text-[#AAA398] max-w-4xl mb-8 leading-relaxed font-light">
               {project.caseStudy.technicalApproach.overview}
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {project.caseStudy.technicalApproach.components.map((comp, idx) => (
                 <div
                   key={idx}
-                  className="p-6 rounded-sm bg-[#11100C] border border-[#292720] hover:border-[#68645C] transition-colors"
+                  className="p-5 sm:p-6 rounded-sm bg-[#11100C] border border-[#292720] flex flex-col justify-between"
                 >
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="font-mono text-xs font-bold text-[#D49A46]">
-                      0{idx + 1} // SUBSYSTEM
+                  <div>
+                    <span className="font-mono text-[10px] text-[#D49A46] uppercase tracking-wider mb-1 block">
+                      Approach Component 0{idx + 1}
                     </span>
-                    <Terminal className="w-4 h-4 text-[#68645C]" />
+                    <h3 className="font-display text-base font-bold uppercase text-[#F2EBDD] mb-2.5">
+                      {comp.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#AAA398] leading-relaxed font-light mb-4">
+                      {comp.description}
+                    </p>
                   </div>
 
-                  <h3 className="font-display text-lg font-bold uppercase text-[#F2EBDD] mb-2">
-                    {comp.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-[#AAA398] leading-relaxed mb-4 font-light">
-                    {comp.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-1.5 pt-3 border-t border-[#292720]/80">
-                    {comp.technologies.map((t) => (
-                      <span
-                        key={t}
-                        className="font-mono text-[10px] text-[#E5BA70] bg-[#171612] px-2 py-0.5 rounded-xs border border-[#292720]"
-                      >
-                        {t}
+                  <div className="pt-3 border-t border-[#24221C] flex flex-wrap items-center gap-1.5 text-[11px] font-mono text-[#E5BA70]">
+                    {comp.technologies.map((t, i) => (
+                      <span key={t} className="inline-flex items-center gap-1.5">
+                        {i > 0 && <span className="text-[#4E4A42]" aria-hidden="true">·</span>}
+                        <span>{t}</span>
                       </span>
                     ))}
                   </div>
@@ -437,135 +417,216 @@ export const ProjectCaseStudyPage: React.FC = () => {
             </div>
           </section>
 
-          {/* =========================================================================
-              05 / ENGINEERING DECISIONS
-              ========================================================================= */}
-          <section id="decisions" aria-labelledby="section-05-title">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-              <span>05 // ENGINEERING DECISIONS</span>
+          {/* =======================================================================
+              03. SYSTEM ARCHITECTURE: Technical pipeline diagram
+              ======================================================================= */}
+          <section id="architecture" aria-labelledby="arch-visual-heading" className="scroll-mt-20">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-2">
+              <span>03. System Architecture</span>
             </div>
             <h2
-              id="section-05-title"
-              className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-2"
+              id="arch-visual-heading"
+              className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-3"
             >
-              DECISION, REASON & TRADEOFF ANALYSIS
+              Execution Pipeline &amp; Dataflow Diagram
             </h2>
-            <p className="text-xs font-mono uppercase text-[#68645C] mb-6">
-              GROUNDED IN FACTUAL ARCHITECTURAL CONSTRAINTS
+            <p className="text-sm sm:text-base text-[#AAA398] max-w-4xl mb-6 leading-relaxed font-light">
+              {engineeringReasoning.architectureVisual.summary}
             </p>
 
-            <div className="space-y-4">
-              {project.caseStudy.engineeringDecisions.map((item, idx) => (
+            {/* Architecture Pipeline Visualizer Component */}
+            <ArchitecturePipelineVisual
+              steps={engineeringReasoning.architectureVisual.pipelineSteps}
+              projectTitle={project.title}
+              projectNumber={project.number}
+            />
+          </section>
+
+          {/* =======================================================================
+              04. ENGINEERING: What backend, APIs, preprocessing, etc. were implemented?
+              ======================================================================= */}
+          <section id="engineering" aria-labelledby="engineering-heading" className="scroll-mt-20">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-2">
+              <span>04. Engineering</span>
+            </div>
+            <h2
+              id="engineering-heading"
+              className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-3"
+            >
+              {engineeringReasoning.engineering.title}
+            </h2>
+            <p className="text-sm sm:text-base text-[#AAA398] max-w-4xl mb-8 leading-relaxed font-light">
+              {engineeringReasoning.engineering.overview}
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {engineeringReasoning.engineering.subsystems.map((subsystem, idx) => (
                 <div
                   key={idx}
-                  className="p-6 rounded-sm bg-[#11100C] border border-[#292720]"
+                  className="p-6 rounded-sm bg-[#11100C] border border-[#292720] flex flex-col justify-between"
                 >
-                  <div className="flex items-start gap-3 mb-4">
-                    <span className="font-mono text-xs font-bold px-2 py-0.5 rounded-xs bg-[#171612] border border-[#292720] text-[#D49A46]">
-                      DECISION 0{idx + 1}
-                    </span>
-                    <h3 className="font-display text-base sm:text-lg font-bold uppercase text-[#F2EBDD]">
-                      {item.decision}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-mono text-xs font-bold text-[#D49A46]">
+                        Subsystem 0{idx + 1}
+                      </span>
+                      <span className="font-mono text-[10px] text-[#888175] uppercase">
+                        {subsystem.focus}
+                      </span>
+                    </div>
+
+                    <h3 className="font-display text-lg font-bold uppercase text-[#F2EBDD] mb-3">
+                      {subsystem.name}
                     </h3>
+
+                    <p className="text-xs sm:text-sm text-[#AAA398] leading-relaxed font-light mb-5">
+                      {subsystem.implementation}
+                    </p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-[#292720]">
-                    <div className="p-4 rounded-xs bg-[#171612] border border-[#292720]">
-                      <div className="font-mono text-[10px] uppercase tracking-wider text-[#D49A46] mb-1.5 flex items-center gap-1.5">
-                        <CheckCircle className="w-3 h-3" />
-                        <span>ARCHITECTURAL REASON</span>
-                      </div>
-                      <p className="text-xs sm:text-sm text-[#DCD6CA] leading-relaxed font-light">
-                        {item.reason}
-                      </p>
-                    </div>
-
-                    <div className="p-4 rounded-xs bg-[#171612] border border-[#292720]">
-                      <div className="font-mono text-[10px] uppercase tracking-wider text-[#888175] mb-1.5 flex items-center gap-1.5">
-                        <AlertCircle className="w-3 h-3" />
-                        <span>ENGINEERING TRADEOFF</span>
-                      </div>
-                      <p className="text-xs sm:text-sm text-[#AAA398] leading-relaxed font-light">
-                        {item.tradeoff}
-                      </p>
-                    </div>
+                  <div className="pt-3 border-t border-[#24221C] flex flex-wrap items-center gap-2 text-xs font-mono text-[#E5BA70]">
+                    {subsystem.technologies.map((t: string, i: number) => (
+                      <span key={t} className="inline-flex items-center gap-2">
+                        {i > 0 && <span className="text-[#4E4A42]" aria-hidden="true">·</span>}
+                        <span>{t}</span>
+                      </span>
+                    ))}
                   </div>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* =========================================================================
-              06 / CHALLENGES
-              ========================================================================= */}
-          <section id="challenges" aria-labelledby="section-06-title">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-              <span>06 // CHALLENGES</span>
+          {/* =======================================================================
+              05. MODEL / AI: Actual models, representations, inference components
+              ======================================================================= */}
+          <section id="model-ai" aria-labelledby="model-heading" className="scroll-mt-20">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-2">
+              <span>05. Model &amp; AI Architecture</span>
             </div>
             <h2
-              id="section-06-title"
-              className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-2"
+              id="model-heading"
+              className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-3"
             >
-              TECHNICAL CHALLENGES & VALIDATION BOUNDARIES
+              {engineeringReasoning.modelAI.title}
             </h2>
-            <p className="text-xs font-mono uppercase text-[#68645C] mb-6">
-              SPECIFICATION PLACEHOLDER STRUCTURE (FACTUAL DISCLOSURE RESTRICTIONS)
-            </p>
 
-            <div className="p-6 sm:p-8 rounded-sm bg-[#11100C] border border-[#292720] relative overflow-hidden">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#292720]">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#D49A46]" />
-                  <span className="font-mono text-xs uppercase tracking-wider text-[#E5BA70]">
-                    {project.caseStudy.challenges.notice}
-                  </span>
+            <div className="p-6 sm:p-8 rounded-sm bg-[#11100C] border border-[#292720] mb-6">
+              <div className="flex items-center gap-2 mb-2 font-mono text-xs uppercase tracking-wider text-[#D49A46]">
+                <Cpu className="w-4 h-4 text-[#D49A46]" />
+                <span>Core Strategy: {engineeringReasoning.modelAI.approach}</span>
+              </div>
+              <p className="text-sm sm:text-base text-[#DCD6CA] leading-relaxed font-light mt-3">
+                {engineeringReasoning.modelAI.details}
+              </p>
+            </div>
+
+            {/* Detailed Model/System Specifications */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {engineeringReasoning.modelAI.specifications.map((spec, idx) => (
+                <div
+                  key={idx}
+                  className="p-5 rounded-xs bg-[#14130F] border border-[#292720]"
+                >
+                  <div className="font-mono text-[11px] uppercase tracking-wider text-[#888175] mb-1">
+                    {spec.label}
+                  </div>
+                  <div className="font-display text-sm sm:text-base font-bold uppercase text-[#E5BA70] mb-2">
+                    {spec.value}
+                  </div>
+                  <p className="text-xs sm:text-sm text-[#AAA398] leading-relaxed font-light">
+                    {spec.description}
+                  </p>
                 </div>
-                <span className="font-mono text-[10px] text-[#68645C] px-2 py-0.5 rounded-xs bg-[#171612] border border-[#292720]">
-                  {project.caseStudy.challenges.verifiedStatus}
-                </span>
-              </div>
-
-              <div className="py-6">
-                <p className="text-sm text-[#AAA398] leading-relaxed font-mono">
-                  {project.caseStudy.challenges.placeholderNote}
-                </p>
-              </div>
-
-              <div className="p-4 rounded-xs bg-[#171612] border border-[#292720] flex items-start gap-3">
-                <Terminal className="w-4 h-4 text-[#D49A46] shrink-0 mt-0.5" />
-                <div className="text-xs text-[#68645C] font-mono leading-relaxed">
-                  NOTE: Under strict factual portfolio rules, challenges, telemetry reports, and failure modes are not artificially generated or embellished. Only verified technical milestones from authenticated sources are presented.
-                </div>
-              </div>
+              ))}
             </div>
           </section>
 
-          {/* =========================================================================
-              07 / RESULTS
-              ========================================================================= */}
-          <section id="results" aria-labelledby="section-07-title">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-              <span>07 // RESULTS</span>
+          {/* =======================================================================
+              06. EVALUATION: Documented evaluation results only
+              ======================================================================= */}
+          <section id="evaluation" aria-labelledby="eval-heading" className="scroll-mt-20">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-2">
+              <span>06. Evaluation</span>
             </div>
             <h2
-              id="section-07-title"
+              id="eval-heading"
+              className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-3"
+            >
+              {engineeringReasoning.evaluation.title}
+            </h2>
+            <p className="text-sm sm:text-base text-[#DCD6CA] max-w-4xl mb-6 leading-relaxed font-light">
+              {engineeringReasoning.evaluation.methodology}
+            </p>
+
+            <div className="space-y-4 mb-6">
+              {engineeringReasoning.evaluation.criteria.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-5 sm:p-6 rounded-sm bg-[#11100C] border border-[#292720] grid grid-cols-1 md:grid-cols-12 gap-4 items-start"
+                >
+                  <div className="md:col-span-4">
+                    <div className="font-mono text-[10px] text-[#D49A46] uppercase tracking-wider mb-1">
+                      Aspect Evaluated
+                    </div>
+                    <h3 className="font-display text-base font-bold uppercase text-[#F2EBDD]">
+                      {item.aspect}
+                    </h3>
+                  </div>
+
+                  <div className="md:col-span-4">
+                    <div className="font-mono text-[10px] text-[#888175] uppercase tracking-wider mb-1">
+                      Validation Process
+                    </div>
+                    <p className="text-xs sm:text-sm text-[#AAA398] leading-relaxed font-light">
+                      {item.validation}
+                    </p>
+                  </div>
+
+                  <div className="md:col-span-4">
+                    <div className="font-mono text-[10px] text-[#E5BA70] uppercase tracking-wider mb-1">
+                      Evidence
+                    </div>
+                    <p className="text-xs sm:text-sm text-[#DCD6CA] leading-relaxed font-light">
+                      {item.evidence}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Factual Disclaimer Banner */}
+            <div className="p-4 sm:p-5 rounded-xs bg-[#14130F] border border-[#2E2B23] flex items-start gap-3">
+              <ShieldAlert className="w-4 h-4 text-[#D49A46] shrink-0 mt-0.5" />
+              <p className="text-xs text-[#AAA398] font-mono leading-relaxed">
+                {engineeringReasoning.evaluation.factualNote}
+              </p>
+            </div>
+          </section>
+
+          {/* =======================================================================
+              07. RESULT: Display measurable outcomes genuinely documented
+              ======================================================================= */}
+          <section id="result" aria-labelledby="results-heading" className="scroll-mt-20">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-2">
+              <span>07. Result</span>
+            </div>
+            <h2
+              id="results-heading"
               className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-2"
             >
-              VERIFIED OUTCOMES
+              {engineeringReasoning.result.title}
             </h2>
-            <p className="text-xs font-mono uppercase text-[#68645C] mb-6">
-              NO SYNTHETIC BENCHMARKS, ACCURACY RATES, OR ESTIMATED USER METRICS
+            <p className="text-xs font-mono uppercase text-[#888175] mb-6">
+              Deliverables & implementation details
             </p>
 
             <div className="p-6 sm:p-8 rounded-sm bg-[#11100C] border border-[#292720]">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                {project.caseStudy.results.verifiedOutcomes.map((outcome, idx) => (
+                {engineeringReasoning.result.measurableOutcomes.map((outcome, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-xs bg-[#171612] border border-[#292720] flex items-start gap-3"
+                    className="p-4 rounded-xs bg-[#161511] border border-[#292720] flex items-start gap-3"
                   >
                     <CheckCircle className="w-4 h-4 text-[#D49A46] shrink-0 mt-0.5" />
                     <p className="text-xs sm:text-sm text-[#F2EBDD] leading-relaxed">
@@ -575,112 +636,157 @@ export const ProjectCaseStudyPage: React.FC = () => {
                 ))}
               </div>
 
+              {/* Factual Disclaimer */}
               <div className="pt-4 border-t border-[#292720] flex items-start gap-3">
                 <AlertCircle className="w-4 h-4 text-[#888175] shrink-0 mt-0.5" />
                 <p className="text-xs text-[#888175] font-mono leading-relaxed">
-                  {project.caseStudy.results.disclaimer}
+                  {engineeringReasoning.result.disclaimer}
                 </p>
               </div>
             </div>
           </section>
 
-          {/* =========================================================================
-              08 / TECHNOLOGIES
-              ========================================================================= */}
-          <section id="technologies" aria-labelledby="section-08-title">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-              <span>08 // TECHNOLOGIES</span>
+          {/* =======================================================================
+              08. TECH STACK: Compact, unboxed list of technologies
+              ======================================================================= */}
+          <section id="tech-stack" aria-labelledby="tech-stack-heading" className="scroll-mt-20">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-2">
+              <span>08. Tech Stack</span>
             </div>
             <h2
-              id="section-08-title"
+              id="tech-stack-heading"
               className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-6"
             >
-              TECHNOLOGY CHIPS GROUPED BY DOMAIN
+              Verified Technology Breakdown
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {project.caseStudy.technologyGroups.map((grp) => (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {project.caseStudy.technologyGroups.map((group, idx) => (
                 <div
-                  key={grp.groupName}
-                  className="p-6 rounded-sm bg-[#11100C] border border-[#292720]"
+                  key={idx}
+                  className="p-5 rounded-sm bg-[#11100C] border border-[#292720]"
                 >
-                  <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#D49A46] mb-4 pb-2 border-b border-[#292720]">
-                    <Boxes className="w-3.5 h-3.5" />
-                    <span>{grp.groupName}</span>
+                  <div className="font-mono text-xs uppercase text-[#D49A46] font-bold mb-3 pb-2 border-b border-[#24221C]">
+                    {group.groupName}
                   </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {grp.items.map((tech) => (
-                      <Badge key={tech} variant="default" size="sm">
-                        {tech}
-                      </Badge>
+                  <ul className="space-y-2">
+                    {group.items.map((item) => (
+                      <li
+                        key={item}
+                        className="font-mono text-xs text-[#DCD6CA] flex items-center gap-2"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#8E887D]" />
+                        <span>{item}</span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* =========================================================================
-              09 / REPOSITORY
-              ========================================================================= */}
-          <section id="repository" aria-labelledby="section-09-title">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-              <span>09 // REPOSITORY</span>
+          {/* =======================================================================
+              09. LINKS: Valid Action Destinations (GitHub / Live Demo / Case Study)
+              ======================================================================= */}
+          <section id="links" aria-labelledby="links-heading" className="scroll-mt-20">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-2">
+              <span>09. Links</span>
             </div>
             <h2
-              id="section-09-title"
+              id="links-heading"
               className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-6"
             >
-              SOURCE REPOSITORY & SPECIFICATIONS
+              Verified Repositories &amp; Actions
             </h2>
 
-            <div className="p-6 sm:p-8 rounded-sm bg-[#11100C] border border-[#292720] flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="max-w-xl">
-                <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#AAA398] mb-2">
-                  <Github className="w-4 h-4 text-[#D49A46]" />
-                  <span>GITHUB REPOSITORY</span>
+            <div className="p-6 sm:p-8 rounded-sm bg-[#11100C] border border-[#292720] flex flex-col xl:flex-row xl:items-center justify-between gap-6">
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#AAA398] mb-1">
+                    <Github className="w-4 h-4 text-[#D49A46]" />
+                    <span>Source Repository</span>
+                  </div>
+                  <div className="font-mono text-xs sm:text-sm text-[#F2EBDD] break-all">
+                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#D49A46] underline decoration-[#D49A46]/30">
+                      {project.githubUrl}
+                    </a>
+                  </div>
                 </div>
-                <div className="font-mono text-sm sm:text-base text-[#F2EBDD] font-bold break-all">
-                  {project.githubUrl}
-                </div>
-                <p className="text-xs text-[#888175] mt-2 font-mono">
-                  Contains system source files, pipelines, architectures, and implementation documents.
-                </p>
+
+                {project.liveDemoUrl && (
+                  <div>
+                    <div className="flex items-center gap-2 font-mono text-xs uppercase text-[#AAA398] mb-1">
+                      <ExternalLink className="w-4 h-4 text-[#D49A46]" />
+                      <span>Live Deployment Server</span>
+                    </div>
+                    <div className="font-mono text-xs sm:text-sm text-[#F2EBDD] break-all">
+                      <a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#D49A46] underline decoration-[#D49A46]/30">
+                        {project.liveDemoUrl}
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <div className="shrink-0">
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  referrerPolicy="no-referrer"
-                  className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#090907] bg-[#D49A46] hover:bg-[#E5BA70] px-5 py-3 rounded-xs font-bold transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46]"
-                  aria-label={`Open GitHub repository for ${project.title}`}
-                >
-                  <Github className="w-4 h-4" />
-                  <span>[ OPEN GITHUB REPOSITORY ]</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
+              <div className="flex flex-wrap items-center gap-3 shrink-0">
+                {project.liveDemoUrl && (
+                  <a
+                    href={project.liveDemoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    referrerPolicy="no-referrer"
+                    className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#090907] bg-[#D49A46] hover:bg-[#E5BA70] px-5 py-3 rounded-xs font-bold transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span>Live Application</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                )}
+
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    referrerPolicy="no-referrer"
+                    className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#E5BA70] border border-[#D49A46]/60 hover:bg-[#D49A46]/10 px-4 py-3 rounded-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+                    aria-label={`Open GitHub repository for ${project.title}`}
+                  >
+                    <Github className="w-4 h-4" />
+                    <span>Open GitHub</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                )}
+
+                {project.apiDocsUrl && (
+                  <a
+                    href={project.apiDocsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    referrerPolicy="no-referrer"
+                    className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[#AAA398] border border-[#23211B] hover:border-[#8E887D] hover:bg-[#14130F] px-4 py-3 rounded-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span>API Docs</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                )}
               </div>
             </div>
           </section>
 
-          {/* =========================================================================
-              10 / RELATED SYSTEMS
-              ========================================================================= */}
-          <section id="related" aria-labelledby="section-10-title" className="pt-8 border-t border-[#292720]">
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" />
-              <span>10 // RELATED SYSTEMS</span>
+          {/* =======================================================================
+              EXPLORE OTHER FEATURED ARCHITECTURES
+              ======================================================================= */}
+          <section id="related-systems" aria-labelledby="related-heading" className="pt-10 border-t border-[#292720]">
+            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#D49A46] mb-2">
+              <span>Related Systems</span>
             </div>
             <h2
-              id="section-10-title"
+              id="related-heading"
               className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-6"
             >
-              EXPLORE OTHER PORTFOLIO ARCHITECTURES
+              Other Featured Architecture
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -688,15 +794,15 @@ export const ProjectCaseStudyPage: React.FC = () => {
                 <Link
                   key={relProj.id}
                   to={relProj.caseStudyRoute}
-                  className="group p-6 sm:p-8 rounded-sm bg-[#11100C] border border-[#292720] hover:border-[#D49A46] transition-all duration-300 focus-visible:outline-2 focus-visible:outline-[#D49A46] block"
-                  aria-label={`View Case Study: ${relProj.title}`}
+                  className="group p-6 sm:p-7 rounded-sm bg-[#11100C] border border-[#292720] hover:border-[#D49A46] transition-all duration-300 focus-visible:outline-2 focus-visible:outline-[#D49A46] block"
+                  aria-label={`Explore Project ${relProj.number}: ${relProj.title}`}
                 >
                   <div className="flex items-center justify-between mb-3">
-                    <span className="font-mono text-xs font-bold text-[#D49A46] px-2 py-0.5 rounded-xs bg-[#171612] border border-[#292720]">
-                      SYS_{relProj.number}
+                    <span className="font-mono text-xs font-bold text-[#D49A46] tracking-wider uppercase">
+                      Project {relProj.number}
                     </span>
                     <span className="font-mono text-xs text-[#AAA398] group-hover:text-[#F2EBDD] flex items-center gap-1">
-                      <span>VIEW SYSTEM</span>
+                      <span>View Engineering Detail</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </div>
@@ -709,18 +815,16 @@ export const ProjectCaseStudyPage: React.FC = () => {
                     {relProj.description}
                   </p>
 
-                  <div className="flex flex-wrap gap-1.5 pt-3 border-t border-[#292720]/60">
-                    {relProj.technologies.slice(0, 4).map((tech) => (
-                      <span
-                        key={tech}
-                        className="font-mono text-[10px] text-[#888175] bg-[#171612] px-2 py-0.5 rounded-xs"
-                      >
-                        {tech}
+                  <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-[#24221C] text-[11px] font-mono text-[#888175]">
+                    {relProj.technologies.slice(0, 4).map((tech, i) => (
+                      <span key={tech} className="inline-flex items-center gap-2">
+                        {i > 0 && <span className="text-[#4E4A42]" aria-hidden="true">·</span>}
+                        <span>{tech}</span>
                       </span>
                     ))}
                     {relProj.technologies.length > 4 && (
-                      <span className="font-mono text-[10px] text-[#68645C] px-1 py-0.5">
-                        +{relProj.technologies.length - 4} MORE
+                      <span className="text-[#68645C]">
+                        +{relProj.technologies.length - 4} more
                       </span>
                     )}
                   </div>

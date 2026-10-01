@@ -474,13 +474,13 @@ export const SystemsLabVisualizer: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Mental Health QA Application */}
+                {/* SliceMind Pizza Platform Application */}
                 <div className="p-3.5 rounded-xs bg-[#11100C] border border-[#24221C]">
                   <div className="font-mono text-[10px] uppercase tracking-wider text-[#E5BA70] mb-1">
-                    02 // MENTAL HEALTH QA
+                    02 // SLICEMIND PIZZA PLATFORM
                   </div>
                   <p className="text-xs text-[#DCD6CA] leading-relaxed font-light">
-                    {currentNode.verifiedApplication.mentalHealth}
+                    {currentNode.verifiedApplication.pizzaPlatform}
                   </p>
                 </div>
               </div>

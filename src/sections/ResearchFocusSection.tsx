@@ -1,187 +1,329 @@
-import React, { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
+import React from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Container } from '../components/primitives/Container';
-import { SectionHeading } from '../components/primitives/SectionHeading';
-import { Search, PenTool, Code, BarChart3, Rocket, RefreshCw } from 'lucide-react';
+import {
+  Eye,
+  Sparkles,
+  Cpu,
+  Server,
+  Database,
+  ArrowUpRight,
+  Compass,
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-interface WorkflowStep {
+interface CapabilityDomain {
   id: string;
-  code: string;
+  number: string;
   title: string;
+  tagline: string;
   icon: React.ReactNode;
-  description: string;
+  concepts: {
+    category: string;
+    items: string[];
+  }[];
+  appliedIn: {
+    label: string;
+    route?: string;
+  };
 }
 
-const WORKFLOW_STEPS: WorkflowStep[] = [
+const CAPABILITY_DOMAINS: CapabilityDomain[] = [
   {
-    id: 'understand',
-    code: 'STEP // 01',
-    title: 'UNDERSTAND',
-    icon: <Search className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
-    description: 'Analyzing problem constraints, user requirements, and technical feasibility.',
+    id: 'computer-vision',
+    number: '01',
+    title: 'COMPUTER VISION',
+    tagline: 'Visual-acoustic representations, convolutional feature scaling, and interpretability mapping.',
+    icon: <Eye className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    concepts: [
+      {
+        category: 'Acoustic-to-Vision Transformations',
+        items: ['STFT Log-Mel Spectrograms', 'Mel Filterbanks', 'Time-Frequency Tensors'],
+      },
+      {
+        category: 'Convolutional Architectures',
+        items: ['EfficientNet-B0', 'Compound Scaling', 'Hierarchical Pattern Extraction'],
+      },
+      {
+        category: 'Explainable AI (XAI)',
+        items: ['Grad-CAM Saliency Maps', 'Frequency Harmonic Overlays', 'Visual Diagnostics'],
+      },
+    ],
+    appliedIn: {
+      label: 'AI-Powered Respiratory Screening System',
+      route: '/projects/respiratory-ai',
+    },
   },
   {
-    id: 'design',
-    code: 'STEP // 02',
-    title: 'DESIGN',
-    icon: <PenTool className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
-    description: 'Architecting system schemas, UI/UX flows, and model selection.',
+    id: 'generative-ai',
+    number: '02',
+    title: 'GENERATIVE AI',
+    tagline: 'Retrieval-augmented architectures, multi-agent coordination, and contextual grounding.',
+    icon: <Sparkles className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    concepts: [
+      {
+        category: 'Retrieval-Augmented Systems',
+        items: ['RAG Pipeline Architecture', 'Context Retrieval', 'Semantic Indexing'],
+      },
+      {
+        category: 'Agent Orchestration',
+        items: ['Multi-Agent Task Routing', 'Grounded Verification', 'Tool Interfaces'],
+      },
+      {
+        category: 'Prompt Engineering & Safety',
+        items: ['Structured Grounding Directives', 'Strict Hallucination Constraints'],
+      },
+    ],
+    appliedIn: {
+      label: 'RAG Multi-Agent Assistant & Grounded Copilots',
+    },
   },
   {
-    id: 'build',
-    code: 'STEP // 03',
-    title: 'BUILD',
-    icon: <Code className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
-    description: 'Implementing robust code across full-stack and ML pipelines.',
+    id: 'ai-systems',
+    number: '03',
+    title: 'AI SYSTEMS',
+    tagline: 'Self-supervised representation learning, feature extraction, and automated decision-support reporting.',
+    icon: <Cpu className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    concepts: [
+      {
+        category: 'Representation Learning',
+        items: ['Self-Supervised Learning (SSL)', 'Unlabelled Feature Pre-training'],
+      },
+      {
+        category: 'Inference Pipelines',
+        items: ['Model-to-Product Architecture', 'Low-Latency Preprocessing', 'Contextual Representations'],
+      },
+      {
+        category: 'Decision-Support Systems',
+        items: ['Automated Screening Reports', 'Structured JSON Contracts', 'Interpretability Layers'],
+      },
+    ],
+    appliedIn: {
+      label: 'AI-Powered Respiratory Screening System',
+      route: '/projects/respiratory-ai',
+    },
   },
   {
-    id: 'evaluate',
-    code: 'STEP // 04',
-    title: 'EVALUATE',
-    icon: <BarChart3 className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
-    description: 'Testing performance, accuracy, and edge-case reliability.',
+    id: 'backend-engineering',
+    number: '04',
+    title: 'BACKEND / SOFTWARE ENGINEERING',
+    tagline: 'Stateless API routing, role-based authorization, and cryptographic transaction verification.',
+    icon: <Server className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    concepts: [
+      {
+        category: 'API & Middleware Architecture',
+        items: ['RESTful Routing', 'Node.js & Express Controllers', 'Request Validation'],
+      },
+      {
+        category: 'Security & Access Control',
+        items: ['Stateless JWT Authentication', 'Role-Based Access Control (RBAC)', 'bcrypt Hashing'],
+      },
+      {
+        category: 'Cryptographic Integrity',
+        items: ['Server-Side HMAC-SHA256 Signatures', 'Payment Handshake Verification'],
+      },
+      {
+        category: 'Data Persistence',
+        items: ['MongoDB Document Schemas', 'Mongoose ODM', 'Inventory Tracking'],
+      },
+    ],
+    appliedIn: {
+      label: 'SliceMind — Full-Stack Pizza Ordering Platform',
+      route: '/projects/slicemind',
+    },
   },
   {
-    id: 'deploy',
-    code: 'STEP // 05',
-    title: 'DEPLOY',
-    icon: <Rocket className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
-    description: 'Releasing to staging/production environments with monitoring.',
+    id: 'data-ml',
+    number: '05',
+    title: 'DATA / ML',
+    tagline: 'Acoustic signal conditioning, exploratory data analysis, and mathematical preprocessing.',
+    icon: <Database className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    concepts: [
+      {
+        category: 'Digital Signal Processing',
+        items: ['Butterworth Bandpass Filtering (50–2000 Hz)', 'Acoustic Noise Isolation'],
+      },
+      {
+        category: 'Data Science & Analysis',
+        items: ['Exploratory Data Analysis (EDA)', 'NumPy & Pandas', 'Feature Conditioning'],
+      },
+      {
+        category: 'Model Training & Evaluation',
+        items: ['TensorFlow & PyTorch', 'Loss Optimization', 'Acoustic Anomaly Validation'],
+      },
+    ],
+    appliedIn: {
+      label: 'Aminobots Industry Internship & Applied Machine Learning',
+    },
   },
-  {
-    id: 'iterate',
-    code: 'STEP // 06',
-    title: 'ITERATE',
-    icon: <RefreshCw className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
-    description: 'Continuous improvement based on feedback and performance data.',
-  },
-];
-
-const AI_PIPELINE = [
-  'DATA',
-  'REPRESENTATION',
-  'MODEL',
-  'EVALUATION',
-  'SYSTEM',
-  'PRODUCT'
 ];
 
 export const ResearchFocusSection: React.FC = () => {
-  const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const xLeft = useTransform(scrollYProgress, [0, 1], [-30, 30]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-      },
-    },
-  };
+  const easeCurve = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
   return (
     <section
-      ref={sectionRef}
-      id="how-i-build"
-      className="py-20 md:py-28 lg:py-32 border-b border-[#292720] bg-transparent relative scroll-mt-24 overflow-hidden"
+      id="focus"
+      aria-label="AI and Engineering Focus"
+      className="py-20 md:py-28 border-b border-[#292720] bg-transparent relative scroll-mt-20 overflow-hidden"
     >
-      {/* Engineering Process Subtle Geometric Accent */}
-      <div className="absolute inset-0 pointer-events-none -z-10" aria-hidden="true">
-        <svg className="w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
-          <line x1="10%" y1="0" x2="10%" y2="100%" stroke="#D49A46" strokeWidth="0.5" strokeDasharray="6 12" strokeOpacity="0.04" />
-          <line x1="90%" y1="0" x2="90%" y2="100%" stroke="#D49A46" strokeWidth="0.5" strokeDasharray="6 12" strokeOpacity="0.04" />
-        </svg>
-      </div>
-      <Container size="wide">
-        <SectionHeading
-          indexTag="04 / HOW I BUILD"
-          title="HOW I BUILD"
-          description="A systematic engineering workflow for building robust AI systems and scalable software."
-        />
+      {/* Anchor aliases for navigation links */}
+      <span id="research-focus" className="sr-only" aria-hidden="true" />
+      <span id="how-i-build" className="sr-only" aria-hidden="true" />
 
-        {/* AI Pipeline Logic Flow */}
-        <div className="mb-16 mt-12 overflow-x-auto pb-4 scrollbar-hide">
-          <div className="flex items-center gap-4 min-w-max">
-            {AI_PIPELINE.map((step, idx) => (
-              <React.Fragment key={step}>
-                <div className="flex flex-col items-center">
-                  <span className="font-mono text-[10px] text-[#68645C] mb-2 uppercase tracking-widest">
-                    {idx + 1}
-                  </span>
-                  <div className="px-6 py-3 border border-[#24221C] bg-[#0E0D0A] text-[#F2EBDD] font-mono text-[11px] uppercase tracking-widest font-bold">
-                    {step}
-                  </div>
-                </div>
-                {idx < AI_PIPELINE.length - 1 && (
-                  <div className="w-8 h-px bg-[#24221C] mt-6" />
-                )}
-              </React.Fragment>
-            ))}
+      {/* Atmospheric Ambient Glow */}
+      <div className="absolute inset-0 pointer-events-none -z-10" aria-hidden="true">
+        <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] bg-[#D49A46]/[0.015] blur-[140px] rounded-full" />
+      </div>
+
+      <Container size="wide">
+        {/* Section Header */}
+        <div className="mb-12 sm:mb-14">
+          <div className="flex items-center gap-2 mb-2.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
+            <span className="font-mono text-xs uppercase tracking-widest text-[#D49A46] font-semibold">
+              03. Engineering Capability Map
+            </span>
+            <span className="text-[#4E4A42] text-xs font-mono" aria-hidden="true">·</span>
+            <span className="font-mono text-xs uppercase tracking-wider text-[#888175]">
+              Active Building Focus
+            </span>
+          </div>
+
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div>
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold uppercase tracking-tight text-[#F2EBDD]">
+                Current Focus
+              </h2>
+              <p className="mt-2 text-sm sm:text-base text-[#AAA398] max-w-2xl font-light leading-relaxed">
+                The technical domains and architectural layers I actively design, evaluate, and deploy.
+              </p>
+            </div>
+
+            {/* Core Direction Thesis Card */}
+            <div className="p-4 sm:p-5 rounded-xs bg-[#11100C] border border-[#24221C] max-w-md shrink-0">
+              <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-[#D49A46] mb-1.5">
+                <Compass className="w-3.5 h-3.5 text-[#D49A46]" />
+                <span>Engineering Thesis</span>
+              </div>
+              <p className="text-xs sm:text-sm text-[#DCD6CA] font-light leading-relaxed">
+                Building at the convergence of perception models, generative agent workflows, and production backend infrastructure — from model → product.
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Engineering Workflow Grid */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          variants={containerVariants}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {WORKFLOW_STEPS.map((step) => (
-            <motion.div
-              key={step.id}
-              variants={itemVariants}
-              className="group p-8 border border-[#24221C] bg-[#0E0D0A] hover:bg-[#11100C] hover:border-[#D49A46]/30 transition-all duration-300"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <span className="font-mono text-[10px] text-[#D49A46] tracking-widest">
-                  {step.code}
-                </span>
-                <div className="p-2 border border-[#24221C] group-hover:border-[#D49A46]/20 transition-colors">
-                  {step.icon}
-                </div>
-              </div>
-              <h3 className="font-display text-lg font-bold text-[#F2EBDD] mb-3 uppercase tracking-tight">
-                {step.title}
-              </h3>
-              <p className="font-body text-sm sm:text-[15px] text-[#AAA398] leading-relaxed font-normal">
-                {step.description}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </Container>
+        {/* =========================================================================
+            ENGINEERING CAPABILITY MAP
+            A structured capability matrix (NOT a skill-cloud):
+            Top row: Computer Vision · Generative AI · AI Systems
+            Bottom row: Backend / Software Engineering · Data / ML
+            ========================================================================= */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {CAPABILITY_DOMAINS.map((domain, index) => {
+            const isWideBottom = index >= 3;
 
-      {/* Background Watermark */}
-      {!shouldReduceMotion && (
-        <motion.div
-          style={{ x: xLeft }}
-          className="absolute -bottom-12 left-0 font-display font-black text-[12rem] text-[#F2EBDD] opacity-[0.015] whitespace-nowrap pointer-events-none select-none"
-        >
-          UNDERSTAND · DESIGN · BUILD · EVALUATE · DEPLOY · ITERATE
-        </motion.div>
-      )}
+            return (
+              <motion.article
+                key={domain.id}
+                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.45, delay: index * 0.06, ease: easeCurve }}
+                className={`p-6 sm:p-7 rounded-sm bg-[#11100C] border border-[#24221C] hover:border-[#D49A46]/40 transition-colors duration-300 flex flex-col justify-between group ${
+                  isWideBottom && index === 3 ? 'lg:col-span-1 xl:col-span-1' : ''
+                } ${isWideBottom && index === 4 ? 'lg:col-span-2 xl:col-span-2' : ''}`}
+                aria-label={`${domain.title} capability area`}
+              >
+                <div>
+                  {/* Top Index & Icon */}
+                  <div className="flex items-center justify-between gap-3 mb-4 pb-3 border-b border-[#1F1E19]">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs font-bold text-[#D49A46]">
+                        {domain.number}
+                      </span>
+                      <span className="text-[#3E3B33] text-xs font-mono" aria-hidden="true">/</span>
+                      <span className="font-mono text-[11px] text-[#888175] uppercase tracking-wider">
+                        Domain
+                      </span>
+                    </div>
+
+                    <div className="p-2 rounded-xs bg-[#161511] border border-[#292720] group-hover:border-[#D49A46]/30 transition-colors">
+                      {domain.icon}
+                    </div>
+                  </div>
+
+                  {/* Title & Tagline */}
+                  <h3 className="font-display text-lg sm:text-xl font-bold uppercase text-[#F2EBDD] tracking-tight mb-2 group-hover:text-[#FFFDF9] transition-colors">
+                    {domain.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#AAA398] font-light leading-relaxed mb-6">
+                    {domain.tagline}
+                  </p>
+
+                  {/* Grouped Concepts */}
+                  <div className="space-y-4 mb-6">
+                    {domain.concepts.map((concept) => (
+                      <div key={concept.category} className="space-y-1.5">
+                        <div className="font-mono text-[10px] uppercase tracking-wider text-[#888175]">
+                          {concept.category}
+                        </div>
+                        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-mono text-[#DCD6CA]">
+                          {concept.items.map((item, i) => (
+                            <span key={item} className="inline-flex items-center gap-2.5">
+                              {i > 0 && <span className="text-[#3E3B33]" aria-hidden="true">·</span>}
+                              <span>{item}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Applied Grounding Link / Badge */}
+                <div className="pt-4 border-t border-[#1F1E19] flex items-center justify-between gap-3 text-xs font-mono">
+                  <div className="text-[11px] text-[#888175] truncate">
+                    <span className="text-[#68645C] uppercase tracking-wider block text-[10px]">
+                      Applied In
+                    </span>
+                    <span className="text-[#E5BA70] truncate block">
+                      {domain.appliedIn.label}
+                    </span>
+                  </div>
+
+                  {domain.appliedIn.route && (
+                    <Link
+                      to={domain.appliedIn.route}
+                      className="shrink-0 p-1.5 rounded-xs bg-[#161511] hover:bg-[#1F1D17] border border-[#292720] hover:border-[#D49A46] text-[#AAA398] hover:text-[#E5BA70] transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+                      aria-label={`View project details for ${domain.appliedIn.label}`}
+                    >
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </Link>
+                  )}
+                </div>
+              </motion.article>
+            );
+          })}
+        </div>
+
+        {/* Bottom Directional Takeaway */}
+        <div className="mt-10 p-5 rounded-xs bg-[#11100C] border border-[#24221C] flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs font-mono text-[#AAA398]">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
+            <span className="text-[#E5BA70] uppercase tracking-wider font-semibold">
+              Capability Principle:
+            </span>
+            <span className="text-[#AAA398]">
+              No synthetic skill percentages or arbitrary tier ratings.
+            </span>
+          </div>
+          <div className="text-[#68645C]">
+            Verified through deployed architectures & authenticated repositories
+          </div>
+        </div>
+      </Container>
     </section>
   );
 };

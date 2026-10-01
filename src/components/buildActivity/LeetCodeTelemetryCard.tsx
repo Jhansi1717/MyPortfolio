@@ -99,7 +99,7 @@ export const LeetCodeTelemetryCard: React.FC<LeetCodeTelemetryCardProps> = ({
           <div className="flex items-center justify-between pb-4 border-b border-[#292720] mb-6">
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-bold text-[#E5BA70] uppercase tracking-wider">
-                LEETCODE TELEMETRY
+                LEETCODE STATS
               </span>
               <span className="text-[#68645C]">•</span>
               <span className="font-mono text-[11px] text-[#888175]">
@@ -155,14 +155,14 @@ export const LeetCodeTelemetryCard: React.FC<LeetCodeTelemetryCardProps> = ({
       variant="surface"
       className="p-6 md:p-8 h-full flex flex-col justify-between"
       id="leetcode-telemetry-card"
-      aria-label="LeetCode Algorithmic Problem Solving Telemetry"
+      aria-label="LeetCode Algorithmic Problem Solving Stats"
     >
       <div>
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-[#292720] mb-6">
           <div className="flex items-center gap-2">
             <span className="font-mono text-xs font-bold text-[#E5BA70] uppercase tracking-wider">
-              LEETCODE TELEMETRY
+              LEETCODE STATS
             </span>
             <span className="text-[#68645C]">•</span>
             <span className="font-mono text-[11px] text-[#AAA398]">
@@ -194,7 +194,7 @@ export const LeetCodeTelemetryCard: React.FC<LeetCodeTelemetryCardProps> = ({
         <div className="p-4 rounded-xs bg-[#14130F] border border-[#24221C] mb-4">
           <div className="flex items-center justify-between">
             <span className="font-mono text-[10px] uppercase tracking-wider text-[#68645C]">
-              VERIFIED PROBLEMS SOLVED
+              PROBLEMS SOLVED
             </span>
             <span className="font-mono text-xs text-[#D49A46]">
               COMPUTED LIVE

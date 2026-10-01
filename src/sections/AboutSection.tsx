@@ -41,36 +41,7 @@ export const AboutSection: React.FC = () => {
                 aria-hidden="true"
               />
 
-              {/* Secondary Portrait: Editorial Offset
-                  Reveal: opacity + translateX, Stagger: 120ms, Duration: 800ms */}
-              <motion.div
-                initial={
-                  shouldReduceMotion
-                    ? { opacity: 1, x: 0 }
-                    : { opacity: 0, x: -22 }
-                }
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{
-                  duration: 0.8,
-                  delay: 0.12,
-                  ease: easeCurve,
-                }}
-                style={shouldReduceMotion ? {} : { y: secondaryShiftY }}
-                className="absolute left-0 top-6 sm:top-8 w-[72%] aspect-[4/5] z-10"
-              >
-                <div className="w-full h-full p-[1px] bg-[#1E1C16] border border-[#2B2820] shadow-2xl overflow-hidden group">
-                  <img
-                    src="/Jhansi_Profile_Secondary.jpeg"
-                    alt="Jhansi Bhukya - Working on systems engineering"
-                    className="w-full h-full object-cover grayscale-[0.25] transition-transform duration-500 group-hover:scale-[1.015]"
-                  />
-                  <div className="absolute inset-0 bg-[#080806]/20 pointer-events-none" />
-                </div>
-              </motion.div>
-
-              {/* Primary Portrait: Dominant Focal Anchor
-                  Reveal: clip-path reveal + opacity + translateY, Duration: 800ms */}
+              {/* Primary Portrait: Dominant Focal Anchor with custom framing and crop */}
               <motion.div
                 initial={
                   shouldReduceMotion
@@ -88,15 +59,17 @@ export const AboutSection: React.FC = () => {
                   ease: easeCurve,
                 }}
                 style={shouldReduceMotion ? {} : { y: primaryShiftY }}
-                className="relative ml-auto w-[78%] aspect-[4/5] z-20"
+                className="relative w-full h-full z-20"
               >
                 <div className="w-full h-full p-[1px] bg-[#1C1B15] border border-[#D49A46]/35 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.85)] relative overflow-hidden group">
                   <img
                     src="/Jhansi_Profile_Primary.jpeg"
                     alt="Jhansi Bhukya - AI / ML Engineer"
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.015]"
+                    className="w-full h-full object-cover object-[center_0%] scale-[1.0] grayscale-[10%] brightness-[92%] contrast-[105%] transition-transform duration-500 group-hover:scale-[1.1]"
                   />
-                  {/* Subtle Light Tone */}
+                  {/* Subtle Cinematic Edge Vignette / Radial mask overlay for distinct framing */}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,rgba(8,8,6,0.35)_100%)] pointer-events-none" />
+                  {/* Subtle Light Tone overlay */}
                   <div className="absolute inset-0 bg-[linear-gradient(135deg,transparent_40%,rgba(212,154,70,0.04)_50%,transparent_60%)] pointer-events-none" />
                 </div>
               </motion.div>

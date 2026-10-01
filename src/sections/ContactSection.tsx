@@ -1,8 +1,20 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
-import { Mail, ArrowUpRight, Copy, Check, Loader2, MapPin } from 'lucide-react';
+import {
+  Mail,
+  Linkedin,
+  Github,
+  FileText,
+  ArrowUpRight,
+  Copy,
+  Check,
+  Send,
+  Loader2,
+  ExternalLink,
+} from 'lucide-react';
 import { Container } from '../components/primitives/Container';
-import { authoritativeProfile } from '../data/portfolioData';
+import { authoritativeProfile, resumeConfig } from '../data/portfolioData';
+import { EASE_CUSTOM, DURATION } from '../utils/motionTokens';
 
 export const ContactSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -15,12 +27,17 @@ export const ContactSection: React.FC = () => {
     'bot-field': '',
   });
 
+  const emailAddress = authoritativeProfile.email; // jhansibhukya17@gmail.com
+  const linkedinUrl = authoritativeProfile.linkedin.profileUrl; // https://www.linkedin.com/in/jhansibhukya/
+  const githubUrl = authoritativeProfile.github.profileUrl; // https://github.com/Jhansi1717
+  const resumeUrl = resumeConfig.filePath; // /resume/Jhansi_Bhukya_Resume.pdf
+
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    navigator.clipboard.writeText('jhansibhukya17@gmail.com');
+    navigator.clipboard.writeText(emailAddress);
     setEmailCopied(true);
-    setTimeout(() => setEmailCopied(false), 2000);
+    setTimeout(() => setEmailCopied(false), 2200);
   };
 
   const encode = (data: Record<string, string>) => {
@@ -36,14 +53,20 @@ export const ContactSection: React.FC = () => {
     setFormState('submitting');
 
     try {
-      await fetch('/', {
+      const response = await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: encode({ 'form-name': 'contact', ...formData }),
       });
-      setFormState('success');
+      
+      if (response.ok) {
+        setFormState('success');
+      } else {
+        console.error('Form submission HTTP failure:', response.status);
+        setFormState('error');
+      }
     } catch (error) {
-      console.error('Form submission error:', error);
+      console.error('Form submission network error:', error);
       setFormState('error');
     }
   };
@@ -63,213 +86,222 @@ export const ContactSection: React.FC = () => {
     setFormState('initial');
   };
 
-  const contactLinks = [
-    {
-      label: 'EMAIL',
-      value: 'jhansibhukya17@gmail.com',
-      href: 'mailto:jhansibhukya17@gmail.com',
-      isEmail: true,
-    },
-    {
-      label: 'GITHUB',
-      value: 'github.com/Jhansi1717',
-      href: authoritativeProfile.github.profileUrl,
-      isExternal: true,
-    },
-    {
-      label: 'LINKEDIN',
-      value: 'linkedin.com/in/jhansibhukya/',
-      href: authoritativeProfile.linkedin.profileUrl,
-      isExternal: true,
-    },
-    {
-      label: 'LEETCODE',
-      value: 'leetcode.com/u/Jhansi_gopal/',
-      href: authoritativeProfile.leetcode.profileUrl,
-      isExternal: true,
-    },
-    {
-      label: 'LOCATION',
-      value: 'Hyderabad, India',
-      isLocation: true,
-    },
-  ];
-
-  const easeCurve = [0.16, 1, 0.3, 1] as [number, number, number, number];
-
   return (
     <section
       id="contact"
-      aria-label="Contact"
-      className="py-20 md:py-28 lg:py-32 border-t border-[#292720] bg-transparent relative w-full overflow-hidden scroll-mt-24"
+      aria-label="Contact and Direct Inquiries"
+      className="py-20 md:py-28 border-b border-[#292720] bg-transparent relative scroll-mt-20 overflow-hidden"
     >
-      {/* Subtle Background Accent — Single Restrained Glow & Grid Line Behind Content */}
+      {/* Background ambient glow */}
       <div className="absolute inset-0 pointer-events-none -z-10" aria-hidden="true">
-        <div className="absolute top-1/4 right-1/3 w-[360px] h-[360px] bg-[#D49A46]/[0.025] blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#292720] to-transparent" />
+        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-[#D49A46]/[0.018] blur-[140px] rounded-full" />
       </div>
 
       <Container size="wide">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-start w-full">
+        {/* Section Header */}
+        <div className="mb-10 sm:mb-12">
+          <div className="flex items-center gap-2 mb-2.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
+            <span className="font-mono text-xs uppercase tracking-widest text-[#D49A46] font-semibold">
+              05. Contact
+            </span>
+            <span className="text-[#4E4A42] text-xs font-mono" aria-hidden="true">·</span>
+            <span className="font-mono text-xs uppercase tracking-wider text-[#888175]">
+              Get In Touch
+            </span>
+          </div>
+
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight text-[#F2EBDD]">
+            Let's build something useful.
+          </h2>
+          <p className="mt-3 text-sm sm:text-base text-[#AAA398] max-w-2xl font-light leading-relaxed">
+            Open to AI/ML engineering, systems development, and software opportunities. Direct email outreach is preferred.
+          </p>
+        </div>
+
+        {/* Compact CTA Ribbon */}
+        <div className="mb-10 p-5 sm:p-6 rounded-sm bg-[#14130F] border border-[#24221C] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xs bg-[#1A1914] text-[#D49A46] border border-[#292720]">
+              <FileText className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="font-display text-sm font-bold uppercase text-[#F2EBDD]">
+                Resume &amp; Background
+              </div>
+              <div className="font-mono text-xs text-[#888175]">
+                PDF document with complete academic and engineering details
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#D49A46] text-[#090907] font-mono text-xs uppercase font-bold tracking-wider rounded-xs hover:bg-[#E5BA70] transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>VIEW RESUME</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
+
+            <a
+              href={`mailto:${emailAddress}`}
+              className="inline-flex items-center gap-2 px-4 py-2.5 border border-[#292720] bg-[#161511] text-[#E5BA70] hover:text-[#FFFDF9] hover:border-[#D49A46]/60 font-mono text-xs uppercase font-semibold tracking-wider rounded-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+            >
+              <Mail className="w-3.5 h-3.5" />
+              <span>GET IN TOUCH</span>
+            </a>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           
-          {/* =========================================================================
-              LEFT COLUMN (~42%): Heading, Context, Compact Editorial Contact Rows
-              ========================================================================= */}
-          <motion.div
-            initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.6, ease: easeCurve }}
-            className="w-full min-w-0 lg:col-span-5 flex flex-col justify-start"
-          >
-            {/* 10 / CONTACT Tag */}
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
-              <span className="font-mono text-[11px] uppercase tracking-[0.10em] text-[#D49A46] font-semibold">
-                10 / CONTACT
-              </span>
+          {/* LEFT: Direct Contact Channels */}
+          <div className="lg:col-span-6 space-y-5">
+            
+            {/* Direct Email Card */}
+            <div className="p-6 rounded-sm bg-[#11100C] border border-[#292720] hover:border-[#D49A46]/40 transition-colors duration-200">
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-widest text-[#D49A46]">
+                  <Mail className="w-4 h-4 text-[#D49A46]" />
+                  <span>EMAIL</span>
+                </div>
+                <span className="font-mono text-[11px] text-[#888175]">Primary</span>
+              </div>
+
+              <div className="mb-4">
+                <a
+                  href={`mailto:${emailAddress}`}
+                  className="font-mono text-base sm:text-lg font-bold text-[#F2EBDD] hover:text-[#E5BA70] transition-colors break-all flex items-center gap-2 group/link"
+                >
+                  <span>{emailAddress}</span>
+                  <ArrowUpRight className="w-4 h-4 text-[#D49A46] shrink-0 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+                </a>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-[#1F1E19]">
+                <a
+                  href={`mailto:${emailAddress}`}
+                  className="inline-flex items-center justify-center gap-2 bg-[#D49A46] hover:bg-[#E5BA70] text-[#090907] font-mono text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+                >
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>Send Email</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  className="inline-flex items-center justify-center gap-2 bg-[#161511] hover:bg-[#1E1D18] text-[#AAA398] hover:text-[#F2EBDD] border border-[#292720] font-mono text-xs uppercase tracking-wider px-3.5 py-2 rounded-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46] cursor-pointer"
+                >
+                  {emailCopied ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-[#4ADE80]" />
+                      <span className="text-[#4ADE80] font-medium">Copied</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5 text-[#D49A46]" />
+                      <span>Copy Address</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
 
-            {/* Display Heading */}
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-bold uppercase tracking-[-0.02em] text-[#F2EBDD] leading-[1.12] mb-4 max-w-md">
-              LET'S BUILD
-              <br />
-              SOMETHING USEFUL.
-            </h2>
-
-            {/* Supporting Copy */}
-            <p className="font-body text-base sm:text-lg text-[#AAA398] font-normal leading-relaxed max-w-md mb-8 sm:mb-10">
-              Open to professional opportunities in AI/ML engineering, software systems, and applied AI.
-            </p>
-
-            {/* Compact Editorial Rows */}
-            <div className="border-t border-[#24221C] w-full">
-              {contactLinks.map((item, index) => {
-                const isClickable = !item.isLocation;
-
-                const innerContent = (
-                  <div className="flex items-center justify-between py-3.5 sm:py-4 border-b border-[#24221C] transition-colors group/row">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-6 min-w-0 pr-2">
-                      <span className="font-mono text-[10px] text-[#68645C] uppercase tracking-[0.10em] font-medium w-20 shrink-0">
-                        {item.label}
-                      </span>
-                      <span className="font-body text-sm text-[#AAA398] group-hover/row:text-[#F2EBDD] transition-colors truncate">
-                        {item.value}
-                      </span>
+            {/* Profiles: LinkedIn & GitHub */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <a
+                href={linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-4 rounded-xs bg-[#11100C] hover:bg-[#161511] border border-[#24221C] hover:border-[#D49A46]/60 transition-all duration-200 group flex items-center justify-between focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xs bg-[#191814] text-[#D49A46]">
+                    <Linkedin className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="font-display text-xs sm:text-sm font-bold uppercase text-[#F2EBDD] group-hover:text-[#FFFDF9]">
+                      LinkedIn
                     </div>
-
-                    <div className="flex items-center gap-2 shrink-0">
-                      {item.isEmail && (
-                        <button
-                          type="button"
-                          onClick={handleCopyEmail}
-                          title="Copy email to clipboard"
-                          aria-label="Copy email address"
-                          className="p-1.5 rounded-xs text-[#8E887D] hover:text-[#D49A46] hover:bg-[#1C1B16] transition-colors"
-                        >
-                          {emailCopied ? (
-                            <span className="flex items-center gap-1 font-mono text-[10px] text-[#4ADE80] uppercase">
-                              <Check className="w-3.5 h-3.5" />
-                              <span className="hidden sm:inline">COPIED</span>
-                            </span>
-                          ) : (
-                            <Copy className="w-3.5 h-3.5" />
-                          )}
-                        </button>
-                      )}
-
-                      {isClickable && (
-                        <span className="text-[#D49A46] text-sm transform group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 transition-transform">
-                          <ArrowUpRight className="w-4 h-4" />
-                        </span>
-                      )}
-
-                      {item.isLocation && (
-                        <MapPin className="w-3.5 h-3.5 text-[#68645C]" />
-                      )}
+                    <div className="font-mono text-[11px] text-[#888175]">
+                      in/jhansibhukya
                     </div>
                   </div>
-                );
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-[#888175] group-hover:text-[#D49A46] transition-colors" />
+              </a>
 
-                if (isClickable) {
-                  return (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      target={item.isExternal ? '_blank' : undefined}
-                      rel={item.isExternal ? 'noopener noreferrer' : undefined}
-                      className="block w-full focus-visible:outline-1 focus-visible:outline-[#D49A46]"
-                    >
-                      {innerContent}
-                    </a>
-                  );
-                }
-
-                return (
-                  <div key={item.label} className="w-full">
-                    {innerContent}
+              <a
+                href={githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-4 rounded-xs bg-[#11100C] hover:bg-[#161511] border border-[#24221C] hover:border-[#D49A46]/60 transition-all duration-200 group flex items-center justify-between focus-visible:outline-2 focus-visible:outline-[#D49A46]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xs bg-[#191814] text-[#D49A46]">
+                    <Github className="w-4 h-4" />
                   </div>
-                );
-              })}
+                  <div>
+                    <div className="font-display text-xs sm:text-sm font-bold uppercase text-[#F2EBDD] group-hover:text-[#FFFDF9]">
+                      GitHub
+                    </div>
+                    <div className="font-mono text-[11px] text-[#888175]">
+                      @Jhansi1717
+                    </div>
+                  </div>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-[#888175] group-hover:text-[#D49A46] transition-colors" />
+              </a>
             </div>
-          </motion.div>
 
-          {/* =========================================================================
-              RIGHT COLUMN (~58%): Clean Enclosed Contact Form
-              ========================================================================= */}
-          <motion.div
-            initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.6, delay: 0.15, ease: easeCurve }}
-            className="w-full min-w-0 lg:col-span-7"
-          >
-            <div className="w-full bg-[#11110E] border border-[#292720] rounded-xs p-6 sm:p-8 lg:p-10 box-border shadow-lg">
-              <div className="font-mono text-[11px] text-[#8E887D] uppercase tracking-[0.10em] font-medium mb-6 flex items-center justify-between">
-                <span>CONTACT FORM</span>
-                <span className="text-[#68645C] text-[10px]">ALL FIELDS REQUIRED</span>
+          </div>
+
+          {/* RIGHT: Quick Message Form */}
+          <div className="lg:col-span-6">
+            <div className="p-6 sm:p-7 rounded-sm bg-[#11100C] border border-[#292720]">
+              <div className="font-mono text-xs font-bold uppercase tracking-widest text-[#888175] mb-4 pb-3 border-b border-[#1F1E19]">
+                SEND A MESSAGE
               </div>
 
               <AnimatePresence mode="wait">
                 {formState === 'success' ? (
                   <motion.div
                     key="success"
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.4, ease: easeCurve }}
-                    className="py-8 sm:py-12 flex flex-col items-start"
+                    className="py-8 text-center"
                   >
-                    <div className="w-10 h-10 rounded-full bg-[#D49A46]/10 border border-[#D49A46]/30 flex items-center justify-center mb-5 text-[#D49A46]">
-                      <Check className="w-5 h-5" />
+                    <div className="w-9 h-9 rounded-full bg-[#D49A46]/10 border border-[#D49A46]/30 flex items-center justify-center mx-auto mb-3 text-[#D49A46]">
+                      <Check className="w-4 h-4" />
                     </div>
-                    <h3 className="font-display text-xl sm:text-2xl font-bold uppercase tracking-tight text-[#F2EBDD] mb-3">
-                      MESSAGE SENT
+                    <h3 className="font-display text-lg font-bold uppercase text-[#F2EBDD] mb-1">
+                      Message Sent
                     </h3>
-                    <p className="font-body text-sm sm:text-base text-[#AAA398] font-normal leading-relaxed mb-8 max-w-md">
-                      Thanks for reaching out. Your message has been received.
+                    <p className="text-xs text-[#AAA398] font-light max-w-sm mx-auto mb-4">
+                      Thank you. Your note has been received.
                     </p>
                     <button
                       type="button"
                       onClick={handleReset}
-                      className="font-mono text-xs uppercase font-semibold tracking-[0.06em] text-[#D49A46] hover:text-[#E5BA70] transition-colors flex items-center gap-2"
+                      className="font-mono text-xs uppercase font-semibold text-[#D49A46] hover:text-[#E5BA70] transition-colors inline-flex items-center gap-1 cursor-pointer"
                     >
-                      <span>SEND ANOTHER MESSAGE</span>
+                      <span>Send Another Note</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
                     </button>
                   </motion.div>
                 ) : (
-                  <motion.form
-                    key="form"
+                  <form
                     name="contact"
                     method="POST"
                     data-netlify="true"
                     data-netlify-honeypot="bot-field"
                     onSubmit={handleSubmit}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="w-full box-border"
+                    className="space-y-3.5"
                   >
                     <input type="hidden" name="form-name" value="contact" />
                     <p className="hidden">
@@ -279,14 +311,13 @@ export const ContactSection: React.FC = () => {
                       </label>
                     </p>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 mb-6">
-                      {/* Name Field */}
-                      <div className="w-full min-w-0">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      <div>
                         <label
                           htmlFor="name"
-                          className="block font-mono text-[10px] text-[#8E887D] uppercase tracking-[0.10em] font-medium mb-2"
+                          className="block font-mono text-[10px] text-[#888175] uppercase tracking-wider mb-1"
                         >
-                          NAME
+                          Name
                         </label>
                         <input
                           type="text"
@@ -295,18 +326,17 @@ export const ContactSection: React.FC = () => {
                           required
                           value={formData.name}
                           onChange={handleChange}
-                          placeholder="Your name"
-                          className="w-full bg-[#090907] border border-[#292720] rounded-xs px-4 py-3 font-body text-sm text-[#F2EBDD] font-normal placeholder-[#787368] focus:outline-none focus:border-[#D49A46] focus:ring-1 focus:ring-[#D49A46] transition-colors box-border"
+                          placeholder="Your Name"
+                          className="w-full bg-[#090907] border border-[#24221C] rounded-xs px-3 py-2 text-xs sm:text-sm text-[#F2EBDD] font-light placeholder-[#5A574E] focus:outline-none focus:border-[#D49A46] transition-colors"
                         />
                       </div>
 
-                      {/* Email Field */}
-                      <div className="w-full min-w-0">
+                      <div>
                         <label
                           htmlFor="email"
-                          className="block font-mono text-[10px] text-[#8E887D] uppercase tracking-[0.10em] font-medium mb-2"
+                          className="block font-mono text-[10px] text-[#888175] uppercase tracking-wider mb-1"
                         >
-                          EMAIL
+                          Email
                         </label>
                         <input
                           type="email"
@@ -315,73 +345,64 @@ export const ContactSection: React.FC = () => {
                           required
                           value={formData.email}
                           onChange={handleChange}
-                          placeholder="your@email.com"
-                          className="w-full bg-[#090907] border border-[#292720] rounded-xs px-4 py-3 font-body text-sm text-[#F2EBDD] font-normal placeholder-[#787368] focus:outline-none focus:border-[#D49A46] focus:ring-1 focus:ring-[#D49A46] transition-colors box-border"
+                          placeholder="you@example.com"
+                          className="w-full bg-[#090907] border border-[#24221C] rounded-xs px-3 py-2 text-xs sm:text-sm text-[#F2EBDD] font-light placeholder-[#5A574E] focus:outline-none focus:border-[#D49A46] transition-colors"
                         />
                       </div>
                     </div>
 
-                    {/* Message Field */}
-                    <div className="w-full min-w-0 mb-6">
+                    <div>
                       <label
                         htmlFor="message"
-                        className="block font-mono text-[10px] text-[#8E887D] uppercase tracking-[0.10em] font-medium mb-2"
+                        className="block font-mono text-[10px] text-[#888175] uppercase tracking-wider mb-1"
                       >
-                        MESSAGE
+                        Message
                       </label>
                       <textarea
                         id="message"
                         name="message"
+                        rows={3}
                         required
-                        rows={5}
                         value={formData.message}
                         onChange={handleChange}
-                        placeholder="Tell me about your project, opportunity, or idea"
-                        className="w-full min-h-[150px] bg-[#090907] border border-[#292720] rounded-xs px-4 py-3 font-body text-sm text-[#F2EBDD] font-normal placeholder-[#787368] focus:outline-none focus:border-[#D49A46] focus:ring-1 focus:ring-[#D49A46] transition-colors resize-y box-border leading-relaxed"
+                        placeholder="Role opportunity, project discussion, or inquiry..."
+                        className="w-full bg-[#090907] border border-[#24221C] rounded-xs px-3 py-2 text-xs sm:text-sm text-[#F2EBDD] font-light placeholder-[#5A574E] focus:outline-none focus:border-[#D49A46] transition-colors resize-none"
                       />
                     </div>
 
-                    {/* Action & Status */}
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
+                    {formState === 'error' && (
+                      <div className="p-2.5 rounded-xs bg-[#24130F] border border-[#7F1D1D] text-[#FCA5A5] text-xs font-mono">
+                        Submission error. Please email directly at {emailAddress}.
+                      </div>
+                    )}
+
+                    <div className="pt-1">
                       <button
                         type="submit"
                         disabled={formState === 'submitting'}
-                        className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 sm:py-4 bg-[#D49A46] text-[#090907] font-mono text-xs uppercase font-semibold tracking-[0.06em] rounded-xs transition-all duration-200 hover:bg-[#E5BA70] hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#181712] hover:bg-[#222019] text-[#E5BA70] border border-[#D49A46]/50 hover:border-[#D49A46] font-mono text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46] cursor-pointer disabled:opacity-50"
                       >
                         {formState === 'submitting' ? (
                           <>
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            <span>SENDING...</span>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            <span>Sending...</span>
                           </>
                         ) : (
                           <>
-                            <span>SEND MESSAGE</span>
-                            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                            <Send className="w-3.5 h-3.5 text-[#D49A46]" />
+                            <span>Send Message</span>
                           </>
                         )}
                       </button>
-
-                      {formState === 'error' && (
-                        <p className="font-mono text-xs text-[#F87171] uppercase tracking-[0.08em]" role="alert">
-                          MESSAGE COULD NOT BE SENT. Please try again.
-                        </p>
-                      )}
                     </div>
-                  </motion.form>
+                  </form>
                 )}
               </AnimatePresence>
             </div>
-          </motion.div>
+          </div>
 
         </div>
       </Container>
-
-      {/* Accessible Live Region */}
-      <div className="sr-only" aria-live="polite">
-        {formState === 'submitting' && 'Sending message...'}
-        {formState === 'success' && 'Message sent successfully.'}
-        {formState === 'error' && 'Error sending message. Please try again.'}
-      </div>
     </section>
   );
 };

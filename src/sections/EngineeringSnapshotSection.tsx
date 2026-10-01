@@ -1,190 +1,231 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Container } from '../components/primitives/Container';
-import { engineeringSnapshotData } from '../data/portfolioData';
-import { Brain, Terminal, Database, Cpu, Layers } from 'lucide-react';
-import { cn } from '../lib/utils';
+import {
+  Code2,
+  Brain,
+  Sparkles,
+  Eye,
+  Server,
+  Database,
+  Wrench,
+  CheckCircle,
+} from 'lucide-react';
+
+interface SkillCategory {
+  id: string;
+  name: string;
+  code: string;
+  icon: React.ReactNode;
+  skills: string[];
+  evidence: string;
+}
+
+const SKILL_CATEGORIES: SkillCategory[] = [
+  {
+    id: 'languages',
+    name: 'LANGUAGES',
+    code: '01',
+    icon: <Code2 className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    skills: ['Python', 'JavaScript', 'SQL', 'HTML / CSS'],
+    evidence: 'Core language across all AI pipelines, web services, and systems.',
+  },
+  {
+    id: 'ai-ml',
+    name: 'AI / ML',
+    code: '02',
+    icon: <Brain className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    skills: [
+      'TensorFlow',
+      'PyTorch',
+      'Scikit-Learn',
+      'Self-Supervised Learning (SSL)',
+      'Deep Learning',
+    ],
+    evidence: 'EfficientNet-B0 pipeline, PyTorch transformers, and Aminobots ML staging.',
+  },
+  {
+    id: 'generative-ai',
+    name: 'GENERATIVE AI',
+    code: '03',
+    icon: <Sparkles className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    skills: [
+      'Retrieval-Augmented Generation (RAG)',
+      'Multi-Agent Orchestration',
+      'Prompt Grounding & Safety',
+      'Context Engineering',
+    ],
+    evidence: 'RAG knowledge assistant architectures and Microsoft GenAI certification.',
+  },
+  {
+    id: 'computer-vision',
+    name: 'COMPUTER VISION',
+    code: '04',
+    icon: <Eye className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    skills: [
+      'STFT Log-Mel Spectrograms',
+      'EfficientNet-B0 Backbone',
+      'Grad-CAM (Explainable AI / Saliency)',
+      'OpenCV',
+    ],
+    evidence: 'Acoustic-to-vision spectrogram conversion and visual diagnostic heatmaps.',
+  },
+  {
+    id: 'backend',
+    name: 'BACKEND',
+    code: '05',
+    icon: <Server className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    skills: [
+      'Node.js',
+      'Express.js',
+      'RESTful API Architecture',
+      'JWT Authentication',
+      'Role-Based Access Control (RBAC)',
+    ],
+    evidence: 'Stateless auth gateways, protected endpoints, and async query dispatch.',
+  },
+  {
+    id: 'databases',
+    name: 'DATABASES',
+    code: '06',
+    icon: <Database className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    skills: [
+      'MongoDB',
+      'Mongoose ODM',
+      'MySQL',
+      'NoSQL Document Modeling',
+    ],
+    evidence: 'Multi-turn conversational dialogue storage and transactional orders.',
+  },
+  {
+    id: 'tools-infrastructure',
+    name: 'TOOLS / INFRASTRUCTURE',
+    code: '07',
+    icon: <Wrench className="w-4 h-4 text-[#D49A46]" aria-hidden="true" />,
+    skills: [
+      'Git & GitHub',
+      'Postman',
+      'Razorpay Payment Gateway (HMAC-SHA256)',
+      'Audio Signal Processing (SciPy / Librosa)',
+    ],
+    evidence: 'Cryptographic payment verification, sensor filtering, and code registries.',
+  },
+];
 
 export const EngineeringSnapshotSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
   const easeCurve = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-  const getCategoryIcon = (id: string) => {
-    switch (id) {
-      case 'ai-ml':
-        return (
-          <Brain
-            className="w-5 h-5 text-[#D49A46] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            aria-hidden="true"
-          />
-        );
-      case 'engineering':
-        return (
-          <Terminal
-            className="w-5 h-5 text-[#D49A46] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            aria-hidden="true"
-          />
-        );
-      case 'data':
-        return (
-          <Database
-            className="w-5 h-5 text-[#D49A46] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            aria-hidden="true"
-          />
-        );
-      case 'core-cs':
-        return (
-          <Cpu
-            className="w-5 h-5 text-[#D49A46] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            aria-hidden="true"
-          />
-        );
-      default:
-        return (
-          <Layers
-            className="w-5 h-5 text-[#D49A46] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            aria-hidden="true"
-          />
-        );
-    }
-  };
-
   return (
     <section
-      id="technical-profile"
-      aria-label="Technical Profile Section"
-      className="py-20 md:py-28 lg:py-32 border-b border-[#292720] bg-transparent relative scroll-mt-24"
+      id="skills"
+      aria-label="Technical Skills & Competencies"
+      className="py-20 md:py-28 border-b border-[#292720] bg-transparent relative scroll-mt-20 overflow-hidden"
     >
+      {/* Anchor alias for navigation links */}
+      <span id="technical-profile" className="sr-only" aria-hidden="true" />
+
       <Container size="wide">
-        {/* Section Heading with Target Typography: Title 58-76px, Description 19-22px */}
-        <div className="mb-14 md:mb-18 lg:mb-20 max-w-4xl">
-          {/* Index Tag */}
-          <motion.div
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.55, ease: easeCurve }}
-            className="flex items-center gap-2 mb-3 sm:mb-4"
-          >
+        {/* Section Header */}
+        <div className="mb-12 sm:mb-14">
+          <div className="flex items-center gap-2 mb-2.5">
             <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
-            <span className="font-mono text-xs sm:text-[13px] uppercase tracking-[0.14em] text-[#D49A46] font-semibold">
-              05 / TECHNICAL PROFILE
+            <span className="font-mono text-xs uppercase tracking-widest text-[#D49A46] font-semibold">
+              05. Technical Skills
             </span>
-          </motion.div>
+            <span className="text-[#4E4A42] text-xs font-mono" aria-hidden="true">·</span>
+            <span className="font-mono text-xs uppercase tracking-wider text-[#888175]">
+              Verified Competencies
+            </span>
+          </div>
 
-          {/* Section Title: Desktop Target 58–76px */}
-          <motion.h2
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.6, delay: 0.08, ease: easeCurve }}
-            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.75rem] xl:text-[4.25rem] uppercase font-bold tracking-tight text-[#F2EBDD] leading-[1.05]"
-          >
-            TECHNICAL PROFILE
-          </motion.h2>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold uppercase tracking-tight text-[#F2EBDD]">
+                Technical Skills
+              </h2>
+              <p className="mt-2 text-sm sm:text-base text-[#AAA398] max-w-2xl font-light">
+                Grouped engineering competencies supported by evidence in deployed systems and repositories.
+              </p>
+            </div>
 
-          {/* Section Description: Desktop Target 19–22px */}
-          <motion.p
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-40px' }}
-            transition={{ duration: 0.6, delay: 0.16, ease: easeCurve }}
-            className="mt-5 sm:mt-6 text-base sm:text-lg lg:text-[1.25rem] text-[#AAA398] font-normal leading-relaxed border-l border-[#292720] pl-6 max-w-3xl"
-          >
-            Core engineering capabilities organized across machine learning architectures,
-            software systems, data pipelines, and computer science foundations.
-          </motion.p>
+            <div className="shrink-0 font-mono text-[11px] text-[#6E6A62] uppercase tracking-wider">
+              No arbitrary skill bars or fake percentages
+            </div>
+          </div>
         </div>
 
-        {/* 4 Cards Grid with 70–100ms Sequential Stagger */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7">
-          {engineeringSnapshotData.map((category, idx) => {
-            const isAiMl = category.id === 'ai-ml';
+        {/* =========================================================================
+            GROUPED SKILLS MATRIX (7 MANDATORY CATEGORIES)
+            Minimal · Technical · Scannable · Credible
+            Top: 4 Categories | Bottom: 3 Categories
+            ========================================================================= */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {SKILL_CATEGORIES.map((category, index) => {
+            const isWide = index >= 4;
 
             return (
               <motion.div
                 key={category.id}
-                initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
-                transition={{
-                  duration: 0.6,
-                  delay: idx * 0.08,
-                  ease: easeCurve,
-                }}
-                className={cn(
-                  'rounded-xs border border-[#24221C] bg-[#0E0D0A] p-7 sm:p-8 flex flex-col justify-between transition-all duration-300',
-                  'hover:border-[#D49A46]/45 hover:bg-[#11100C] hover:-translate-y-[3px]',
-                  'hover:shadow-[0_20px_45px_rgba(0,0,0,0.7)] group relative overflow-hidden'
-                )}
+                transition={{ duration: 0.45, delay: index * 0.05, ease: easeCurve }}
+                className={`p-6 rounded-sm bg-[#11100C] border border-[#24221C] hover:border-[#D49A46]/40 transition-colors duration-200 flex flex-col justify-between group ${
+                  isWide && index === 4 ? 'lg:col-span-1' : ''
+                } ${isWide && index === 5 ? 'lg:col-span-1' : ''} ${
+                  isWide && index === 6 ? 'lg:col-span-2' : ''
+                }`}
               >
-                {/* Subtle Card Variation: Left Accent Rule (AI/ML has slightly stronger accent line) */}
-                <div
-                  className={cn(
-                    'absolute left-0 top-0 bottom-0 transition-transform duration-300 origin-top pointer-events-none',
-                    isAiMl
-                      ? 'w-[2.5px] bg-[#D49A46] scale-y-75 group-hover:scale-y-100'
-                      : 'w-[1.5px] bg-[#D49A46]/80 scale-y-0 group-hover:scale-y-100'
-                  )}
-                  aria-hidden="true"
-                />
-
                 <div>
-                  {/* Card Category Code & Icon: Desktop Target 13–15px */}
-                  <div className="flex items-center justify-between gap-2 mb-6">
-                    <span className="font-mono text-xs sm:text-[13px] text-[#6E6A62] tracking-[0.14em] uppercase font-semibold group-hover:text-[#D49A46] transition-colors">
-                      {category.code}
-                    </span>
-                    <div className="text-[#55524B] group-hover:text-[#D49A46] transition-colors">
-                      {getCategoryIcon(category.id)}
+                  {/* Category Header */}
+                  <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-[#1F1E19]">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs font-bold text-[#D49A46]">
+                        {category.code}
+                      </span>
+                      <h3 className="font-display text-sm font-bold uppercase tracking-wider text-[#F2EBDD] group-hover:text-[#FFFDF9] transition-colors">
+                        {category.name}
+                      </h3>
+                    </div>
+                    <div className="p-1.5 rounded-xs bg-[#161511] border border-[#24221C]">
+                      {category.icon}
                     </div>
                   </div>
 
-                  {/* Card Title: Desktop Target 27–34px (Hierarchy Rule: Dominant Anchor) */}
-                  <h3 className="font-display text-2xl sm:text-[1.7rem] lg:text-[1.85rem] uppercase font-bold text-[#F2EBDD] tracking-tight mb-3 group-hover:text-[#FFFDF9] transition-colors leading-[1.15]">
-                    {category.name}
-                  </h3>
-
-                  {/* Card Description/Subtitle: Desktop Target 16–18px */}
-                  <p className="font-body text-sm sm:text-[15px] lg:text-[16px] text-[#8E887D] mb-7 leading-relaxed tracking-normal font-normal">
-                    {category.subtitle}
-                  </p>
-
-                  {/* Skill List: Desktop Target 16–18px (Hierarchy Rule: SKILL LIST > DESCRIPTION) */}
-                  <div className="space-y-3.5 sm:space-y-4">
+                  {/* Scannable Skills List (No pill bubbles, clean unboxed text) */}
+                  <ul className="space-y-2 mb-6">
                     {category.skills.map((skill) => (
-                      <div
+                      <li
                         key={skill}
-                        className="flex items-center gap-3 group/item"
+                        className="flex items-start gap-2.5 text-xs font-mono text-[#DCD6CA] group/item"
                       >
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#2E2B23] group-hover/item:bg-[#D49A46] transition-colors shrink-0" />
-                        <span className="font-mono text-sm sm:text-[15px] text-[#DCD6CA] group-hover/item:text-[#FFFDF9] transition-colors tracking-tight font-medium">
+                        <span className="w-1 h-1 rounded-full bg-[#D49A46] shrink-0 mt-1.5" />
+                        <span className="group-hover/item:text-[#FFFDF9] transition-colors">
                           {skill}
                         </span>
-                      </div>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
 
-                {/* Footer Metadata: Desktop Target 13–15px */}
-                <div className="mt-10 sm:mt-12 pt-4 sm:pt-5 border-t border-[#24221C]">
-                  <span className="font-mono text-xs sm:text-[13px] text-[#6E6A62] tracking-wide leading-relaxed block">
-                    {category.evidence}
-                  </span>
+                {/* Grounded Evidence Citation */}
+                <div className="pt-3.5 border-t border-[#1F1E19]">
+                  <div className="text-[11px] font-mono text-[#888175] leading-relaxed">
+                    <span className="text-[#68645C] uppercase block text-[10px] tracking-wider mb-0.5">
+                      Engineering Highlights
+                    </span>
+                    <span className="text-[#AAA398]">
+                      {category.evidence}
+                    </span>
+                  </div>
                 </div>
               </motion.div>
             );
           })}
         </div>
 
-        {/* Factual Summary Footer (Clean, professional, free from pseudo-technical jargon) */}
-        <div className="mt-10 pt-4 border-t border-[#292720]/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs text-[#6E6A62]">
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
-            <span>APPLIED TECHNICAL STACK VERIFIED ACROSS CODE REPOSITORIES</span>
-          </div>
-          <span className="text-[#8E887D]">HYDERABAD, INDIA</span>
-        </div>
+
       </Container>
     </section>
   );

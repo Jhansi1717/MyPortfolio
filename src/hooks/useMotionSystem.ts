@@ -20,7 +20,7 @@ import {
 
 /**
  * Centralized React Hook for the Portfolio Motion Design System
- * Provides single source of truth for motion tokens, reduced motion state, and variant presets.
+ * Provides central management for motion tokens, reduced motion state, and variant presets.
  */
 export function useMotionSystem() {
   const shouldReduceMotion = useReducedMotion();

@@ -48,8 +48,8 @@ const GITHUB_FALLBACK = {
     name: 'Jhansi Bhukya',
     html_url: 'https://github.com/Jhansi1717',
     avatar_url: 'https://avatars.githubusercontent.com/u/193582333?v=4',
-    public_repos: 8,
-    bio: 'AI/ML Engineer · Full-Stack Systems Developer',
+    public_repos: 7,
+    bio: 'AI/ML Engineer',
     created_at: '2025-01-03T08:43:43Z',
   },
   repos: [
@@ -66,28 +66,17 @@ const GITHUB_FALLBACK = {
     },
     {
       id: 2,
-      name: 'Mental_Health_QA_System',
-      full_name: 'Jhansi1717/Mental_Health_QA_System',
-      html_url: 'https://github.com/Jhansi1717/Mental_Health_QA_System',
-      description: 'Transformer-based question answering system with REST APIs, NLP processing, and MongoDB conversational telemetry.',
-      language: 'TypeScript',
-      stargazers_count: 0,
-      forks_count: 0,
-      updated_at: '2026-04-19T19:04:47Z',
-    },
-    {
-      id: 3,
       name: 'Pizza_ordering_system',
       full_name: 'Jhansi1717/Pizza_ordering_system',
       html_url: 'https://github.com/Jhansi1717/Pizza_ordering_system',
-      description: 'Full-stack food ordering platform featuring JWT authentication, role-based access control, and transaction lifecycle management.',
+      description: 'Full-stack food ordering platform featuring mock OTP phone-based login, dynamic preparation slot scheduling, and preorder subscription tracking.',
       language: 'JavaScript',
       stargazers_count: 0,
       forks_count: 0,
       updated_at: '2026-08-15T12:30:00Z',
     },
     {
-      id: 4,
+      id: 3,
       name: 'Food-Health_App',
       full_name: 'Jhansi1717/Food-Health_App',
       html_url: 'https://github.com/Jhansi1717/Food-Health_App',
@@ -133,10 +122,10 @@ const GITHUB_FALLBACK = {
       message: 'Acoustic feature extraction and model inference updates',
     },
     {
-      repo: 'Jhansi1717/Mental_Health_QA_System',
+      repo: 'Jhansi1717/Pizza_ordering_system',
       type: 'PushEvent',
-      date: '2026-04-19T19:04:47Z',
-      message: 'Transformer query pipeline and tokenization optimization',
+      date: '2026-08-15T12:30:00Z',
+      message: 'Implement prep slot scheduling and mock OTP phone login',
     },
   ],
 };
@@ -161,8 +150,8 @@ function getLocalGroundedFallback(query: string): string {
   if (q.includes('respiratory') || q.includes('screening') || q.includes('audio') || q.includes('lung')) {
     return "Jhansi built the **AI-Powered Respiratory Screening System** ([View Case Study](/projects/respiratory-ai)). It uses audio signal processing, Mel-spectrograms, TensorFlow, and EfficientNet-B0 to screen respiratory pathologies with Grad-CAM explainability and automated clinical reporting. Code is available on [GitHub](https://github.com/Jhansi1717/AI_Powered_Respiratory_Screening).";
   }
-  if (q.includes('pizza') || q.includes('ordering') || q.includes('full-stack') || q.includes('payment') || q.includes('razorpay')) {
-    return "Jhansi built the **Full-Stack Pizza Ordering Platform** ([View Case Study](/projects/pizza-ordering)). It features JWT authentication, Role-Based Access Control (RBAC), MongoDB persistence, and Razorpay payment gateway integration with server-side HMAC signature verification. Code is available on [GitHub](https://github.com/Jhansi1717/Pizza_ordering_system).";
+  if (q.includes('pizza') || q.includes('ordering') || q.includes('full-stack') || q.includes('slicemind')) {
+    return "Jhansi built the **Full-Stack Pizza Ordering Platform** ([View Case Study](/projects/pizza-ordering)). It features Mock OTP phone-based login, automated preparation slot scheduling, preorder subscriptions, and relational database persistence using FastAPI, SQLAlchemy, and SQLite/PostgreSQL. Code is available on [GitHub](https://github.com/Jhansi1717/Pizza_ordering_system).";
   }
   if (q.includes('cgpa') || q.includes('education') || q.includes('cbit') || q.includes('university') || q.includes('degree')) {
     return "Jhansi is an undergraduate student at **Chaitanya Bharathi Institute of Technology (CBIT)** pursuing a Bachelor of Engineering (B.E.) in Computer Science & Engineering (AI & ML), expected May 2027, with a **9.72 / 10 CGPA** ([View Education](#education)).";
@@ -171,15 +160,15 @@ function getLocalGroundedFallback(query: string): string {
     return "Jhansi is a Data Science Intern at **Aminobots** (15 July 2026 – 14 January 2027), focused on data science pipelines, preprocessing workflows, and applied machine learning system integration ([View Experience](#experience)).";
   }
   if (q.includes('skill') || q.includes('python') || q.includes('react') || q.includes('tensorflow') || q.includes('tech')) {
-    return "Jhansi's technical stack includes **Python, TensorFlow, EfficientNet-B0, Scikit-Learn, OpenCV, React.js, Node.js, Express.js, MongoDB, MySQL, Git, and RESTful APIs** ([View Tech Stack](#skills)).";
+    return "Jhansi's technical stack includes **Python, TensorFlow, PyTorch, EfficientNet-B0, Scikit-Learn, OpenCV, React.js, Node.js, Express.js, MongoDB, and RESTful APIs** ([View Focus](#focus)).";
   }
   if (q.includes('contact') || q.includes('email') || q.includes('phone') || q.includes('reach') || q.includes('hire')) {
     return "You can reach Jhansi via email at **jhansibhukya17@gmail.com**. Her GitHub is [github.com/Jhansi1717](https://github.com/Jhansi1717) and LinkedIn is [linkedin.com/in/jhansibhukya](https://www.linkedin.com/in/jhansibhukya/) ([View Contact](#contact)).";
   }
   if (q.includes('github') || q.includes('code') || q.includes('repo')) {
-    return "Jhansi's GitHub profile is [github.com/Jhansi1717](https://github.com/Jhansi1717), featuring repositories for Respiratory AI, Pizza Ordering, Mental Health QA, and RAG agents.";
+    return "Jhansi's GitHub profile is [github.com/Jhansi1717](https://github.com/Jhansi1717), featuring repositories for Respiratory AI and the SliceMind Pizza Ordering Platform.";
   }
-  return "That information isn't included in Jhansi's portfolio. You can explore her [Featured Projects](#projects), [Experience](#experience), [Education](#education), or contact her directly at jhansibhukya17@gmail.com.";
+  return "That information isn't included in Jhansi's portfolio. You can explore her [Featured Projects](#selected-work), [Experience](#experience), [Focus](#focus), [Education](#education), or contact her directly at jhansibhukya17@gmail.com.";
 }
 
 // AI Copilot Grounded Chat Endpoint

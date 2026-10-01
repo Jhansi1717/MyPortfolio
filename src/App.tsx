@@ -1,11 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { LayoutShell } from './components/layout/LayoutShell';
 import { HomePage } from './pages/HomePage';
-import { ProjectCaseStudyPage } from './pages/ProjectCaseStudyPage';
-import { NotFoundPage } from './pages/NotFoundPage';
-import { Preloader } from './components/layout/Preloader';
+import { EASE_CUSTOM, DURATION } from './utils/motionTokens';
+
+// Route-level code splitting for non-homepage pages to optimize initial bundle size
+const ProjectCaseStudyPage = React.lazy(() =>
+  import('./pages/ProjectCaseStudyPage').then((module) => ({
+    default: module.ProjectCaseStudyPage,
+  }))
+);
+
+const NotFoundPage = React.lazy(() =>
+  import('./pages/NotFoundPage').then((module) => ({
+    default: module.NotFoundPage,
+  }))
+);
 
 // High-fidelity scroll cache supporting back/forward browser flow
 const scrollCache = new Map<string, number>();
@@ -34,7 +45,7 @@ function ScrollHandler() {
       if (element) {
         const timer = setTimeout(() => {
           element.scrollIntoView({ behavior: 'smooth' });
-        }, 150);
+        }, 120);
         return () => clearTimeout(timer);
       }
     }
@@ -46,7 +57,7 @@ function ScrollHandler() {
         top: cachedY !== undefined ? cachedY : 0,
         behavior: 'auto',
       });
-    }, 80);
+    }, 60);
 
     return () => clearTimeout(timer);
   }, [pathname, hash]);
@@ -58,44 +69,60 @@ function AnimatedRoutes() {
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
 
-  // Dynamic status to trigger alternating cinematic directions
   const isCaseStudy = location.pathname.startsWith('/projects/');
 
+  // Premium editorial route transition with clip-path / mask, opacity, and subtle translation (~450ms)
   const transitionVariants = shouldReduceMotion
     ? {
-        initial: { opacity: 0 },
-        animate: { opacity: 1, transition: { duration: 0.25 } },
-        exit: { opacity: 0, transition: { duration: 0.25 } },
+        initial: { opacity: 1 },
+        animate: { opacity: 1 },
+        exit: { opacity: 1 },
       }
-    : {
+    : isCaseStudy
+    ? {
         initial: {
           opacity: 0,
-          y: isCaseStudy ? 35 : -35,
-          scale: isCaseStudy ? 0.98 : 1.0,
-          clipPath: isCaseStudy
-            ? 'inset(8% 8% 8% 8% round 4px)'
-            : 'inset(0% 0% 0% 0%)',
+          y: 16,
+          clipPath: 'inset(3% 0% 0% 0%)',
         },
         animate: {
           opacity: 1,
           y: 0,
-          scale: 1,
-          clipPath: 'inset(0% 0% 0% 0% round 0px)',
+          clipPath: 'inset(0% 0% 0% 0%)',
           transition: {
-            duration: 0.48, // Perfect middle of the requested 350-550ms range
-            ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+            duration: 0.45,
+            ease: EASE_CUSTOM,
           },
         },
         exit: {
           opacity: 0,
-          y: isCaseStudy ? 30 : -30,
-          scale: isCaseStudy ? 1.0 : 0.98,
-          clipPath: isCaseStudy
-            ? 'inset(0% 0% 0% 0%)'
-            : 'inset(8% 8% 8% 8% round 4px)',
+          y: -12,
+          clipPath: 'inset(0% 0% 3% 0%)',
           transition: {
-            duration: 0.42,
-            ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+            duration: 0.35,
+            ease: EASE_CUSTOM,
+          },
+        },
+      }
+    : {
+        initial: {
+          opacity: 0,
+          y: 10,
+        },
+        animate: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: DURATION.COMPONENT,
+            ease: EASE_CUSTOM,
+          },
+        },
+        exit: {
+          opacity: 0,
+          y: -8,
+          transition: {
+            duration: DURATION.MICRO,
+            ease: EASE_CUSTOM,
           },
         },
       };
@@ -108,30 +135,33 @@ function AnimatedRoutes() {
         initial="initial"
         animate="animate"
         exit="exit"
-        className="w-full min-h-screen bg-transparent"
+        className="w-full min-h-screen bg-[#090907]"
       >
-        <Routes location={location}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/projects/:slug" element={<ProjectCaseStudyPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+        <React.Suspense
+          fallback={
+            <div className="min-h-screen bg-[#090907] flex items-center justify-center">
+              <div className="w-5 h-5 border-2 border-[#D49A46] border-t-transparent rounded-full animate-spin" />
+            </div>
+          }
+        >
+          <Routes location={location}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/projects/:slug" element={<ProjectCaseStudyPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </React.Suspense>
       </motion.div>
     </AnimatePresence>
   );
 }
 
 export default function App() {
-  const [preloaderComplete, setPreloaderComplete] = useState(false);
-
   return (
     <BrowserRouter>
-      <Preloader onComplete={() => setPreloaderComplete(true)} />
       <ScrollHandler />
-      {preloaderComplete && (
-        <LayoutShell>
-          <AnimatedRoutes />
-        </LayoutShell>
-      )}
+      <LayoutShell>
+        <AnimatedRoutes />
+      </LayoutShell>
     </BrowserRouter>
   );
 }

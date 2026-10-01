@@ -124,7 +124,7 @@ export const GitHubTelemetryCard: React.FC<GitHubTelemetryCardProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-bold text-[#E5BA70] uppercase tracking-wider">
-                GITHUB TELEMETRY
+                GITHUB ACTIVITY
               </span>
               <span className="text-[#68645C]">•</span>
               <span className="font-mono text-[11px] text-[#AAA398]">
@@ -132,7 +132,7 @@ export const GitHubTelemetryCard: React.FC<GitHubTelemetryCardProps> = ({
               </span>
             </div>
             <div className="font-mono text-[10px] text-[#888175] mt-0.5">
-              SYSTEM REPOSITORY REGISTRY & CODE ARTIFACTS
+              GITHUB REPOSITORIES & SOURCE CODE
             </div>
           </div>
         </div>
@@ -331,11 +331,11 @@ export const GitHubTelemetryCard: React.FC<GitHubTelemetryCardProps> = ({
             <div className="flex items-center gap-2">
               <Activity className="w-3.5 h-3.5 text-[#D49A46]" />
               <span className="font-mono text-xs font-bold text-[#E5BA70] uppercase tracking-wider">
-                CHRONOLOGICAL ACTIVITY TELEMETRY
+                RECENT COMMITS & ACTIVITIES
               </span>
             </div>
             <span className="font-mono text-[10px] text-[#888175]">
-              VERIFIED REMOTE ACTIONS
+              GITHUB COMMITS
             </span>
           </div>
 

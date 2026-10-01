@@ -1,6 +1,7 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { cn } from '../../lib/utils';
+import { EASE_CUSTOM, DURATION } from '../../utils/motionTokens';
 
 export interface SectionHeadingProps {
   indexTag?: string;
@@ -17,6 +18,8 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   alignment = 'left',
   className = '',
 }) => {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <div
       className={cn(
@@ -27,10 +30,10 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
     >
       {indexTag && (
         <motion.div 
-          initial={{ opacity: 0, x: -10 }}
+          initial={shouldReduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: DURATION.COMPONENT, ease: EASE_CUSTOM }}
           className="flex items-center gap-2 mb-3"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#D49A46]" aria-hidden="true" />
@@ -41,10 +44,10 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       )}
       
       <motion.h2 
-        initial={{ opacity: 0, y: 20 }}
+        initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
-        transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: DURATION.SECTION, delay: 0.05, ease: EASE_CUSTOM }}
         className="font-display text-3xl sm:text-4xl md:text-5xl uppercase font-bold tracking-tight text-[#F2EBDD] leading-tight"
       >
         {title}
@@ -52,10 +55,10 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
 
       {description && (
         <motion.p 
-          initial={{ opacity: 0, y: 15 }}
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: DURATION.SECTION, delay: 0.1, ease: EASE_CUSTOM }}
           className="mt-6 text-base sm:text-lg text-[#AAA398] font-normal leading-relaxed max-w-2xl border-l border-[#292720] pl-6"
         >
           {description}
@@ -64,4 +67,3 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
     </div>
   );
 };
-
