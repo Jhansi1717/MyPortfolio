@@ -15,7 +15,7 @@ export const EducationSection: React.FC = () => {
         <SectionHeading
           indexTag="07 / EDUCATION"
           title="EDUCATION"
-          description="Consistent high academic performance across computer science theory, advanced mathematics, and artificial intelligence specialization."
+          description="B.E. CSE (AI & ML) at CBIT with a 9.72 / 10 CGPA."
         />
 
         {/* Primary Academic Card: CBIT */}
@@ -30,7 +30,7 @@ export const EducationSection: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2 font-mono text-[11px] text-[#D49A46] uppercase tracking-widest pb-3 mb-4 border-b border-[#24221C]">
                   <GraduationCap className="w-4 h-4 text-[#D49A46]" />
-                  <span>PRIMARY ACADEMIC PROGRAMME</span>
+                  <span>UNDERGRADUATE</span>
                 </div>
 
                 <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold uppercase tracking-tight text-[#F2EBDD] mb-3">
@@ -92,7 +92,7 @@ export const EducationSection: React.FC = () => {
 
                 <div className="font-mono text-[10px] uppercase text-[#68645C] tracking-widest mb-2 flex items-center gap-2">
                   <Award className="w-3.5 h-3.5 text-[#D49A46]" />
-                  <span>ACADEMIC MERIT METRIC</span>
+                  <span>CGPA</span>
                 </div>
 
                 {/* Visually prominent 9.72 / 10 */}
@@ -106,16 +106,16 @@ export const EducationSection: React.FC = () => {
                 </div>
 
                 <div className="font-mono text-xs uppercase tracking-wider text-[#DCD6CA] font-semibold mt-1">
-                  CGPA · ACADEMIC DISTINCTION
+                  CGPA
                 </div>
 
                 <p className="font-body text-sm text-[#AAA398] mt-3 leading-relaxed font-normal">
-                  Continuous top-tier performance evaluated across theoretical coursework, system lab projects, and computational rigor at Chaitanya Bharathi Institute of Technology.
+                  Current undergraduate CGPA at CBIT.
                 </p>
 
                 <div className="mt-4 pt-3 border-t border-[#201F19] flex items-center justify-between font-mono text-[10px] text-[#68645C]">
                   <span>SCALE: 10.00 MAXIMUM</span>
-                  <span className="text-[#D49A46] font-semibold">VERIFIED TRANSCRIPT</span>
+                  <span className="text-[#D49A46] font-semibold">CURRENT ACADEMIC RECORD</span>
                 </div>
               </div>
             </div>
@@ -142,7 +142,7 @@ export const EducationSection: React.FC = () => {
                 98.8% (IPE)
               </div>
               <div className="font-mono text-[10px] uppercase text-[#888175]">
-                STATE BOARD (IPE) · 80 PERCENTILE IN JEE MAIN
+                TELANGANA IPE
               </div>
             </div>
           </div>
