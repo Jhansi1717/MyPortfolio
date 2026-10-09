@@ -37,7 +37,6 @@ export const profileData: Profile = {
   status: 'OPEN FOR AI/ML & ENGINEERING OPPORTUNITIES',
   contact: {
     email: 'jhansibhukya17@gmail.com',
-    phone: '+91 7207653560',
     location: 'Hyderabad, Telangana, India',
   },
 };
