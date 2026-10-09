@@ -42,8 +42,9 @@ export const ProjectCaseStudyPage: React.FC = () => {
     window.scrollTo({ top: 0, behavior: shouldReduceMotion ? 'auto' : 'smooth' });
   }, [slug, shouldReduceMotion]);
 
-  const normalizedSlug = slug === 'pizza-ordering' ? 'slicemind' : slug;
-  const project = projectsData.find((p) => p.slug === normalizedSlug);
+  const project = projectsData.find(
+    (p) => p.slug === slug || (slug === 'slicemind' && p.slug === 'pizza-ordering') || (slug === 'pizza-ordering' && p.slug === 'slicemind')
+  );
 
   // Monitor active scroll section for subnav highlighting
   useEffect(() => {

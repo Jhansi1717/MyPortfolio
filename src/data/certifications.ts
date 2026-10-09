@@ -25,7 +25,7 @@ export interface Certification {
 export const certificationsList: Certification[] = [
   {
     id: 'oracle-agentic-ai',
-    title: 'Agentic AI Certified Foundations Associate',
+    title: 'Oracle Certified Associate: Agentic AI Foundations',
     issuer: 'Oracle',
     issuerOrganization: 'Oracle University',
     category: 'Agentic AI / Artificial Intelligence',
@@ -41,6 +41,35 @@ export const certificationsList: Certification[] = [
       'Autonomous Agent Design',
       'Multi-Agent Coordination',
       'AI Decision Pipelines',
+    ],
+  },
+  {
+    id: 'ms-genai',
+    title: 'Career Essentials in Generative AI',
+    issuer: 'Microsoft',
+    issuerOrganization: 'Microsoft / LinkedIn',
+    category: 'Generative AI / Foundations',
+    summary:
+      'Foundational curriculum covering generative AI concepts, LLM principles, responsible AI ethics, and developer workflow augmentation.',
+    skillsHighlighted: [
+      'Generative AI Foundations',
+      'Responsible AI Frameworks',
+      'Large Language Models',
+    ],
+  },
+  {
+    id: 'infosys-dbms',
+    title: 'Database Management Systems',
+    issuer: 'Infosys',
+    issuerOrganization: 'Infosys Springboard',
+    category: 'Data Architecture / DBMS',
+    summary:
+      'Comprehensive database engineering program emphasizing relational schema design, SQL optimization, normalization, and ACID transaction guarantees.',
+    skillsHighlighted: [
+      'Relational Schemas',
+      'SQL Query Optimization',
+      'ACID & Transactions',
+      'Database Indexing',
     ],
   },
   {
@@ -87,35 +116,6 @@ export const certificationsList: Certification[] = [
       'Network Vulnerability Auditing',
       'Security Protocols & Defense',
       'System Threat Analysis',
-    ],
-  },
-  {
-    id: 'ms-genai',
-    title: 'Career Essentials in Generative AI',
-    issuer: 'Microsoft',
-    issuerOrganization: 'Microsoft / LinkedIn',
-    category: 'Generative AI / Foundations',
-    summary:
-      'Foundational curriculum covering generative AI concepts, LLM principles, responsible AI ethics, and developer workflow augmentation.',
-    skillsHighlighted: [
-      'Generative AI Foundations',
-      'Responsible AI Frameworks',
-      'Large Language Models',
-    ],
-  },
-  {
-    id: 'infosys-dbms',
-    title: 'Database Management Systems',
-    issuer: 'Infosys',
-    issuerOrganization: 'Infosys Springboard',
-    category: 'Data Architecture / DBMS',
-    summary:
-      'Comprehensive database engineering program emphasizing relational schema design, SQL optimization, normalization, and ACID transaction guarantees.',
-    skillsHighlighted: [
-      'Relational Schemas',
-      'SQL Query Optimization',
-      'ACID & Transactions',
-      'Database Indexing',
     ],
   },
   {

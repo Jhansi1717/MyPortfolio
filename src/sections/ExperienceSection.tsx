@@ -12,21 +12,21 @@ interface ContributionItem {
 const verifiedContributions: ContributionItem[] = [
   {
     number: '01',
-    heading: 'DATA PREPROCESSING',
+    heading: 'PRODUCTION PROJECTS',
     description:
-      'Built preprocessing pipelines for machine learning workflows.',
+      'Contributing across production initiatives including KidneyCare, Helm, TRACE, and PowerIQ.',
   },
   {
     number: '02',
-    heading: 'DATA ANALYSIS',
+    heading: 'DATA SCIENCE PRACTICE',
     description:
-      'Used EDA to assess data quality and feature distributions.',
+      'Selected for Aminobots’ Data Science Practice, supporting machine learning workflows and data pipelines.',
   },
   {
     number: '03',
-    heading: 'MODEL INTEGRATION',
+    heading: 'SECURE DATA HANDLING',
     description:
-      'Helped integrate machine learning models into staging environments.',
+      'Adhering strictly to enterprise data-handling protocols and client confidentiality requirements.',
   },
 ];
 
@@ -157,7 +157,7 @@ export const ExperienceSection: React.FC = () => {
                   EXPERIENCE
                 </motion.div>
 
-                {/* Date: 15 JUL 2026 — 14 JAN 2027 (IBM Plex Mono) */}
+                {/* Date: Jul 2026 – Present (IBM Plex Mono) */}
                 <motion.div
                   initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -165,10 +165,7 @@ export const ExperienceSection: React.FC = () => {
                   transition={{ duration: 0.45, delay: 0.18, ease: easeCurve }}
                   className="font-mono text-xs sm:text-sm tracking-[0.08em] text-[#8E887D] uppercase font-medium mb-3.5 leading-relaxed"
                 >
-                  <span className="lg:hidden">15 JUL 2026 — 14 JAN 2027</span>
-                  <span className="hidden lg:block">
-                    15 JUL 2026 — 14 JAN 2027
-                  </span>
+                  <span>{data.period}</span>
                 </motion.div>
 
                 {/* Role: DATA SCIENCE INTERN (Manrope Display, Bold) */}

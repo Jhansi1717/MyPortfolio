@@ -24,23 +24,32 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   const isVisualLeft = index % 2 === 0;
 
   const isRespiratory = project.id === 'respiratory-ai';
+  const isPizza = project.id === 'pizza-ordering';
 
-  // Verified structured fields matching exact prompt specifications
+  // Verified structured fields matching exact resume specifications
   const projectHighlights = isRespiratory
     ? [
         'Browser-based audio processing with bounded signal transformation.',
         'PyTorch + timm EfficientNet-B0 inference on Mel spectrograms.',
         'FastAPI service with confidence scoring and clinical reporting.',
       ]
+    : isPizza
+    ? [
+        'Full-stack ordering platform with JWT authentication and RBAC.',
+        'Razorpay payments, inventory management, and shopping cart flows.',
+        'Real-time order tracking and REST APIs with MongoDB persistence.',
+      ]
     : [
-        'React/Vite storefront with menu, cart, and authenticated workflows.',
-        'FastAPI + SQLAlchemy backend with secure OTP phone authentication.',
-        'SQL persistence for orders, subscriptions, and inventory tracking.',
+        'Transformer-based NLP question-answering architecture.',
+        'RESTful APIs with conversational analytics and session tracking.',
+        'MongoDB persistence for context-aware information retrieval.',
       ];
 
   const stack = isRespiratory
     ? ['PYTHON', 'PYTORCH', 'TIMM', 'EFFICIENTNET-B0', 'FASTAPI']
-    : ['REACT', 'FASTAPI', 'SQLALCHEMY', 'POSTGRESQL / SQLITE', 'OTP AUTH'];
+    : isPizza
+    ? ['REACT.JS', 'NODE.JS', 'EXPRESS.JS', 'MONGODB', 'JWT', 'RAZORPAY']
+    : ['PYTHON', 'TRANSFORMERS', 'NLP', 'REST APIS', 'MONGODB', 'NODE.JS'];
 
   const handleCardClick = () => {
     if (typeof window !== 'undefined' && window.innerWidth < 1024) {

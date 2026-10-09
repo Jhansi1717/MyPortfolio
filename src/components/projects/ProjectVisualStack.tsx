@@ -133,6 +133,109 @@ export const ProjectVisualStack: React.FC<ProjectVisualStackProps> = ({
     );
   }
 
+  if (projectId === 'mental-health-qa') {
+    return (
+      <div className="relative w-full aspect-[16/11] sm:aspect-[16/10] select-none group/visual">
+        <motion.div
+          animate={
+            shouldReduceMotion
+              ? {}
+              : isActive
+              ? { x: -3, y: -3 }
+              : { x: 0, y: 0 }
+          }
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-full h-full rounded-xs bg-[#0E0D0A] border border-[#24221C] overflow-hidden p-4 sm:p-5 flex flex-col justify-between transition-colors duration-300 group-hover/visual:border-[#38352C]"
+        >
+          {/* Header Bar */}
+          <div className="flex items-center justify-between border-b border-[#201F19] pb-2.5">
+            <div className="flex items-center gap-2">
+              <span
+                className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                  isActive ? 'bg-[#D49A46]' : 'bg-[#68645C]'
+                }`}
+              />
+              <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-wider text-[#8E887D]">
+                SYS_03 // TRANSFORMER NLP &amp; QA PIPELINE
+              </span>
+            </div>
+            <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-widest text-[#55524B]">
+              BERT/ROBERTA // MONGODB
+            </span>
+          </div>
+
+          {/* Central Schematic: Transformer Attention Graph */}
+          <div className="my-auto py-2">
+            <svg
+              className="w-full h-24 sm:h-32 text-[#D49A46]"
+              viewBox="0 0 340 120"
+              fill="none"
+              preserveAspectRatio="none"
+            >
+              <line x1="20" y1="60" x2="320" y2="60" stroke="#1F1D17" strokeWidth="0.75" />
+              <line x1="70" y1="20" x2="160" y2="60" stroke="#D49A46" strokeWidth="1" strokeOpacity="0.4" />
+              <line x1="70" y1="100" x2="160" y2="60" stroke="#D49A46" strokeWidth="1" strokeOpacity="0.4" />
+              <line x1="160" y1="60" x2="250" y2="30" stroke="#D49A46" strokeWidth="1.2" strokeOpacity="0.8" />
+              <line x1="160" y1="60" x2="250" y2="90" stroke="#D49A46" strokeWidth="1" strokeOpacity="0.4" />
+
+              {/* Input Nodes */}
+              <circle cx="70" cy="20" r="5" fill="#1C1B15" stroke="#D49A46" strokeWidth="1" />
+              <circle cx="70" cy="60" r="5" fill="#1C1B15" stroke="#D49A46" strokeWidth="1" />
+              <circle cx="70" cy="100" r="5" fill="#1C1B15" stroke="#D49A46" strokeWidth="1" />
+
+              {/* Transformer Layer Node */}
+              <rect x="140" y="42" width="40" height="36" rx="2" fill="#14130F" stroke="#D49A46" strokeWidth="1.5" />
+              <text x="160" y="63" textAnchor="middle" fill="#E5BA70" fontSize="8" fontFamily="monospace">ATTN</text>
+
+              {/* Output Embeddings */}
+              <circle cx="250" cy="30" r="6" fill="#D49A46" fillOpacity="0.2" stroke="#D49A46" strokeWidth="1.25" />
+              <circle cx="250" cy="90" r="5" fill="#1C1B15" stroke="#68645C" strokeWidth="1" />
+              <circle cx="310" cy="60" r="6" fill="#D49A46" stroke="#E5BA70" strokeWidth="1" />
+              <line x1="250" y1="30" x2="310" y2="60" stroke="#D49A46" strokeWidth="1.25" />
+              <line x1="250" y1="90" x2="310" y2="60" stroke="#68645C" strokeWidth="0.75" />
+            </svg>
+          </div>
+
+          {/* Footer Metadata */}
+          <div className="flex items-center justify-between pt-2 border-t border-[#1C1B15] font-mono text-[8px] sm:text-[9px] text-[#68645C]">
+            <span>CONTEXT RETRIEVAL // REST API</span>
+            <span className="text-[#D49A46]">NLP PIPELINE // ACTIVE</span>
+          </div>
+        </motion.div>
+
+        {/* Layer 2: Floating Inspector */}
+        <motion.div
+          animate={
+            shouldReduceMotion
+              ? {}
+              : isActive
+              ? { x: 4, y: 4 }
+              : { x: 0, y: 0 }
+          }
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute -bottom-3 -right-2 sm:-bottom-4 sm:-right-4 w-[68%] sm:w-[60%] rounded-xs bg-[#14130F]/95 border border-[#2E2B23] p-3 shadow-xl backdrop-blur-xs transition-colors duration-300 group-hover/visual:border-[#D49A46]/40"
+        >
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="font-mono text-[8px] sm:text-[9px] text-[#AAA398] uppercase font-medium tracking-wide">
+              RETRIEVAL ENGINE
+            </span>
+            <span className="font-mono text-[8px] sm:text-[9px] text-[#D49A46] font-bold">
+              TRANSFORMER
+            </span>
+          </div>
+          <div className="h-px w-full bg-[#2A271F] mb-2" aria-hidden="true" />
+          <p className="font-mono text-[8px] sm:text-[9px] text-[#787368] leading-tight">
+            context-aware retrieval · conversational analytics · REST API
+          </p>
+        </motion.div>
+
+        {/* Framing Accents */}
+        <div className="absolute -top-1 -left-1 w-2.5 h-2.5 border-t border-l border-[#D49A46]/40 pointer-events-none" />
+        <div className="absolute -top-1 -right-1 w-2.5 h-2.5 border-t border-r border-[#D49A46]/40 pointer-events-none" />
+      </div>
+    );
+  }
+
   // Project 02: Full-Stack Pizza Ordering Platform (Editorial Decoupled Architecture)
   return (
     <div className="relative w-full aspect-[16/11] sm:aspect-[16/10] select-none group/visual">

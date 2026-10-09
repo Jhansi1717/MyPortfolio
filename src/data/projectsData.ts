@@ -43,8 +43,8 @@ export const projectsData: Project[] = [
     caseStudyRoute: '/projects/respiratory-ai',
     metrics: null,
     bullets: [
-      'Designed and developed a respiratory disease screening system using Self-Supervised Learning and EfficientNet-B0 for lung sound classification.',
-      'Implemented audio signal processing, Explainable AI (XAI), and automated reporting for real-time clinical decision support.',
+      'Developed a respiratory screening platform using SimCLR-style Self-Supervised Learning and EfficientNet-B0 for 4-class lung sound classification with Librosa, Mel-spectrograms, and Explainable AI.',
+      'Built and deployed a FastAPI + React.js application with JWT authentication, prediction/history APIs, real-time visualization, and multilingual support; achieved sub-2-second response time, 10x faster audio loading, and 60% smaller visualization payloads.',
     ],
     status: 'ACTIVE DEVELOPMENT',
     caseStudy: {
@@ -221,20 +221,20 @@ export const projectsData: Project[] = [
     slug: 'pizza-ordering',
     number: '02',
     title: 'Full-Stack Pizza Ordering Platform',
-    category: 'FULL-STACK ENGINEERING',
+    category: 'FULL-STACK SYSTEMS',
     description:
-      'Full-stack pizza ordering platform with a React/Vite client, FastAPI backend, SQL persistence, and ordering workflows.',
+      'Full-stack ordering platform with JWT authentication, role-based access control, REST APIs, and MongoDB integration.',
     technologies: [
-      'React',
-      'FastAPI',
-      'SQLAlchemy',
-      'PostgreSQL / SQLite',
-      'OTP Authentication',
-      'Tailwind CSS',
+      'React.js',
+      'Node.js',
+      'Express.js',
+      'MongoDB',
+      'JWT Authentication',
+      'Razorpay',
     ],
     architecture: {
       summary:
-        'A React/Vite client connected to a FastAPI backend with SQL persistence, OTP authentication, and order workflows.',
+        'A full-stack ordering platform with JWT authentication, role-based access control, REST APIs, Razorpay integration, and MongoDB persistence.',
       pipeline: [
         'CLIENT',
         'API',
@@ -254,8 +254,8 @@ export const projectsData: Project[] = [
     caseStudyRoute: '/projects/pizza-ordering',
     metrics: null,
     bullets: [
-      'Engineered a full-stack food ordering platform with JWT-based authentication, authorization, and role-based access control.',
-      'Integrated Razorpay payments, inventory management, shopping cart functionality, and real-time order tracking features.',
+      'Developed and deployed a full-stack ordering platform with JWT authentication, role-based access control, REST APIs, and MongoDB integration.',
+      'Integrated Razorpay payments, inventory management, shopping cart functionality, and real-time order tracking for end-to-end order processing.',
     ],
     status: 'FEATURED PROJECT',
     caseStudy: {
@@ -412,6 +412,130 @@ export const projectsData: Project[] = [
         {
           groupName: 'Data & Payments',
           items: ['MongoDB', 'Razorpay Payments', 'HMAC Verification', 'Inventory Engine'],
+        },
+      ],
+    },
+  },
+  {
+    id: 'mental-health-qa',
+    slug: 'mental-health-qa',
+    number: '03',
+    title: 'Mental Health QA System',
+    category: 'NLP / AI SYSTEMS',
+    description:
+      'Transformer-based NLP question-answering platform with RESTful APIs, conversational analytics, and MongoDB for context-aware retrieval.',
+    technologies: [
+      'Python',
+      'Transformers',
+      'NLP',
+      'REST APIs',
+      'MongoDB',
+      'Node.js',
+    ],
+    architecture: {
+      summary:
+        'A transformer-based question-answering architecture integrating contextual NLP embeddings, semantic search, and document store with conversational analytics.',
+      pipeline: [
+        'USER QUERY',
+        'NLP TRANSFORMER',
+        'CONTEXT RETRIEVAL',
+        'RESPONSE GENERATION',
+        'CONVERSATIONAL ANALYTICS',
+      ],
+      keyHighlights: [
+        'Context-aware information retrieval leveraging transformer embeddings',
+        'RESTful APIs with session handling and conversational metrics',
+        'MongoDB persistence for context histories and retrieval telemetry',
+      ],
+    },
+    githubUrl: authoritativeProfile.github.repositories.mentalHealthQA,
+    liveDemoUrl: null,
+    caseStudyRoute: '/projects/mental-health-qa',
+    metrics: null,
+    bullets: [
+      'Developed a transformer-based NLP question-answering platform with RESTful APIs, conversational analytics, and MongoDB for context-aware information retrieval and support.',
+    ],
+    status: 'ACTIVE PROJECT',
+    caseStudy: {
+      problemStatement:
+        'Context-grounded question-answering demands high contextual accuracy and empathetic dialogue flow without hallucination or latency degradation.',
+      problemContext:
+        'Building reliable support tools requires sensitive natural language understanding, robust intent matching, and low-latency API delivery backed by flexible document persistence.',
+      architectureNodes: [
+        {
+          id: 'query-intake',
+          name: 'Query Intake',
+          stageNumber: '01',
+          category: 'GATEWAY',
+          description: 'Validates and preprocesses incoming user queries via RESTful endpoints.',
+          input: 'Natural language text queries',
+          output: 'Sanitized tokens & payload',
+          technologies: ['Node.js', 'REST APIs'],
+        },
+        {
+          id: 'transformer-nlp',
+          name: 'Transformer NLP',
+          stageNumber: '02',
+          category: 'INFERENCE',
+          description: 'Employs transformer architectures for contextual embedding and semantic intent parsing.',
+          input: 'Sanitized text tokens',
+          output: 'Contextual latent embeddings',
+          technologies: ['Transformers', 'Python', 'NLP'],
+        },
+        {
+          id: 'context-analytics',
+          name: 'Analytics & Persistence',
+          stageNumber: '03',
+          category: 'PERSISTENCE',
+          description: 'Maintains query histories, response confidence scoring, and interaction analytics.',
+          input: 'Session records & analytics',
+          output: 'Persisted conversation telemetry',
+          technologies: ['MongoDB', 'Conversational Analytics'],
+        },
+      ],
+      technicalApproach: {
+        overview:
+          'Transformer-based language representations coupled with RESTful microservices for responsive, context-aware information retrieval and support.',
+        components: [
+          {
+            title: 'Transformer NLP Backbone',
+            description: 'Extracts deep semantic relationships from user text for intent discovery.',
+            technologies: ['Transformers', 'NLP', 'Python'],
+          },
+          {
+            title: 'RESTful API & Analytics Gateway',
+            description: 'Serves query endpoints with sub-second response times and session analytics.',
+            technologies: ['Node.js', 'REST APIs', 'MongoDB'],
+          },
+        ],
+      },
+      engineeringDecisions: [
+        {
+          decision: 'Transformer Representations for Intent Matching',
+          reason: 'Provides deep contextual comprehension across conversational nuances.',
+          tradeoff: 'Higher computational requirement during token embedding generation.',
+        },
+      ],
+      challenges: {
+        notice: 'CURRENT STATUS',
+        verifiedStatus: 'PROJECT REPOSITORY ACTIVE',
+        placeholderNote:
+          'Detailed model benchmark logs and semantic evaluation metrics are documented in the project GitHub repository.',
+      },
+      results: {
+        verifiedOutcomes: [
+          'Developed a transformer-based NLP question-answering platform with RESTful APIs, conversational analytics, and MongoDB for context-aware information retrieval and support.',
+        ],
+        disclaimer: 'Public metrics are shown only where supported by project documentation.',
+      },
+      technologyGroups: [
+        {
+          groupName: 'NLP & Machine Learning',
+          items: ['Transformers', 'NLP', 'Python', 'Contextual Embeddings'],
+        },
+        {
+          groupName: 'Backend & Data',
+          items: ['REST APIs', 'MongoDB', 'Node.js', 'Conversational Analytics'],
         },
       ],
     },

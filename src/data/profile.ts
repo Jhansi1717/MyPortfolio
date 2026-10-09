@@ -10,6 +10,7 @@ export interface GitHubConfig {
   repositories: {
     respiratoryScreening: string;
     pizzaOrdering: string;
+    mentalHealthQA: string;
     foodHealthApp: string;
     upscOS: string;
     miniProject: string;
@@ -19,6 +20,7 @@ export interface GitHubConfig {
 export interface AuthoritativeProfile {
   name: string;
   email: string;
+  phone: string;
   location: string;
   github: GitHubConfig;
   linkedin: {
@@ -34,6 +36,7 @@ export interface AuthoritativeProfile {
 export const authoritativeProfile: AuthoritativeProfile = {
   name: 'Jhansi Bhukya',
   email: 'jhansibhukya17@gmail.com',
+  phone: '+91 7207653560',
   location: 'Hyderabad, Telangana, India',
   github: {
     profileUrl: 'https://github.com/Jhansi1717',
@@ -42,6 +45,7 @@ export const authoritativeProfile: AuthoritativeProfile = {
     repositories: {
       respiratoryScreening: 'https://github.com/Jhansi1717/AI_Powered_Respiratory_Screening',
       pizzaOrdering: 'https://github.com/Jhansi1717/Pizza_ordering_system',
+      mentalHealthQA: 'https://github.com/Jhansi1717/Mental_Health_QA_System',
       foodHealthApp: 'https://github.com/Jhansi1717/Food-Health_App',
       upscOS: 'https://github.com/Jhansi1717/UPSC-OS',
       miniProject: 'https://github.com/Jhansi1717/MiniProject',

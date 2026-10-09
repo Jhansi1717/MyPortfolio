@@ -11,6 +11,7 @@ import {
   Send,
   Loader2,
   ExternalLink,
+  Phone,
 } from 'lucide-react';
 import { Container } from '../components/primitives/Container';
 import { authoritativeProfile, resumeConfig } from '../data/portfolioData';
@@ -257,6 +258,31 @@ export const ContactSection: React.FC = () => {
                 <ExternalLink className="w-3.5 h-3.5 text-[#888175] group-hover:text-[#D49A46] transition-colors" />
               </a>
             </div>
+
+            {/* Direct Phone Channel */}
+            {authoritativeProfile.phone && (
+              <div className="p-4 rounded-xs bg-[#11100C] border border-[#24221C] flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xs bg-[#191814] text-[#D49A46]">
+                    <Phone className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="font-display text-xs sm:text-sm font-bold uppercase text-[#F2EBDD]">
+                      PHONE
+                    </div>
+                    <a
+                      href={`tel:${authoritativeProfile.phone}`}
+                      className="font-mono text-xs text-[#888175] hover:text-[#E5BA70] transition-colors"
+                    >
+                      {authoritativeProfile.phone}
+                    </a>
+                  </div>
+                </div>
+                <span className="font-mono text-[10px] text-[#6E6A62] uppercase tracking-wider">
+                  DIRECT
+                </span>
+              </div>
+            )}
 
           </div>
 

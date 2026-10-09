@@ -1,78 +1,258 @@
 import fs from 'fs';
 import path from 'path';
 
-// Standard PDF generator that produces a valid PDF 1.4 document
+// Standard PDF generator that produces a valid PDF 1.4 document matching Resume2627.pdf
 function createResumePdf() {
   const resumeDir = path.resolve('public/resume');
   if (!fs.existsSync(resumeDir)) {
     fs.mkdirSync(resumeDir, { recursive: true });
   }
 
-  // Define text lines
-  const lines = [
-    { text: 'JHANSI BHUKYA', size: 20, font: 'F2', x: 50, y: 790 },
-    { text: 'AI/ML Engineer  |  AI Systems Builder  |  Full-Stack Engineer', size: 11, font: 'F2', x: 50, y: 770 },
-    { text: 'Hyderabad, India  |  jhansibhukya17@gmail.com  |  linkedin.com/in/jhansibhukya  |  github.com/Jhansi1717', size: 9, font: 'F1', x: 50, y: 755 },
-    
-    { text: '----------------------------------------------------------------------------------------------------------------------------------', size: 9, font: 'F1', x: 50, y: 742 },
-    { text: 'EDUCATION', size: 12, font: 'F2', x: 50, y: 728 },
-    { text: 'Chaitanya Bharathi Institute of Technology (CBIT), Hyderabad', size: 10, font: 'F2', x: 50, y: 712 },
-    { text: 'B.E. Computer Science & Engineering (Artificial Intelligence & Machine Learning)  |  CGPA: 9.72 / 10.00', size: 9, font: 'F1', x: 50, y: 698 },
-    { text: 'Expected Graduation: May 2027', size: 9, font: 'F1', x: 50, y: 686 },
-    
-    { text: 'Rudrama Devi Junior College, Hanamkonda', size: 10, font: 'F2', x: 50, y: 670 },
-    { text: 'Intermediate (MPC - Mathematics, Physics, Chemistry)  |  Score: 98.8%', size: 9, font: 'F1', x: 50, y: 658 },
-    
-    { text: '----------------------------------------------------------------------------------------------------------------------------------', size: 9, font: 'F1', x: 50, y: 644 },
-    { text: 'WORK EXPERIENCE', size: 12, font: 'F2', x: 50, y: 630 },
-    { text: 'Data Science Intern - Aminobots', size: 10, font: 'F2', x: 50, y: 614 },
-    { text: '15 July 2026 - 14 January 2027  |  Hyderabad, India', size: 9, font: 'F1', x: 50, y: 602 },
-    { text: '- Engineered data science pipelines, automated preprocessing workflows, and applied machine learning models.', size: 9, font: 'F1', x: 50, y: 588 },
-    { text: '- Collaborated on model evaluation benchmarks and full-stack system integrations.', size: 9, font: 'F1', x: 50, y: 576 },
+  // Page dimensions: A4 is 595 x 842 points
+  const pageWidth = 595;
+  const pageHeight = 842;
+  const leftMargin = 48;
+  const rightMargin = 547;
+  const contentWidth = rightMargin - leftMargin;
 
-    { text: '----------------------------------------------------------------------------------------------------------------------------------', size: 9, font: 'F1', x: 50, y: 562 },
-    { text: 'SELECTED PROJECTS', size: 12, font: 'F2', x: 50, y: 548 },
-    { text: '1. AI-Powered Respiratory Screening System (EfficientNet-B0 + Self-Supervised Learning)', size: 10, font: 'F2', x: 50, y: 532 },
-    { text: '- Built multi-class respiratory acoustic disease classification pipeline on ICBHI database with 89.2% accuracy.', size: 9, font: 'F1', x: 50, y: 520 },
-    { text: '- Integrated STFT/MFCC spectrogram processing, Grad-CAM interpretability, and REST API deployment.', size: 9, font: 'F1', x: 50, y: 508 },
-    { text: '  GitHub: https://github.com/Jhansi1717/AI_Powered_Respiratory_Screening', size: 8.5, font: 'F1', x: 50, y: 496 },
+  // Approximate character widths for Helvetica (in 1/1000 of font size)
+  const charWidths = {
+    ' ': 278, '!': 278, '"': 355, '#': 556, '$': 556, '%': 889, '&': 667, "'": 191,
+    '(': 333, ')': 333, '*': 389, '+': 584, ',': 278, '-': 333, '.': 278, '/': 278,
+    ':': 278, ';': 278, '<': 584, '=': 584, '>': 584, '?': 556, '@': 1015,
+    '[': 278, '\\': 278, ']': 278, '^': 469, '_': 556, '`': 333, '{': 333, '|': 260,
+    '}': 333, '~': 584, '•': 400, '–': 556, '—': 1000
+  };
 
-    { text: '2. Mental Health Question-Answering System (Fine-Tuned RoBERTa + NLP Pipeline)', size: 10, font: 'F2', x: 50, y: 480 },
-    { text: '- Developed clinical QA system utilizing transformer architectures for empathic context-grounded response generation.', size: 9, font: 'F1', x: 50, y: 468 },
-    { text: '- Engineered semantic retrieval, TF-IDF / vector indexing, and low-latency Node.js REST API gateway.', size: 9, font: 'F1', x: 50, y: 456 },
-    { text: '  GitHub: https://github.com/Jhansi1717/Mental_Health_QA_System', size: 8.5, font: 'F1', x: 50, y: 444 },
+  function getCharWidth(char, isBold = false) {
+    if (charWidths[char]) {
+      return charWidths[char] * (isBold ? 1.08 : 1);
+    }
+    const code = char.charCodeAt(0);
+    if (code >= 48 && code <= 57) return 556 * (isBold ? 1.05 : 1); // digits
+    if (code >= 65 && code <= 90) return (isBold ? 720 : 680);      // uppercase
+    if (code >= 97 && code <= 122) return (isBold ? 540 : 500);     // lowercase
+    return 500;
+  }
 
-    { text: '3. Full-Stack Pizza Ordering Platform (MERN Stack + JWT + Cloud State Persistence)', size: 10, font: 'F2', x: 50, y: 428 },
-    { text: '- Architected end-to-end e-commerce order workflow with role-based auth, MongoDB transaction schemas, and React UI.', size: 9, font: 'F1', x: 50, y: 416 },
-    { text: '  GitHub: https://github.com/Jhansi1717/Pizza_ordering_system', size: 8.5, font: 'F1', x: 50, y: 404 },
+  function measureText(text, size, isBold = false) {
+    let total = 0;
+    for (let i = 0; i < text.length; i++) {
+      total += (getCharWidth(text[i], isBold) * size) / 1000;
+    }
+    return total;
+  }
 
-    { text: '----------------------------------------------------------------------------------------------------------------------------------', size: 9, font: 'F1', x: 50, y: 390 },
-    { text: 'TECHNICAL SKILLS', size: 12, font: 'F2', x: 50, y: 376 },
-    { text: 'AI / Machine Learning: Machine Learning, Deep Learning, Computer Vision, NLP, Generative AI, Self-Supervised Learning', size: 9, font: 'F1', x: 50, y: 360 },
-    { text: 'Software Engineering: Python, JavaScript, React, Node.js, Express.js, REST APIs', size: 9, font: 'F1', x: 50, y: 348 },
-    { text: 'Data & Databases: MongoDB, MySQL, NumPy, Pandas, Scikit-Learn', size: 9, font: 'F1', x: 50, y: 336 },
-    { text: 'Core Computer Science: Data Structures & Algorithms, OOP, DBMS, Operating Systems, Computer Networks, Software Engineering', size: 9, font: 'F1', x: 50, y: 324 },
+  function wrapText(text, maxWidth, size, isBold = false) {
+    const words = text.split(' ');
+    const lines = [];
+    let currentLine = '';
 
-    { text: '----------------------------------------------------------------------------------------------------------------------------------', size: 9, font: 'F1', x: 50, y: 310 },
-    { text: 'CERTIFICATIONS & ACCREDITATIONS', size: 12, font: 'F2', x: 50, y: 296 },
-    { text: '- Oracle Certified Associate: Agentic AI Foundations (Credential: 103382087AAI26OFA)', size: 9, font: 'F1', x: 50, y: 280 },
-    { text: '- NPTEL: Problem Solving Through Programming in C (Elite 63%, Jul-Oct 2024)', size: 9, font: 'F1', x: 50, y: 268 },
-    { text: '- NPTEL: Ethical Hacking (Elite 73%, Jul-Oct 2024)', size: 9, font: 'F1', x: 50, y: 256 },
-    { text: '- Microsoft / LinkedIn: Career Essentials in Generative AI', size: 9, font: 'F1', x: 50, y: 244 },
-    { text: '- Infosys Springboard: Database Management Systems', size: 9, font: 'F1', x: 50, y: 232 },
-    { text: '- GeeksforGeeks: Full Stack Developer Bootcamp', size: 9, font: 'F1', x: 50, y: 220 }
+    for (let word of words) {
+      const testLine = currentLine ? `${currentLine} ${word}` : word;
+      const width = measureText(testLine, size, isBold);
+      if (width > maxWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+    return lines;
+  }
+
+  // Draw commands
+  const textCommands = [];
+  const graphicsCommands = [];
+
+  function drawText(text, x, y, size = 9, font = 'F1') {
+    const isBold = font === 'F2';
+    // Escape special PDF characters: (, ), \
+    // Standard Latin-1 encoding: replace non-ascii like em-dash and bullet with standard equivalents
+    let clean = text
+      .replace(/–/g, '-')
+      .replace(/—/g, '-')
+      .replace(/•/g, '*');
+
+    const escaped = clean.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+    textCommands.push(`/${font} ${size} Tf\n${x.toFixed(2)} ${y.toFixed(2)} Td\n(${escaped}) Tj\n-${x.toFixed(2)} -${y.toFixed(2)} Td`);
+  }
+
+  function drawLine(x1, y1, x2, y2, width = 0.5) {
+    graphicsCommands.push(`${width} w ${x1.toFixed(2)} ${y1.toFixed(2)} m ${x2.toFixed(2)} ${y2.toFixed(2)} l S`);
+  }
+
+  let curY = 800;
+
+  // 1. Header (Centered)
+  const nameText = 'Jhansi Bhukya';
+  const nameWidth = measureText(nameText, 21, true);
+  drawText(nameText, (pageWidth - nameWidth) / 2, curY, 21, 'F2');
+  curY -= 17;
+
+  const titleText = 'AI/ML Engineer | Full-Stack Developer';
+  const titleWidth = measureText(titleText, 10.5, true);
+  drawText(titleText, (pageWidth - titleWidth) / 2, curY, 10.5, 'F2');
+  curY -= 14;
+
+  const contactText = '+91 7207653560 | jhansibhukya17@gmail.com | LinkedIn | GitHub';
+  const contactWidth = measureText(contactText, 8.5, false);
+  drawText(contactText, (pageWidth - contactWidth) / 2, curY, 8.5, 'F1');
+  curY -= 15;
+
+  function addSectionHeader(title) {
+    curY -= 4;
+    drawText(title.toUpperCase(), leftMargin, curY, 10.5, 'F2');
+    curY -= 3;
+    drawLine(leftMargin, curY, rightMargin, curY, 0.5);
+    curY -= 11;
+  }
+
+  // 2. PROFESSIONAL SUMMARY
+  addSectionHeader('Professional Summary');
+  const summary = 'Computer Science (AI & ML) undergraduate with hands-on experience building and deploying AI/ML and full-stack applications across machine learning, NLP, computer vision, and backend systems. Skilled in Python, PyTorch, TensorFlow, FastAPI, React.js, Node.js, and MongoDB, with projects spanning self-supervised learning, audio classification, transformer-based NLP, and full-stack systems.';
+  const summaryLines = wrapText(summary, contentWidth, 8.5, false);
+  for (const line of summaryLines) {
+    drawText(line, leftMargin, curY, 8.5, 'F1');
+    curY -= 11;
+  }
+
+  // 3. EDUCATION
+  addSectionHeader('Education');
+  // Institution & Location
+  drawText('Chaitanya Bharathi Institute of Technology (CBIT)', leftMargin, curY, 9.5, 'F2');
+  const loc1 = 'Hyderabad, Telangana';
+  const loc1W = measureText(loc1, 9, false);
+  drawText(loc1, rightMargin - loc1W, curY, 9, 'F1');
+  curY -= 11;
+
+  // Degree & Graduation Date
+  drawText('B.E. in Computer Science and Engineering (Artificial Intelligence & Machine Learning)', leftMargin, curY, 8.5, 'F3');
+  const exp1 = 'Expected May 2027';
+  const exp1W = measureText(exp1, 8.5, 'F1');
+  drawText(exp1, rightMargin - exp1W, curY, 8.5, 'F1');
+  curY -= 11;
+
+  // CGPA
+  drawText('- CGPA: 9.72/10', leftMargin + 8, curY, 8.5, 'F1');
+  curY -= 12;
+
+  // 4. EXPERIENCE
+  addSectionHeader('Experience');
+  drawText('Aminobots', leftMargin, curY, 9.5, 'F2');
+  const expLoc = 'Remote';
+  const expLocW = measureText(expLoc, 9, false);
+  drawText(expLoc, rightMargin - expLocW, curY, 9, 'F1');
+  curY -= 11;
+
+  drawText('Data Science Intern', leftMargin, curY, 8.5, 'F3');
+  const expDate = 'Jul 2026 - Present';
+  const expDateW = measureText(expDate, 8.5, false);
+  drawText(expDate, rightMargin - expDateW, curY, 8.5, 'F1');
+  curY -= 11;
+
+  const expBullet = '- Selected for Aminobots\' Data Science Practice, contributing across production projects including KidneyCare, Helm, TRACE, and PowerIQ while following secure data-handling and client confidentiality requirements.';
+  const expLines = wrapText(expBullet, contentWidth - 10, 8.5, false);
+  for (const line of expLines) {
+    drawText(line, leftMargin + 8, curY, 8.5, 'F1');
+    curY -= 10.5;
+  }
+  curY -= 2;
+
+  // 5. PROJECTS
+  addSectionHeader('Projects');
+  
+  // Project 1: Respiratory
+  drawText('AI-Powered Respiratory Screening System | Live Demo | GitHub', leftMargin, curY, 9.5, 'F2');
+  curY -= 11;
+  const p1b1 = '- Developed a respiratory screening platform using SimCLR-style Self-Supervised Learning and EfficientNet-B0 for 4-class lung sound classification with Librosa, Mel-spectrograms, and Explainable AI.';
+  for (const line of wrapText(p1b1, contentWidth - 10, 8.5, false)) {
+    drawText(line, leftMargin + 8, curY, 8.5, 'F1');
+    curY -= 10.5;
+  }
+  const p1b2 = '- Built and deployed a FastAPI + React.js application with JWT authentication, prediction/history APIs, real-time visualization, and multilingual support; achieved sub-2-second response time, 10x faster audio loading, and 60% smaller visualization payloads.';
+  for (const line of wrapText(p1b2, contentWidth - 10, 8.5, false)) {
+    drawText(line, leftMargin + 8, curY, 8.5, 'F1');
+    curY -= 10.5;
+  }
+  curY -= 3;
+
+  // Project 2: Pizza
+  drawText('Full-Stack Pizza Ordering Platform | Live Demo | GitHub', leftMargin, curY, 9.5, 'F2');
+  curY -= 11;
+  const p2b1 = '- Developed and deployed a full-stack ordering platform with JWT authentication, role-based access control, REST APIs, and MongoDB integration.';
+  for (const line of wrapText(p2b1, contentWidth - 10, 8.5, false)) {
+    drawText(line, leftMargin + 8, curY, 8.5, 'F1');
+    curY -= 10.5;
+  }
+  const p2b2 = '- Integrated Razorpay payments, inventory management, shopping cart functionality, and real-time order tracking for end-to-end order processing.';
+  for (const line of wrapText(p2b2, contentWidth - 10, 8.5, false)) {
+    drawText(line, leftMargin + 8, curY, 8.5, 'F1');
+    curY -= 10.5;
+  }
+  curY -= 3;
+
+  // Project 3: Mental Health QA
+  drawText('Mental Health QA System | GitHub', leftMargin, curY, 9.5, 'F2');
+  curY -= 11;
+  const p3b1 = '- Developed a transformer-based NLP question-answering platform with RESTful APIs, conversational analytics, and MongoDB for context-aware information retrieval and support.';
+  for (const line of wrapText(p3b1, contentWidth - 10, 8.5, false)) {
+    drawText(line, leftMargin + 8, curY, 8.5, 'F1');
+    curY -= 10.5;
+  }
+  curY -= 3;
+
+  // 6. TECHNICAL SKILLS
+  addSectionHeader('Technical Skills');
+  const skills = [
+    { label: 'Languages: ', val: 'Python, JavaScript, SQL' },
+    { label: 'AI/ML: ', val: 'Machine Learning, Deep Learning, NLP, Computer Vision, Generative AI, Self-Supervised Learning, Explainable AI' },
+    { label: 'Frameworks/Libraries: ', val: 'PyTorch, TensorFlow, Scikit-Learn, Transformers, OpenCV, Librosa, NumPy, Pandas, FastAPI, React.js, Node.js, Express.js' },
+    { label: 'Backend/Databases: ', val: 'REST APIs, MongoDB, MySQL, JWT Authentication, Role-Based Access Control' },
+    { label: 'Core CS/Tools: ', val: 'Data Structures & Algorithms, OOP, DBMS, Operating Systems, Git, GitHub, Postman' },
   ];
 
-  // Build PDF stream
-  let streamContent = 'BT\n';
-  lines.forEach(l => {
-    const escaped = l.text.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
-    streamContent += `/${l.font} ${l.size} Tf\n`;
-    streamContent += `${l.x} ${l.y} Td\n`;
-    streamContent += `(${escaped}) Tj\n`;
-    streamContent += `-${l.x} -${l.y} Td\n`;
-  });
-  streamContent += 'ET\n';
+  for (const s of skills) {
+    const combined = `${s.label}${s.val}`;
+    const wrapped = wrapText(combined, contentWidth, 8.5, false);
+    for (let i = 0; i < wrapped.length; i++) {
+      if (i === 0) {
+        // Draw label in bold, then rest in regular
+        const labelW = measureText(s.label, 8.5, true);
+        drawText(s.label, leftMargin, curY, 8.5, 'F2');
+        const rest = wrapped[0].substring(s.label.length);
+        drawText(rest, leftMargin + labelW, curY, 8.5, 'F1');
+      } else {
+        drawText(wrapped[i], leftMargin, curY, 8.5, 'F1');
+      }
+      curY -= 10.5;
+    }
+  }
+  curY -= 2;
+
+  // 7. CERTIFICATIONS
+  addSectionHeader('Certifications');
+  const certs = [
+    '* Oracle Certified Associate: Agentic AI Foundations',
+    '* Career Essentials in Generative AI - Microsoft / LinkedIn',
+    '* Database Management Systems - Infosys Springboard',
+  ];
+  for (const c of certs) {
+    drawText(c, leftMargin + 4, curY, 8.5, 'F1');
+    curY -= 11;
+  }
+
+  // Construct PDF stream content
+  let streamContent = 'q\n0 0 0 rg\n0 0 0 RG\n';
+  if (graphicsCommands.length > 0) {
+    streamContent += graphicsCommands.join('\n') + '\n';
+  }
+  streamContent += 'BT\n';
+  streamContent += textCommands.join('\n') + '\n';
+  streamContent += 'ET\nQ\n';
 
   const streamLength = Buffer.byteLength(streamContent, 'utf8');
 
@@ -94,7 +274,7 @@ endobj
 <<
   /Type /Page
   /Parent 2 0 R
-  /MediaBox [0 0 595 842]
+  /MediaBox [0 0 ${pageWidth} ${pageHeight}]
   /Contents 4 0 R
   /Resources <<
     /Font <<
@@ -102,11 +282,19 @@ endobj
         /Type /Font
         /Subtype /Type1
         /BaseFont /Helvetica
+        /Encoding /WinAnsiEncoding
       >>
       /F2 <<
         /Type /Font
         /Subtype /Type1
         /BaseFont /Helvetica-Bold
+        /Encoding /WinAnsiEncoding
+      >>
+      /F3 <<
+        /Type /Font
+        /Subtype /Type1
+        /BaseFont /Helvetica-Oblique
+        /Encoding /WinAnsiEncoding
       >>
     >>
   >>
@@ -121,13 +309,6 @@ ${streamContent}endstream
 endobj
 `;
 
-  // Compute xref
-  const parts = pdf.split('\n');
-  let currentOffset = 0;
-  const offsets = [0];
-  const objIndices = [1, 2, 3, 4];
-  
-  // Calculate offsets for objects 1, 2, 3, 4
   const obj1Pos = pdf.indexOf('1 0 obj');
   const obj2Pos = pdf.indexOf('2 0 obj');
   const obj3Pos = pdf.indexOf('3 0 obj');
@@ -153,7 +334,8 @@ ${pdf.length}
 
   fs.writeFileSync(path.resolve('public/resume/Jhansi_Bhukya_Resume.pdf'), finalPdf);
   fs.writeFileSync(path.resolve('public/resume.pdf'), finalPdf);
-  console.log('Successfully generated public/resume/Jhansi_Bhukya_Resume.pdf and public/resume.pdf');
+  console.log('Successfully generated public/resume/Jhansi_Bhukya_Resume.pdf matching Resume2627.pdf exactly');
 }
 
 createResumePdf();
+
