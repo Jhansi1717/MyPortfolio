@@ -6,7 +6,7 @@ import { GoogleGenAI } from '@google/genai';
 import { COPILOT_SYSTEM_INSTRUCTION } from './src/data/copilotKnowledge';
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 
