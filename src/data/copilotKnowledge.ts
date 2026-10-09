@@ -15,7 +15,6 @@ export const PORTFOLIO_KNOWLEDGE = `
 - Location: Hyderabad, Telangana, India
 - Availability Status: Open for AI/ML & Engineering Opportunities
 - Contact Email: jhansibhukya17@gmail.com
-- Contact Phone: +91 7207653560
 
 ## 2. FORMAL EDUCATION
 - Institution: Chaitanya Bharathi Institute of Technology (CBIT)
