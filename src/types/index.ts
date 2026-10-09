@@ -14,7 +14,6 @@ export interface Profile {
   status: string;
   contact: {
     email: string;
-    phone?: string;
     location: string;
   };
 }
