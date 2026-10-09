@@ -20,7 +20,6 @@ export interface GitHubConfig {
 export interface AuthoritativeProfile {
   name: string;
   email: string;
-  phone: string;
   location: string;
   github: GitHubConfig;
   linkedin: {
@@ -36,7 +35,6 @@ export interface AuthoritativeProfile {
 export const authoritativeProfile: AuthoritativeProfile = {
   name: 'Jhansi Bhukya',
   email: 'jhansibhukya17@gmail.com',
-  phone: '+91 7207653560',
   location: 'Hyderabad, Telangana, India',
   github: {
     profileUrl: 'https://github.com/Jhansi1717',
