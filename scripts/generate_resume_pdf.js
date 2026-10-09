@@ -98,7 +98,7 @@ function createResumePdf() {
   drawText(titleText, (pageWidth - titleWidth) / 2, curY, 10.5, 'F2');
   curY -= 14;
 
-  const contactText = '+91 7207653560 | jhansibhukya17@gmail.com | LinkedIn | GitHub';
+  const contactText = 'jhansibhukya17@gmail.com | LinkedIn | GitHub';
   const contactWidth = measureText(contactText, 8.5, false);
   drawText(contactText, (pageWidth - contactWidth) / 2, curY, 8.5, 'F1');
   curY -= 15;
