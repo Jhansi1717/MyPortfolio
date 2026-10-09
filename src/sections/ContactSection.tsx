@@ -9,7 +9,6 @@ import {
   Copy,
   Check,
   Send,
-  Loader2,
   ExternalLink,
   Phone,
 } from 'lucide-react';
@@ -20,12 +19,11 @@ import { EASE_CUSTOM, DURATION } from '../utils/motionTokens';
 export const ContactSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
   const [emailCopied, setEmailCopied] = useState(false);
-  const [formState, setFormState] = useState<'initial' | 'submitting' | 'success' | 'error'>('initial');
+  const [formState, setFormState] = useState<'initial' | 'draft_opened' | 'error'>('initial');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
-    'bot-field': '',
   });
 
   const emailAddress = authoritativeProfile.email; // jhansibhukya17@gmail.com
@@ -41,33 +39,34 @@ export const ContactSection: React.FC = () => {
     setTimeout(() => setEmailCopied(false), 2200);
   };
 
-  const encode = (data: Record<string, string>) => {
-    return Object.keys(data)
-      .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
-      .join('&');
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formState === 'submitting') return;
 
-    setFormState('submitting');
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedMessage = formData.message.trim();
+
+    // 1. Validate fields
+    if (!trimmedName || !trimmedEmail || !trimmedMessage) {
+      setFormState('error');
+      return;
+    }
 
     try {
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': 'contact', ...formData }),
-      });
-      
-      if (response.ok) {
-        setFormState('success');
-      } else {
-        console.error('Form submission HTTP failure:', response.status);
-        setFormState('error');
-      }
-    } catch (error) {
-      console.error('Form submission network error:', error);
+      // 2. Compose mailto URL addressed to jhansibhukya17@gmail.com
+      const subject = `Portfolio Inquiry from ${trimmedName}`;
+      const body = `Name: ${trimmedName}\nEmail: ${trimmedEmail}\n\nMessage:\n${trimmedMessage}`;
+
+      const mailtoUrl = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      // 4. Open the user's default email application with the draft
+      window.location.href = mailtoUrl;
+
+      // 6. Show clear status
+      setFormState('draft_opened');
+    } catch (err) {
+      console.error('Failed to trigger email draft:', err);
+      // 7. If email application cannot be opened, keep message available and display fallback
       setFormState('error');
     }
   };
@@ -82,7 +81,6 @@ export const ContactSection: React.FC = () => {
       name: '',
       email: '',
       message: '',
-      'bot-field': '',
     });
     setFormState('initial');
   };
@@ -294,49 +292,39 @@ export const ContactSection: React.FC = () => {
               </div>
 
               <AnimatePresence mode="wait">
-                {formState === 'success' ? (
+                {formState === 'draft_opened' ? (
                   <motion.div
-                    key="success"
+                    key="draft_opened"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="py-8 text-center"
+                    className="py-6 text-center"
                   >
                     <div className="w-9 h-9 rounded-full bg-[#D49A46]/10 border border-[#D49A46]/30 flex items-center justify-center mx-auto mb-3 text-[#D49A46]">
-                      <Check className="w-4 h-4" />
+                      <Mail className="w-4 h-4" />
                     </div>
-                    <h3 className="font-display text-lg font-bold uppercase text-[#F2EBDD] mb-1">
-                      Message Sent
+                    <h3 className="font-display text-base sm:text-lg font-bold uppercase text-[#F2EBDD] mb-1">
+                      Email Draft Prepared
                     </h3>
-                    <p className="text-xs text-[#AAA398] font-light max-w-sm mx-auto mb-4">
-                      Thank you. Your note has been received.
+                    <p className="text-xs text-[#AAA398] font-light max-w-sm mx-auto mb-4 leading-relaxed">
+                      Email draft opened. Send it from your email app to complete delivery.
                     </p>
-                    <button
-                      type="button"
-                      onClick={handleReset}
-                      className="font-mono text-xs uppercase font-semibold text-[#D49A46] hover:text-[#E5BA70] transition-colors inline-flex items-center gap-1 cursor-pointer"
-                    >
-                      <span>Send Another Note</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </button>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                      <button
+                        type="button"
+                        onClick={handleReset}
+                        className="font-mono text-xs uppercase font-semibold text-[#D49A46] hover:text-[#E5BA70] transition-colors inline-flex items-center gap-1 cursor-pointer"
+                      >
+                        <span>Start New Message</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </motion.div>
                 ) : (
                   <form
-                    name="contact"
-                    method="POST"
-                    data-netlify="true"
-                    data-netlify-honeypot="bot-field"
                     onSubmit={handleSubmit}
                     className="space-y-3.5"
                   >
-                    <input type="hidden" name="form-name" value="contact" />
-                    <p className="hidden">
-                      <label>
-                        Don't fill this out if you're human:{' '}
-                        <input name="bot-field" value={formData['bot-field']} onChange={handleChange} />
-                      </label>
-                    </p>
-
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                       <div>
                         <label
@@ -397,28 +385,24 @@ export const ContactSection: React.FC = () => {
                     </div>
 
                     {formState === 'error' && (
-                      <div className="p-2.5 rounded-xs bg-[#24130F] border border-[#7F1D1D] text-[#FCA5A5] text-xs font-mono">
-                        Submission error. Please email directly at {emailAddress}.
+                      <div className="p-3 rounded-xs bg-[#24130F] border border-[#7F1D1D] text-[#FCA5A5] text-xs font-mono space-y-1">
+                        <div>Unable to open email client automatically.</div>
+                        <div className="text-[#AAA398]">
+                          Please send directly to:{' '}
+                          <a href={`mailto:${emailAddress}`} className="text-[#D49A46] underline hover:text-[#E5BA70]">
+                            {emailAddress}
+                          </a>
+                        </div>
                       </div>
                     )}
 
                     <div className="pt-1">
                       <button
                         type="submit"
-                        disabled={formState === 'submitting'}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#181712] hover:bg-[#222019] text-[#E5BA70] border border-[#D49A46]/50 hover:border-[#D49A46] font-mono text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46] cursor-pointer disabled:opacity-50"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#181712] hover:bg-[#222019] text-[#E5BA70] border border-[#D49A46]/50 hover:border-[#D49A46] font-mono text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#D49A46] cursor-pointer"
                       >
-                        {formState === 'submitting' ? (
-                          <>
-                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                            <span>Sending...</span>
-                          </>
-                        ) : (
-                          <>
-                            <Send className="w-3.5 h-3.5 text-[#D49A46]" />
-                            <span>Send Message</span>
-                          </>
-                        )}
+                        <Send className="w-3.5 h-3.5 text-[#D49A46]" />
+                        <span>Send Message</span>
                       </button>
                     </div>
                   </form>
